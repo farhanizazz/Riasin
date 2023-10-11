@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:riasin_app/register_page.dart';
+import 'package:riasin_app/component/register_page.dart';
 
 void main() {
   runApp(const MainPage());

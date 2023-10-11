@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:riasin_app/labeled_text_field.dart';
+import 'package:riasin_app/component/labeled_text_field.dart';
 import 'package:riasin_app/main.dart';
 
 class RegisterPage extends StatefulWidget {
