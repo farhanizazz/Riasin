@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:riasin_app/component/labeled_text_field.dart';
+import 'package:riasin_app/layout/register_pages/register_page2.dart';
 import 'package:riasin_app/main.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -32,7 +33,7 @@ class _RegisterPageState extends State<RegisterPage> {
             ),
             const SizedBox(height: 60),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 100.0),
+              padding: const EdgeInsets.symmetric(horizontal: 50.0),
               child: Form(
                 key: _formKey,
                 child: Column(children: [
@@ -85,8 +86,9 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                           child: Text(
                             'Lupa Password',
-                            style:
-                                TextStyle(color: Color.fromARGB(70, 27, 9, 14)),
+                            style: TextStyle(
+                                color: Color.fromARGB(70, 27, 9, 14),
+                                fontWeight: FontWeight.w600),
                           ),
                           onPressed: () {})),
                   SizedBox(
@@ -96,14 +98,16 @@ class _RegisterPageState extends State<RegisterPage> {
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
                         _formKey.currentState!.save();
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                              content: Text(
-                                  'Email: ${_formData["email"]}, Password: ${_formData["password"]}}')),
-                        );
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => RegisterPageDataDiri(),
+                            ));
                       }
                     },
                     style: ElevatedButton.styleFrom(
+                      elevation: 0.0,
+                      shadowColor: Colors.transparent,
                       minimumSize: const Size.fromHeight(50),
                     ),
                     child: Text('Register',
@@ -117,7 +121,12 @@ class _RegisterPageState extends State<RegisterPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Sudah punya akun?'),
+                      Text(
+                        'Sudah punya akun?',
+                        style: TextStyle(
+                            color: Color.fromARGB(70, 27, 9, 14),
+                            fontWeight: FontWeight.w600),
+                      ),
                       SizedBox(width: 5),
                       TextButton(
                           style: TextButton.styleFrom(
@@ -127,8 +136,9 @@ class _RegisterPageState extends State<RegisterPage> {
                           ),
                           child: Text(
                             'Login',
-                            style:
-                                TextStyle(color: Color.fromARGB(70, 27, 9, 14)),
+                            style: TextStyle(
+                                color: Color(0xffC55977),
+                                fontWeight: FontWeight.w700),
                           ),
                           onPressed: () {})
                     ],

@@ -1,7 +1,8 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:riasin_app/component/register_page.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:riasin_app/layout/register_pages/register_page.dart';
 
 void main() {
   runApp(const MainPage());
@@ -60,6 +61,7 @@ class MainPage extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
+        fontFamily: GoogleFonts.poppins().fontFamily,
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
             backgroundColor:
@@ -76,12 +78,32 @@ class MainPage extends StatelessWidget {
           ),
         ),
         inputDecorationTheme: InputDecorationTheme(
-            contentPadding: const EdgeInsets.symmetric(horizontal: 22.0),
-            enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(57),
-                borderSide:
-                    BorderSide(color: Color.fromARGB(102, 197, 89, 120)))),
+            hintStyle: TextStyle(height: 2),
+            labelStyle: TextStyle(
+                height: 2,
+                fontWeight: FontWeight.w600,
+                color: Color(0x1B090E61)),
+            alignLabelWithHint: true,
+            contentPadding: EdgeInsets.symmetric(vertical: 2),
+            floatingLabelStyle: TextStyle(
+              color: Colors.black,
+              fontWeight: FontWeight.w600,
+              fontSize: 20,
+            ),
+            focusedErrorBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.red[900]!, width: 4)),
+            errorBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.red[900]!, width: 4)),
+            focusedBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                    color: Color.fromARGB(255, 197, 89, 120), width: 4)),
+            enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(
+                    color: Color.fromARGB(102, 197, 89, 120), width: 4))),
         colorScheme: colorScheme,
+        textTheme: TextTheme(
+          titleMedium: TextStyle(color: Color(0xffC55977), fontSize: 20),
+        ),
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,

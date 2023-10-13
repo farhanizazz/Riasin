@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 
 class LabeledTextField extends StatelessWidget {
@@ -22,35 +24,24 @@ class LabeledTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Align(
-          alignment: Alignment.centerLeft,
-          child: Text(field,
-              style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.w600,
-              )),
-        ),
         const SizedBox(height: 9),
         TextFormField(
-          controller: controller,
-          onSaved: onSaved,
-          validator: validator != null
-              ? (value) => validator!(value)
-              : (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter some text';
-                  }
-                  return null;
-                },
-          obscureText: obscureText,
-          decoration: InputDecoration(
-            hintText: hintText,
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 22.0, vertical: 15.0),
-            border: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(57))),
-          ),
-        ),
+            controller: controller,
+            onSaved: onSaved,
+            validator: validator != null
+                ? (value) => validator!(value)
+                : (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter some text';
+                    }
+                    return null;
+                  },
+            obscureText: obscureText,
+            decoration: InputDecoration(
+                border: UnderlineInputBorder(
+                    borderSide: BorderSide(color: Color(0x50C55977))),
+                labelText: field,
+                hintText: '')),
       ],
     );
   }
