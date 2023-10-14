@@ -9,6 +9,8 @@ class LabeledTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   final TextEditingController? controller;
   final Set? Function(String?)? onSaved;
+  final Widget? suffixIcon;
+  final void Function()? onTap;
 
   const LabeledTextField({
     super.key,
@@ -18,6 +20,8 @@ class LabeledTextField extends StatelessWidget {
     this.validator,
     this.controller,
     this.onSaved,
+    this.suffixIcon,
+    this.onTap,
   });
 
   @override
@@ -26,6 +30,8 @@ class LabeledTextField extends StatelessWidget {
       children: [
         const SizedBox(height: 9),
         TextFormField(
+            onTap: onTap,
+            maxLength: 20,
             controller: controller,
             onSaved: onSaved,
             validator: validator != null
@@ -38,6 +44,9 @@ class LabeledTextField extends StatelessWidget {
                   },
             obscureText: obscureText,
             decoration: InputDecoration(
+                suffixIcon: suffixIcon,
+                counterStyle: MaterialStateTextStyle.resolveWith(
+                    (states) => TextStyle(color: Colors.transparent)),
                 border: UnderlineInputBorder(
                     borderSide: BorderSide(color: Color(0x50C55977))),
                 labelText: field,

@@ -1,23 +1,34 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors
+
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:multi_select_flutter/multi_select_flutter.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:riasin_app/component/labeled_text_field.dart';
-import 'package:intl/intl.dart';
+import 'package:riasin_app/component/upload_with_label.dart';
 import 'package:riasin_app/component/widget_tombol_registrasi_bawah.dart';
-import 'package:riasin_app/layout/register_pages/register_page3.dart';
+import 'package:riasin_app/layout/register_pages/register_page_pilih_hari.dart';
 
-class RegisterPageDataDiri extends StatefulWidget {
-  const RegisterPageDataDiri({super.key});
+class RegisterPageDataJasa extends StatefulWidget {
+  const RegisterPageDataJasa({super.key});
 
   @override
-  State<RegisterPageDataDiri> createState() => _RegisterPageDataDiriState();
+  State<RegisterPageDataJasa> createState() => _RegisterPageDataJasaState();
 }
 
-class _RegisterPageDataDiriState extends State<RegisterPageDataDiri> {
+class _RegisterPageDataJasaState extends State<RegisterPageDataJasa> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController _dateController = TextEditingController();
+  File? _selectedImage;
+
+  Future _pickImageFromGallery() async {
+    final returnedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    setState(() {
+      _selectedImage = File(returnedImage!.path);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +36,7 @@ class _RegisterPageDataDiriState extends State<RegisterPageDataDiri> {
       resizeToAvoidBottomInset: false,
       body: Center(
           child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 1.0),
+        padding: EdgeInsets.symmetric(horizontal: 50.0, vertical: 1.0),
         child: Form(
           key: _formKey,
           child: Column(
@@ -35,31 +46,7 @@ class _RegisterPageDataDiriState extends State<RegisterPageDataDiri> {
                 height: 50,
               ),
               LabeledTextField(
-                  field: "Nama Lengkap",
-                  hintText: 'Masukkan nama lengkap anda'),
-              LabeledTextField(
-                  field: "Nomor Telepon",
-                  hintText: 'Masukkan nama lengkap anda'),
-              LabeledTextField(
-                controller: _dateController,
-                onTap: () {
-                  showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(1800),
-                          lastDate: DateTime(2200))
-                      .then((value) => setState(() => value == null
-                          ? {}
-                          : _dateController.text =
-                              DateFormat('yyyy-MM-dd').format(value)));
-                },
-                field: "Tanggal Lahir",
-                hintText: 'Masukkan nama lengkap anda',
-                suffixIcon: Icon(
-                  Icons.calendar_today_rounded,
-                  color: Color(0xffC55977),
-                ),
-              ),
+                  field: "Nama Jasa MUA", hintText: 'Masukkan nama usaha anda'),
               SizedBox(height: 20),
               DropdownButtonFormField<String>(
                   icon: Icon(
@@ -67,7 +54,7 @@ class _RegisterPageDataDiriState extends State<RegisterPageDataDiri> {
                     color: Color(0xffC55977),
                     size: 40,
                   ),
-                  hint: Text('Pilih Jenis Kelamin',
+                  hint: Text('Lokasi Jasa',
                       style: TextStyle(
                         color: Color(0x1B090E61),
                         fontWeight: FontWeight.w600,
@@ -108,20 +95,32 @@ class _RegisterPageDataDiriState extends State<RegisterPageDataDiri> {
                   onChanged: (newValue) {
                     setState(() {});
                   },
-                  items: [
+                  items: const [
                     DropdownMenuItem(
                         value: 'Laki-Laki', child: Text('Laki-Laki')),
                     DropdownMenuItem(
                         value: 'Perempuan', child: Text('Perempuan')),
                   ]),
+              SizedBox(height: 30),
+              UploadWithLabel(
+                label: "Foto Profil Jasa",
+                onTap: () {
+                  _pickImageFromGallery();
+                },
+              ),
+              SizedBox(height: 30),
+              UploadWithLabel(
+                label: "Foto Profil Jasa",
+              ),
               SizedBox(
-                height: 250,
+                height: 30,
               ),
               WidgetTombolRegistrasiBawah(
-                nextPage: RegisterPageDataJasa(),
-                nextPageName: "Data Jasa",
-                previousPageName: "Akun",
-              ),
+                nextPage: RegisterPilihHari(),
+                nextPageName: "Daftar",
+                previousPageName: "Data Diri",
+                useNextArrow: false,
+              )
             ],
           ),
         ),

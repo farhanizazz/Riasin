@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:riasin_app/layout/register_pages/register_page.dart';
@@ -65,9 +63,9 @@ class MainPage extends StatelessWidget {
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
             backgroundColor:
-                MaterialStateProperty.all<Color>(Color(0xffC55977)),
+                MaterialStateProperty.all<Color>(const Color(0xffC55977)),
             overlayColor: MaterialStateProperty.all<Color>(
-                Color.fromARGB(255, 103, 45, 62).withOpacity(0.5)),
+                const Color.fromARGB(255, 103, 45, 62).withOpacity(0.5)),
             foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
           ),
         ),
@@ -78,14 +76,14 @@ class MainPage extends StatelessWidget {
           ),
         ),
         inputDecorationTheme: InputDecorationTheme(
-            hintStyle: TextStyle(height: 2),
-            labelStyle: TextStyle(
+            hintStyle: const TextStyle(height: 2),
+            labelStyle: const TextStyle(
                 height: 2,
                 fontWeight: FontWeight.w600,
                 color: Color(0x1B090E61)),
             alignLabelWithHint: true,
-            contentPadding: EdgeInsets.symmetric(vertical: 2),
-            floatingLabelStyle: TextStyle(
+            contentPadding: const EdgeInsets.symmetric(vertical: 2),
+            floatingLabelStyle: const TextStyle(
               color: Colors.black,
               fontWeight: FontWeight.w600,
               fontSize: 20,
@@ -94,20 +92,20 @@ class MainPage extends StatelessWidget {
                 borderSide: BorderSide(color: Colors.red[900]!, width: 4)),
             errorBorder: UnderlineInputBorder(
                 borderSide: BorderSide(color: Colors.red[900]!, width: 4)),
-            focusedBorder: UnderlineInputBorder(
+            focusedBorder: const UnderlineInputBorder(
                 borderSide: BorderSide(
                     color: Color.fromARGB(255, 197, 89, 120), width: 4)),
-            enabledBorder: UnderlineInputBorder(
+            enabledBorder: const UnderlineInputBorder(
                 borderSide: BorderSide(
                     color: Color.fromARGB(102, 197, 89, 120), width: 4))),
         colorScheme: colorScheme,
-        textTheme: TextTheme(
+        textTheme: const TextTheme(
           titleMedium: TextStyle(color: Color(0xffC55977), fontSize: 20),
         ),
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
-      home: Home(),
+      home: const Home(),
     );
   }
 }
@@ -120,13 +118,14 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Center(
         child: ElevatedButton(
           onPressed: () {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => RegisterPage(),
+                  builder: (context) => const RegisterPage(),
                 ));
           },
           child: const Text('Launch screen'),
