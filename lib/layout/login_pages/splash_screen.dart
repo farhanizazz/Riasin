@@ -1,25 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
-class splashscreen extends StatelessWidget {
-  const splashscreen({super.key});
+class SplashScreen extends StatelessWidget {
+  const SplashScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-          padding: EdgeInsets.all(24),
+          padding: const EdgeInsets.all(24),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Image.asset("lib/img/logo.png")
-                ],
+                children: [SvgPicture.asset("assets/svg/logoRiasin.svg")],
               )
             ],
-          )
-      ),
+          )),
     );
   }
 }

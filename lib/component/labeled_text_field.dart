@@ -28,10 +28,9 @@ class LabeledTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const SizedBox(height: 9),
         TextFormField(
             onTap: onTap,
-            maxLength: 20,
+            maxLength: 99,
             controller: controller,
             onSaved: onSaved,
             validator: validator != null

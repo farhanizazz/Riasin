@@ -10,7 +10,7 @@ class Login1 extends StatefulWidget {
 class _Login1State extends State<Login1> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Padding(
         padding: EdgeInsets.all(45),
         child: Column(
@@ -18,9 +18,7 @@ class _Login1State extends State<Login1> {
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-
-              ],
+              children: [],
             )
           ],
         ),

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:riasin_app/layout/login_pages/splash_screen.dart';
 import 'package:riasin_app/layout/register_pages/register_page.dart';
+import 'package:riasin_app/layout/register_pages/register_page_pilih_hari.dart';
 
 void main() {
   runApp(const MainPage());
@@ -78,9 +80,7 @@ class MainPage extends StatelessWidget {
         inputDecorationTheme: InputDecorationTheme(
             hintStyle: const TextStyle(height: 2),
             labelStyle: const TextStyle(
-                height: 2,
-                fontWeight: FontWeight.w600,
-                color: Color(0x1B090E61)),
+                fontWeight: FontWeight.w600, color: Color(0x1B090E61)),
             alignLabelWithHint: true,
             contentPadding: const EdgeInsets.symmetric(vertical: 2),
             floatingLabelStyle: const TextStyle(
@@ -119,18 +119,13 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const RegisterPage(),
-                ));
-          },
-          child: const Text('Launch screen'),
-        ),
-      ),
+      // body: InkWell(
+      //     onTap: () {
+      //       Navigator.pushReplacement(context,
+      //           MaterialPageRoute(builder: (context) => RegisterPage()));
+      //     },
+      //     child: SplashScreen())
+      body: RegisterPilihHari(),
     );
   }
 }

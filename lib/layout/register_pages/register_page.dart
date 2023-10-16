@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:riasin_app/component/labeled_text_field.dart';
+import 'package:riasin_app/layout/login_pages/login_page.dart';
 import 'package:riasin_app/layout/register_pages/register_page2.dart';
 import 'package:riasin_app/main.dart';
 
@@ -160,7 +161,12 @@ class _RegisterPageState extends State<RegisterPage> {
                                   color: Color(0xffC55977),
                                   fontWeight: FontWeight.w700),
                             ),
-                            onPressed: () {})
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const LoginPage()));
+                            })
                       ],
                     ),
                   ]),
