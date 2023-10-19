@@ -11,24 +11,26 @@ class LabeledTextField extends StatelessWidget {
   final Set? Function(String?)? onSaved;
   final Widget? suffixIcon;
   final void Function()? onTap;
+  final void Function(String)? onChanged;
 
-  const LabeledTextField({
-    super.key,
-    required this.field,
-    required this.hintText,
-    this.obscureText = false,
-    this.validator,
-    this.controller,
-    this.onSaved,
-    this.suffixIcon,
-    this.onTap,
-  });
+  const LabeledTextField(
+      {super.key,
+      required this.field,
+      required this.hintText,
+      this.obscureText = false,
+      this.validator,
+      this.controller,
+      this.onSaved,
+      this.suffixIcon,
+      this.onTap,
+      this.onChanged});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         TextFormField(
+            onChanged: onChanged,
             onTap: onTap,
             maxLength: 99,
             controller: controller,

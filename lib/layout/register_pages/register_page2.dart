@@ -1,12 +1,12 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:multi_select_flutter/multi_select_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:riasin_app/component/labeled_text_field.dart';
 import 'package:intl/intl.dart';
 import 'package:riasin_app/component/widget_tombol_registrasi_bawah.dart';
 import 'package:riasin_app/layout/register_pages/register_page3.dart';
+import 'package:riasin_app/providers/form_data_provider.dart';
 
 class RegisterPageDataDiri extends StatefulWidget {
   const RegisterPageDataDiri({super.key});
@@ -18,14 +18,39 @@ class RegisterPageDataDiri extends StatefulWidget {
 class _RegisterPageDataDiriState extends State<RegisterPageDataDiri> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController _dateController = TextEditingController();
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _phoneController = TextEditingController();
+  TextEditingController _genderController = TextEditingController();
+
+  @override
+  void initState() {
+    final FormData formData = Provider.of<FormData>(context, listen: false);
+
+    super.initState();
+    _nameController = TextEditingController(text: formData.namaLengkap);
+    _phoneController = TextEditingController(text: formData.nomorTelepon);
+    _dateController = TextEditingController(text: formData.tanggalLahir);
+    _genderController = TextEditingController(text: formData.jenisKelamin);
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _phoneController.dispose();
+    _genderController.dispose();
+    _dateController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final FormData formData = Provider.of<FormData>(context);
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Center(
           child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 50.0, vertical: 50.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 50.0),
         child: Form(
           key: _formKey,
           child: Column(
@@ -34,23 +59,59 @@ class _RegisterPageDataDiriState extends State<RegisterPageDataDiri> {
               Column(
                 children: [
                   LabeledTextField(
-                      field: "Nama Lengkap",
-                      hintText: 'Masukkan nama lengkap anda'),
+                    field: "Nama Lengkap",
+                    hintText: 'Masukkan nama lengkap anda',
+                    controller: _nameController,
+                    onChanged: formData.changeNamaLengkap,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Nama lengkap tidak boleh kosong';
+                      }
+                      return null;
+                    },
+                  ),
                   LabeledTextField(
-                      field: "Nomor Telepon",
-                      hintText: 'Masukkan nama lengkap anda'),
+                    field: "Nomor Telepon",
+                    hintText: 'Masukkan nama lengkap anda',
+                    controller: _phoneController,
+                    onChanged: formData.changeNomorTelepon,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Nomor telepon tidak boleh kosong';
+                      } else if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
+                        return 'Input hanya boleh berupa angka';
+                      }
+                      return null;
+                    },
+                  ),
                   LabeledTextField(
+                    onChanged: formData.changeTanggalLahir,
                     controller: _dateController,
                     onTap: () {
                       showDatePicker(
-                              context: context,
-                              initialDate: DateTime.now(),
-                              firstDate: DateTime(1800),
-                              lastDate: DateTime(2200))
-                          .then((value) => setState(() => value == null
-                              ? {}
-                              : _dateController.text =
-                                  DateFormat('yyyy-MM-dd').format(value)));
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(1800),
+                        lastDate: DateTime(2200),
+                      ).then((value) {
+                        if (value != null) {
+                          String formattedDate =
+                              DateFormat('yyyy-MM-dd').format(value);
+                          setState(() {
+                            _dateController.text = formattedDate;
+                            formData.changeTanggalLahir(formattedDate);
+                          });
+                        }
+                      });
+                    },
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Tanggal lahir tidak boleh kosong';
+                      }
+                      if (!RegExp(r'^\d{4}-\d{2}-\d{2}$').hasMatch(value)) {
+                        return 'Input must be in the format yyyy-MM-dd';
+                      }
+                      return null;
                     },
                     field: "Tanggal Lahir",
                     hintText: 'Masukkan nama lengkap anda',
@@ -61,6 +122,9 @@ class _RegisterPageDataDiriState extends State<RegisterPageDataDiri> {
                   ),
                   SizedBox(height: 20),
                   DropdownButtonFormField<String>(
+                      validator: (value) => value == null
+                          ? 'Jenis kelamin tidak boleh kosong'
+                          : null,
                       icon: Icon(
                         Icons.arrow_drop_down,
                         color: Color(0xffC55977),
@@ -108,7 +172,9 @@ class _RegisterPageDataDiriState extends State<RegisterPageDataDiri> {
                         ),
                       ),
                       onChanged: (newValue) {
-                        setState(() {});
+                        setState(() {
+                          formData.changeJenisKelamin(newValue!);
+                        });
                       },
                       items: [
                         DropdownMenuItem(
@@ -119,7 +185,16 @@ class _RegisterPageDataDiriState extends State<RegisterPageDataDiri> {
                 ],
               ),
               WidgetTombolRegistrasiBawah(
-                nextPage: RegisterPageDataJasa(),
+                nextPageOnTap: () {
+                  if (_formKey.currentState!.validate()) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => RegisterPageDataJasa(),
+                        ));
+                  }
+                },
+                usePrevButton: false,
                 nextPageName: "Data Jasa",
                 previousPageName: "Akun",
               ),

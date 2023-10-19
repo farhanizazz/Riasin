@@ -2,29 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class WidgetTombolRegistrasiBawah extends StatelessWidget {
-  final Widget nextPage;
+  final Function() nextPageOnTap;
   final String nextPageName;
   final String previousPageName;
   final bool useNextArrow;
+  final bool usePrevButton;
 
   const WidgetTombolRegistrasiBawah({
     super.key,
-    required this.nextPage,
+    required this.nextPageOnTap,
     required this.nextPageName,
     required this.previousPageName,
     this.useNextArrow = true,
+    this.usePrevButton = true,
   });
 
   @override
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Expanded(
+      usePrevButton ? Expanded(
           child: ElevatedButton(
             onPressed: () {
               Navigator.pop(context);
             },
             style: ButtonStyle(
+              padding: MaterialStateProperty.all(EdgeInsets.all(0)),
               backgroundColor:
                   MaterialStateProperty.all<Color>(const Color(0xffD5F0E9)),
               overlayColor: MaterialStateProperty.all<Color>(
@@ -40,40 +43,35 @@ class WidgetTombolRegistrasiBawah extends StatelessWidget {
               shadowColor: MaterialStateProperty.all<Color>(Colors.transparent),
             ),
             child: Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SvgPicture.asset(
-                    'assets/svg/arrowBack.svg',
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Text(previousPageName,
-                      style: const TextStyle(
-                        color: Color(0xff030806),
-                        fontWeight: FontWeight.w500,
-                      )),
-                ],
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 13.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SvgPicture.asset(
+                      'assets/svg/arrowBack.svg',
+                    ),
+                    Text(previousPageName,
+                        style: const TextStyle(
+                          color: Color(0xff030806),
+                          fontWeight: FontWeight.w500,
+                        )),
+                  ],
+                ),
               ),
             ),
           ),
-        ),
-        const SizedBox(
-          width: 20,
+        ): const SizedBox(),
+        SizedBox(
+          width: usePrevButton ? 20 : 0,
         ),
         Expanded(
           child: ElevatedButton(
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => nextPage,
-                  ));
+              nextPageOnTap();
             },
             style: ButtonStyle(
-              padding: MaterialStateProperty.all<EdgeInsets>(
-                  const EdgeInsets.symmetric(horizontal: 0)),
+              padding: MaterialStateProperty.all(EdgeInsets.all(0)),
               backgroundColor:
                   MaterialStateProperty.all<Color>(const Color(0xffC55977)),
               minimumSize:
@@ -86,30 +84,30 @@ class WidgetTombolRegistrasiBawah extends StatelessWidget {
               elevation: MaterialStateProperty.all<double>(0.0),
               shadowColor: MaterialStateProperty.all<Color>(Colors.transparent),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SizedBox(
-                  width: 10,
-                ),
-                Text(nextPageName,
-                    style: const TextStyle(
-                      color: Color(0xFFFFFFFF),
-                      fontWeight: FontWeight.w500,
-                    )),
-                useNextArrow
-                    ? Row(
-                        children: [
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          SvgPicture.asset(
-                            'assets/svg/arrowNext.svg',
-                          ),
-                        ],
-                      )
-                    : const SizedBox(),
-              ],
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 13.0),
+              child: Row(
+                mainAxisAlignment: usePrevButton ? MainAxisAlignment.spaceBetween : MainAxisAlignment.center,
+                children: [
+                  Text(nextPageName,
+                      style: const TextStyle(
+                        color: Color(0xFFFFFFFF),
+                        fontWeight: FontWeight.w500,
+                      )),
+                  useNextArrow
+                      ? Row(
+                          children: [
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            SvgPicture.asset(
+                              'assets/svg/arrowNext.svg',
+                            ),
+                          ],
+                        )
+                      : const SizedBox(),
+                ],
+              ),
             ),
           ),
         ),
