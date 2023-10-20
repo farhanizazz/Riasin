@@ -1,29 +1,33 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:riasin_app/component/labeled_text_field.dart';
-import 'package:riasin_app/component/upload_with_label.dart';
+import 'package:intl/intl.dart';
 import 'package:riasin_app/component/widget_tombol_registrasi_bawah.dart';
+import 'package:riasin_app/layout/register_pages/register_page3.dart';
 import 'package:riasin_app/layout/register_pages/register_page_pilih_hari.dart';
+import 'package:riasin_app/providers/form_data_provider.dart';
+
+import '../../component/upload_with_label.dart';
 
 class RegisterPageDataJasa extends StatefulWidget {
   const RegisterPageDataJasa({super.key});
 
   @override
-  State<RegisterPageDataJasa> createState() => _RegisterPageDataJasaState();
+  State<RegisterPageDataJasa> createState() => _RegisterPageDataDiriState();
 }
 
-class _RegisterPageDataJasaState extends State<RegisterPageDataJasa> {
+class _RegisterPageDataDiriState extends State<RegisterPageDataJasa> {
   final _formKey = GlobalKey<FormState>();
+
   File? _selectedImage;
 
   Future _pickImageFromGallery() async {
-    final returnedImage =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+    final returnedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
 
     setState(() {
       _selectedImage = File(returnedImage!.path);
@@ -31,12 +35,26 @@ class _RegisterPageDataJasaState extends State<RegisterPageDataJasa> {
   }
 
   @override
+  void initState() {
+    final FormData formData = Provider.of<FormData>(context, listen: false);
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final FormData formData = Provider.of<FormData>(context);
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Center(
           child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 50.0, vertical: 50.0),
+        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 50.0),
         child: Form(
           key: _formKey,
           child: Column(
@@ -45,16 +63,28 @@ class _RegisterPageDataJasaState extends State<RegisterPageDataJasa> {
               Column(
                 children: [
                   LabeledTextField(
-                      field: "Nama Jasa MUA",
-                      hintText: 'Masukkan nama usaha anda'),
+                    field: "Nama Lengkap",
+                    hintText: 'Masukkan nama lengkap anda',
+                    onChanged: formData.changeNamaLengkap,
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Nama lengkap tidak boleh kosong';
+                      }
+                      return null;
+                    },
+                  ),
                   SizedBox(height: 20),
                   DropdownButtonFormField<String>(
+                    isDense: true,
+                      validator: (value) => value == null
+                          ? 'Jenis kelamin tidak boleh kosong'
+                          : null,
                       icon: Icon(
                         Icons.arrow_drop_down,
                         color: Color(0xffC55977),
                         size: 40,
                       ),
-                      hint: Text('Lokasi Jasa',
+                      hint: Text('Pilih Kecamatan',
                           style: TextStyle(
                             color: Color(0x1B090E61),
                             fontWeight: FontWeight.w600,
@@ -68,7 +98,6 @@ class _RegisterPageDataJasaState extends State<RegisterPageDataJasa> {
                           color: Color(0x1B090E61),
                         ),
                         alignLabelWithHint: true,
-                        contentPadding: EdgeInsets.symmetric(vertical: 2),
                         floatingLabelStyle: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.w600,
@@ -96,15 +125,19 @@ class _RegisterPageDataJasaState extends State<RegisterPageDataJasa> {
                         ),
                       ),
                       onChanged: (newValue) {
-                        setState(() {});
+                        setState(() {
+                          formData.changeJenisKelamin(newValue!);
+                        });
                       },
-                      items: const [
+                      items: [
                         DropdownMenuItem(
                             value: 'Laki-Laki', child: Text('Laki-Laki')),
                         DropdownMenuItem(
                             value: 'Perempuan', child: Text('Perempuan')),
                       ]),
-                  SizedBox(height: 30),
+                  SizedBox(
+                    height: 20,
+                  ),
                   UploadWithLabel(
                     label: "Foto Profil Jasa",
                     onTap: () {
@@ -118,11 +151,18 @@ class _RegisterPageDataJasaState extends State<RegisterPageDataJasa> {
                 ],
               ),
               WidgetTombolRegistrasiBawah(
-                nextPage: RegisterPilihHari(),
-                nextPageName: "Daftar",
+                nextPageOnTap: () {
+                  if (_formKey.currentState!.validate()) {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => RegisterPilihHari(),
+                        ));
+                  }
+                },
+                nextPageName: "Data Jasa",
                 previousPageName: "Data Diri",
-                useNextArrow: false,
-              )
+              ),
             ],
           ),
         ),

@@ -28,7 +28,7 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(
                 height: 30,
               ),
-              Column(
+              const Column(
                 children: [
                   LabeledTextField(
                       field: 'Email', hintText: "Masukkan email anda"),
@@ -78,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                       const Text(
                         "Belum punya akun?",
                         style: TextStyle(
-                            color: Color(0xff1B090E4D),
+                            color: Color(0xff1b090e4d),
                             fontWeight: FontWeight.w600),
                       ),
                       const SizedBox(
@@ -89,7 +89,7 @@ class _LoginPageState extends State<LoginPage> {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => RegisterPage()));
+                                    builder: (context) => const RegisterPage()));
                           },
                           overlayColor:
                               MaterialStateProperty.all(Colors.transparent),

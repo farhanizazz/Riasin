@@ -27,15 +27,15 @@ class UploadWithLabel extends StatelessWidget {
         SizedBox(
           height: 8,
         ),
-        InkWell(
-          onTap: onTap,
-          child: Container(
-              width: double.infinity,
-              height: 158,
-              decoration: BoxDecoration(
-                color: Color(0xffE1CCD2),
-                borderRadius: BorderRadius.circular(20),
-              ),
+        Container(
+          width: double.infinity,
+          height: 158,
+          child: Material(
+            borderRadius: BorderRadius.circular(20),
+            color: Color(0xffE1CCD2),
+            child: InkWell(
+              onTap: onTap,
+              borderRadius: BorderRadius.circular(20),
               child: Center(
                 child: image == null
                     ? Column(
@@ -60,7 +60,9 @@ class UploadWithLabel extends StatelessWidget {
                         ],
                       )
                     : Image.file(image!),
-              )),
+              ),
+            ),
+          ),
         ),
       ],
     );
