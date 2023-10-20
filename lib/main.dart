@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:riasin_app/layout/login_pages/splash_screen.dart';
 import 'package:riasin_app/layout/register_pages/register_page.dart';
 import 'package:riasin_app/layout/register_pages/register_page_pilih_hari.dart';
+import 'package:riasin_app/layout/mua/dashboard.dart';
 
 void main() {
   runApp(const MainPage());
@@ -125,7 +126,8 @@ class Home extends StatelessWidget {
       //           MaterialPageRoute(builder: (context) => RegisterPage()));
       //     },
       //     child: SplashScreen())
-      body: RegisterPilihHari(),
+      // body: RegisterPilihHari(),
+      body: DashboardPage(),
     );
   }
 }
