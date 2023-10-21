@@ -7,7 +7,8 @@ import 'package:riasin_app/layout/register_pages/register_page.dart';
 import 'package:riasin_app/providers/form_data_provider.dart';
 
 import 'layout/register_pages/register_page2.dart';
-import 'package:riasin_app/layout/mua/dashboard.dart';
+import 'package:riasin_app/layout/mua/dashboard_mua.dart';
+import 'package:riasin_app/layout/client/dashboard_client.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,7 +36,7 @@ const colorScheme = ColorScheme(
   onTertiary: accentFgColor,
   surface: backgroundColor,
   onSurface: textColor,
-  error: Brightness.light == Brightness.light
+  error: Brightness.light == Brightness.light 
       ? Color(0xffB3261E)
       : Color(0xffF2B8B5),
   onError: Brightness.light == Brightness.light
@@ -135,19 +136,20 @@ class Home extends StatelessWidget {
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        body: InkWell(
-            onTap: () async {
-              if(_checkToken() != null) {
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => const RegisterPageDataDiri()));
-                return;
-              } else {
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => const RegisterPage()));
-              }
-            },
-            child: SplashScreen())
-        // body: RegisterPilihHari(),
+        // body: InkWell(
+        //     onTap: () async {
+        //       if(_checkToken() != null) {
+        //         Navigator.pushReplacement(context,
+        //             MaterialPageRoute(builder: (context) => const RegisterPageDataDiri()));
+        //         return;
+        //       } else {
+        //       Navigator.pushReplacement(context,
+        //           MaterialPageRoute(builder: (context) => const RegisterPage()));
+        //       }
+        //     },
+        //     child: SplashScreen())
+        body: DashboardClient(),
+        // body: DashboardMua(),
         );
   }
 }
