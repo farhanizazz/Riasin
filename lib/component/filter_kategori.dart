@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 
 class FilterKategori extends StatefulWidget {
-  const FilterKategori({
+  FilterKategori({
     super.key,
     required this.kategori,
     required this.nama,
     required this.value,
+    required this.onSelected,
   });
 
   final List<String> kategori;
   final String nama;
   final String value;
+  final Function(bool) onSelected;
 
   @override
   State<FilterKategori> createState() => _FilterKategoriState();
@@ -20,15 +22,7 @@ class _FilterKategoriState extends State<FilterKategori> {
   @override
   Widget build(BuildContext context) {
     return FilterChip(
-      onSelected: (selected) {
-        setState(() {
-          if (selected) {
-            widget.kategori.add(widget.value);
-          } else {
-            widget.kategori.remove(widget.value);
-          }
-        });
-      },
+      onSelected: widget.onSelected,
       label: Text(
         widget.nama,
         style: TextStyle(

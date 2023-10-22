@@ -36,7 +36,7 @@ const colorScheme = ColorScheme(
   onTertiary: accentFgColor,
   surface: backgroundColor,
   onSurface: textColor,
-  error: Brightness.light == Brightness.light 
+  error: Brightness.light == Brightness.light
       ? Color(0xffB3261E)
       : Color(0xffF2B8B5),
   onError: Brightness.light == Brightness.light
@@ -136,19 +136,19 @@ class Home extends StatelessWidget {
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        // body: InkWell(
-        //     onTap: () async {
-        //       if(_checkToken() != null) {
-        //         Navigator.pushReplacement(context,
-        //             MaterialPageRoute(builder: (context) => const RegisterPageDataDiri()));
-        //         return;
-        //       } else {
-        //       Navigator.pushReplacement(context,
-        //           MaterialPageRoute(builder: (context) => const RegisterPage()));
-        //       }
-        //     },
-        //     child: SplashScreen())
-        body: DashboardClient(),
+        body: InkWell(
+            onTap: () async {
+              if(await _checkToken() != null) {
+                Navigator.pushReplacement(context,
+                    MaterialPageRoute(builder: (context) => const RegisterPageDataDiri()));
+                return;
+              } else {
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => const RegisterPage()));
+              }
+            },
+            child: const SplashScreen())
+        // body: DashboardClient(),
         // body: DashboardMua(),
         );
   }

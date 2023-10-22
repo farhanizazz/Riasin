@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:riasin_app/providers/form_data_provider.dart';
 
 class Page2 extends StatefulWidget {
   const Page2({super.key});
@@ -8,8 +10,21 @@ class Page2 extends StatefulWidget {
 }
 
 class _Page2State extends State<Page2> {
+  late FormData _formData;
+  TextEditingController _jumlahCustomer = TextEditingController();
+
+
+  void initState() {
+    final FormData _formData = Provider.of<FormData>(context, listen: false);
+
+    super.initState();
+    _jumlahCustomer = TextEditingController(text: _formData.namaLengkap);
+  }
+
   @override
   Widget build(BuildContext context) {
+    final FormData _formData = Provider.of<FormData>(context, listen: false);
+
     return Container(
       decoration: BoxDecoration(
         color: const Color(0xffE9ECEC),
@@ -38,6 +53,11 @@ class _Page2State extends State<Page2> {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: TextFormField(
+                onChanged: (value) {
+                  setState(() {
+                    _formData.changeJumlahOrderan(value);
+                  });
+                },
                 style: const TextStyle(
                   color: Color(0xffC55977),
                   fontWeight: FontWeight.w600,

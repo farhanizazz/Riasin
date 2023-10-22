@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:riasin_app/component/filter_kategori.dart';
+import 'package:riasin_app/providers/form_data_provider.dart';
 
 class Page3 extends StatefulWidget {
   const Page3({super.key});
@@ -10,9 +12,25 @@ class Page3 extends StatefulWidget {
 
 class _Page3State extends State<Page3> {
   List<String> kategori = [];
+  late FormData _formData;
+
+  void initState() {
+    _formData = Provider.of<FormData>(context, listen: false);
+    kategori = _formData.kategori;
+
+    super.initState();
+  }
+
+  void setKategori(String value) {
+    setState(() {
+      _formData.setKategori(value);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    final FormData _formData = Provider.of<FormData>(context, listen: false);
+
     return Container(
       decoration: BoxDecoration(
         color: const Color(0xffE9ECEC),
@@ -43,14 +61,20 @@ class _Page3State extends State<Page3> {
               spacing: 10,
               children: [
                 FilterKategori(
-                    kategori: kategori, nama: "Make Up", value: "Make Up"),
+                    kategori: _formData.kategori, nama: "Make Up", value: "1", onSelected: (value) {
+                      setKategori("1");
+                },),
                 FilterKategori(
-                    kategori: kategori, nama: "Hair Do", value: "Hair Do"),
-                FilterKategori(kategori: kategori, nama: "Hena", value: "Hena"),
+                    kategori: _formData.kategori, nama: "Hair Do", value: "2", onSelected: (value) {
+                      setKategori("2");}),
+                FilterKategori(kategori: kategori, nama: "Hena", value: "3", onSelected: (value) {
+                      setKategori("3");}),
                 FilterKategori(
-                    kategori: kategori, nama: "Hijab Do", value: "Hijab Do"),
+                    kategori: _formData.kategori, nama: "Hijab Do", value: "4", onSelected: (value) {
+                      setKategori("4");}),
                 FilterKategori(
-                    kategori: kategori, nama: "Nail Art", value: "Nail Art"),
+                    kategori: _formData.kategori, nama: "Nail Art", value: "5", onSelected: (value) {
+                      setKategori("5");}),
               ],
             ),
           ],

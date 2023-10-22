@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -23,26 +24,48 @@ class RegisterPageDataJasa extends StatefulWidget {
 
 class _RegisterPageDataDiriState extends State<RegisterPageDataJasa> {
   final _formKey = GlobalKey<FormState>();
+  TextEditingController _namaMUAController = TextEditingController();
+  TextEditingController _kecamatanController = TextEditingController();
 
-  File? _selectedImage;
+  late FormData formData;
 
   Future _pickImageFromGallery() async {
-    final returnedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+    final returnedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
 
     setState(() {
-      _selectedImage = File(returnedImage!.path);
+      formData.changeProfilePicture(File(returnedImage!.path));
     });
+  }
+
+  Future _pickPDFPortofolio() async {
+    FilePickerResult? returnedFile = await FilePicker.platform.pickFiles(
+      allowMultiple: true,
+      type: FileType.custom,
+      allowedExtensions: ['pdf'],
+    );
+
+    if (returnedFile != null) {
+      setState(() {
+        formData
+            .changePortofolio(returnedFile.paths.map((e) => File(e!)).toList());
+      });
+    }
   }
 
   @override
   void initState() {
-    final FormData formData = Provider.of<FormData>(context, listen: false);
+    formData = Provider.of<FormData>(context, listen: false);
 
     super.initState();
+    _namaMUAController = TextEditingController(text: formData.namaMUA);
+    _kecamatanController = TextEditingController(text: formData.kecamatan);
   }
 
   @override
   void dispose() {
+    _namaMUAController.dispose();
+    _kecamatanController.dispose();
     super.dispose();
   }
 
@@ -65,7 +88,8 @@ class _RegisterPageDataDiriState extends State<RegisterPageDataJasa> {
                   LabeledTextField(
                     field: "Nama Lengkap",
                     hintText: 'Masukkan nama lengkap anda',
-                    onChanged: formData.changeNamaLengkap,
+                    controller: _namaMUAController,
+                    onChanged: formData.changeNamaMUA,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Nama lengkap tidak boleh kosong';
@@ -75,7 +99,6 @@ class _RegisterPageDataDiriState extends State<RegisterPageDataJasa> {
                   ),
                   SizedBox(height: 20),
                   DropdownButtonFormField<String>(
-                    isDense: true,
                       validator: (value) => value == null
                           ? 'Jenis kelamin tidak boleh kosong'
                           : null,
@@ -126,14 +149,14 @@ class _RegisterPageDataDiriState extends State<RegisterPageDataJasa> {
                       ),
                       onChanged: (newValue) {
                         setState(() {
-                          formData.changeJenisKelamin(newValue!);
+                          formData.changeKecamatan(newValue!);
                         });
                       },
                       items: [
                         DropdownMenuItem(
-                            value: 'Laki-Laki', child: Text('Laki-Laki')),
+                            value: '1', child: Text('Laki-Laki')),
                         DropdownMenuItem(
-                            value: 'Perempuan', child: Text('Perempuan')),
+                            value: '2', child: Text('Perempuan')),
                       ]),
                   SizedBox(
                     height: 20,
@@ -143,16 +166,48 @@ class _RegisterPageDataDiriState extends State<RegisterPageDataJasa> {
                     onTap: () {
                       _pickImageFromGallery();
                     },
+                    image: formData.profilePicture,
+                    icon: Icon(
+                      Icons.image,
+                      color: Color(0xffC55977),
+                      size: 40,
+                    ),
                   ),
                   SizedBox(height: 30),
                   UploadWithLabel(
-                    label: "Foto Profil Jasa",
+                    label: "Portofolio Jasa",
+                    onTap: () {
+                      _pickPDFPortofolio();
+                    },
+                    icon: Icon(
+                      Icons.file_copy,
+                      color: Color(0xffC55977),
+                      size: 40,
+                    ),
                   ),
                 ],
               ),
               WidgetTombolRegistrasiBawah(
                 nextPageOnTap: () {
                   if (_formKey.currentState!.validate()) {
+                    if (formData.profilePicture == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Foto profil tidak boleh kosong'),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                      return;
+                    }
+                    if (formData.pdfPortfolio == null) {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text('Portofolio tidak boleh kosong'),
+                          backgroundColor: Colors.red,
+                        ),
+                      );
+                      return;
+                    }
                     Navigator.push(
                         context,
                         MaterialPageRoute(

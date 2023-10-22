@@ -7,43 +7,99 @@ class FormData extends ChangeNotifier {
   String tanggalLahir;
   String jenisKelamin;
 
+  String namaMUA;
+  String kecamatan;
+
   File? profilePicture;
-  File? pdfPortfolio;
+  List<File>? pdfPortfolio;
+
+  List<String> hari = [];
+  String jumlahOrderan;
+
+  List<String> kategori = [];
 
   FormData({
     this.namaLengkap = '',
     this.nomorTelepon = '',
     this.tanggalLahir = '',
     this.jenisKelamin = '',
+    this.kecamatan = '',
+    this.namaMUA = '',
     this.profilePicture,
     this.pdfPortfolio,
+    this.jumlahOrderan = '',
   });
 
   void changeNamaLengkap(
     String namaLengkap,
-  ) async {
+  )  {
     this.namaLengkap = namaLengkap;
     notifyListeners();
   }
 
   void changeNomorTelepon(
     String nomorTelepon,
-  ) async {
+  )  {
     this.nomorTelepon = nomorTelepon;
     notifyListeners();
   }
 
   void changeTanggalLahir(
     String tanggalLahir,
-  ) async {
+  ) {
     this.tanggalLahir = tanggalLahir;
     notifyListeners();
   }
 
   void changeJenisKelamin(
     String jenisKelamin,
-  ) async {
+  ) {
     this.jenisKelamin = jenisKelamin;
+    notifyListeners();
+  }
+
+  void changeKecamatan (String kecamatan) {
+    this.kecamatan = kecamatan;
+    notifyListeners();
+  }
+
+  void changeNamaMUA(String namaMUA) {
+    this.namaMUA = namaMUA;
+    notifyListeners();
+  }
+
+  void changeProfilePicture(File profilePicture) {
+    this.profilePicture = profilePicture;
+    notifyListeners();
+  }
+
+  void changePortofolio(List<File> pdfPortfolio) {
+    this.pdfPortfolio = pdfPortfolio;
+    notifyListeners();
+  }
+
+  void setHari(String hari) {
+    if (this.hari.contains(hari)) {
+      this.hari.remove(hari);
+      notifyListeners();
+      return;
+    }
+    this.hari.add(hari);
+    notifyListeners();
+  }
+
+  void changeJumlahOrderan(String jumlahOrderan) {
+    this.jumlahOrderan = jumlahOrderan;
+    notifyListeners();
+  }
+
+  void setKategori(String kategori) {
+    if (this.kategori.contains(kategori)) {
+      this.kategori.remove(kategori);
+      notifyListeners();
+      return;
+    }
+    this.kategori.add(kategori);
     notifyListeners();
   }
 }
