@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:riasin_app/Url.dart';
 import 'package:riasin_app/component/labeled_text_field.dart';
 import 'package:riasin_app/layout/login_pages/login_page.dart';
 import 'package:riasin_app/layout/register_pages/register_page2.dart';
@@ -39,7 +40,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Future<http.Response> createMUA(
       String email, String password, String confirmPassword) {
     return http.post(
-      Uri.parse('https://riasinajah.my.id/public/api/register'),
+      Uri.parse('$baseUrl/api/register'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

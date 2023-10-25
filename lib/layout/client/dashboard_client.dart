@@ -1,39 +1,80 @@
+import 'dart:convert';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:riasin_app/Url.dart';
 import 'package:riasin_app/layout/mua/dashboard_mua.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class DashboardClient extends StatefulWidget {
-  const DashboardClient({super.key});
+  const DashboardClient({super.key, required this.token});
+
+  final String token;
 
   @override
   _DashboardClientState createState() => _DashboardClientState();
 }
 
 class _DashboardClientState extends State<DashboardClient> {
-  List<String> chipLabels = ['Semua', 'Make Up', 'Hair Do', 'Hijab Do', 'Nail Art'];
+  List<String> chipLabels = [
+    'Semua',
+    'Make Up',
+    'Hair Do',
+    'Hijab Do',
+    'Nail Art'
+  ];
   String? selectedFilter = 'Semua';
   List<String> filterOptions = ['Semua', 'Paket 1', 'Paket 2', 'Paket 3'];
-  int _selectedIndex = 0; 
+  int _selectedIndex = 0;
   int _currentCarouselIndex = 0;
   List<Product> products = [
     Product('assets/images/mua.jpg'),
     Product('assets/images/mua.jpg'),
     Product('assets/images/mua.jpg'),
   ];
+  final dio = Dio();
+  bool isLoading = true;
+  late Map<String, dynamic> profileData;
+
+  void getDashboard() async {
+    try {
+      Response<String> profileData = await dio.get('$baseUrl/api/pencari-jasa-mua/dashboard/3',
+          options: Options(headers: {'Authorization': 'Bearer ${widget.token}'}));
+      setState(() {
+        if (profileData.statusCode == 200) {
+          this.profileData = jsonDecode(profileData.data!)['data'];
+          print(this.profileData);
+          isLoading = false;
+        }
+      });
+    } on DioException catch (e) {
+      print(e.response);
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getDashboard();
+  }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: null,
-      body: ListView(
-        children: <Widget>[
-          Stack(
-            children: <Widget>[
-              Container(
-                color: const Color(0xFFC55977),
-                height: MediaQuery.of(context).size.height / 3,
-              ),
-              SingleChildScrollView(
+      body: isLoading
+          ? const Center(
+              child: CircularProgressIndicator(),
+            )
+          : ListView(children: <Widget>[
+              Stack(children: <Widget>[
+                Container(
+                  color: const Color(0xFFC55977),
+                  height: MediaQuery.of(context).size.height / 3,
+                ),
+                SingleChildScrollView(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
@@ -46,25 +87,27 @@ class _DashboardClientState extends State<DashboardClient> {
                             ClipRRect(
                               borderRadius: BorderRadius.circular(20),
                               child: SizedBox(
-                                width: 50, 
-                                height: 50, 
+                                width: 50,
+                                height: 50,
                                 child: Image.asset(
-                                  'assets/images/profile.jpg', 
+                                  'assets/images/profile.jpg',
                                   fit: BoxFit.cover,
                                 ),
                               ),
                             ),
                             const SizedBox(width: 10),
-                            const Column(
+                            Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: <Widget>[
-                                Text(
+                                const Text(
                                   'Hi,',
-                                  style: TextStyle(fontSize: 10, color: Colors.white),
+                                  style: TextStyle(
+                                      fontSize: 10, color: Colors.white),
                                 ),
                                 Text(
-                                  'Nama Client',
-                                  style: TextStyle(fontSize: 12, color: Colors.white),
+                                  profileData['client']['nama'],
+                                  style: const TextStyle(
+                                      fontSize: 12, color: Colors.white),
                                 ),
                               ],
                             ),
@@ -74,7 +117,8 @@ class _DashboardClientState extends State<DashboardClient> {
 
                       // Kolom Pencarian dan Filter
                       Container(
-                        padding: const EdgeInsets.only(left: 16.0, right: 16.0, bottom: 20.0),
+                        padding: const EdgeInsets.only(
+                            left: 16.0, right: 16.0, bottom: 20.0),
                         child: Row(
                           children: <Widget>[
                             Expanded(
@@ -90,7 +134,7 @@ class _DashboardClientState extends State<DashboardClient> {
                                     hintStyle: TextStyle(fontSize: 12),
                                     border: InputBorder.none,
                                     contentPadding: EdgeInsets.all(10.0),
-                                    prefixIcon: Icon(Icons.search), 
+                                    prefixIcon: Icon(Icons.search),
                                   ),
                                 ),
                               ),
@@ -141,7 +185,8 @@ class _DashboardClientState extends State<DashboardClient> {
                                       ),
                                     ];
                                   },
-                                  child: const Icon(Icons.filter_list, color: Colors.white), // Warna pink
+                                  child: const Icon(Icons.filter_list,
+                                      color: Colors.white), // Warna pink
                                 ),
                               ),
                             ),
@@ -150,9 +195,9 @@ class _DashboardClientState extends State<DashboardClient> {
                       ),
 
                       CarouselSlider(
-                        items: products.map((product) {
+                        items: profileData['banner'].map<Widget>((banner) {
                           return _buildCarouselItem(
-                            product.imagePath,
+                            banner['gambar'],
                           );
                         }).toList(),
                         options: CarouselOptions(
@@ -160,7 +205,8 @@ class _DashboardClientState extends State<DashboardClient> {
                           enlargeCenterPage: true,
                           enableInfiniteScroll: true,
                           autoPlayInterval: const Duration(seconds: 3),
-                          autoPlayAnimationDuration: const Duration(milliseconds: 800),
+                          autoPlayAnimationDuration:
+                              const Duration(milliseconds: 800),
                           autoPlayCurve: Curves.fastOutSlowIn,
                           aspectRatio: 2.0,
                           onPageChanged: (index, reason) {
@@ -175,14 +221,17 @@ class _DashboardClientState extends State<DashboardClient> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: <Widget>[
-                          for (int i = 0; i < products.length; i++)
+                          for (int i = 0; i < profileData['banner'].length; i++)
                             Container(
                               width: 8.0,
                               height: 8.0,
-                              margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                              margin: const EdgeInsets.symmetric(
+                                  vertical: 10.0, horizontal: 2.0),
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: _currentCarouselIndex == i ? const Color.fromARGB(255, 197, 89, 120) : Colors.grey,
+                                color: _currentCarouselIndex == i
+                                    ? const Color.fromARGB(255, 197, 89, 120)
+                                    : Colors.grey,
                               ),
                             ),
                         ],
@@ -194,11 +243,15 @@ class _DashboardClientState extends State<DashboardClient> {
                           scrollDirection: Axis.horizontal,
                           child: Row(
                             children: <Widget>[
-                              for (String label in chipLabels)
+                              for (Map<String, dynamic> label in profileData['kategori'])
                                 Padding(
-                                  padding: const EdgeInsets.all(2.0), // Spasi antara Chip
+                                  padding: const EdgeInsets.all(2.0),
+                                  // Spasi antara Chip
                                   child: ActionChip(
-                                    label: Text(label, style: const TextStyle(fontSize: 10, color: Color(0xffC55977))),
+                                    label: Text(label['nama'],
+                                        style: const TextStyle(
+                                            fontSize: 10,
+                                            color: Color(0xffC55977))),
                                     onPressed: () {
                                       // Aksi yang diambil saat Chip diklik
                                     },
@@ -210,27 +263,33 @@ class _DashboardClientState extends State<DashboardClient> {
                       ),
 
                       // popular
-                        Container(
+                      Container(
                         padding: const EdgeInsets.all(16.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   const Text(
                                     'Popular',
-                                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                                    style: TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                   TextButton(
                                     onPressed: () {
-                                      // Aksi 
+                                      // Aksi
                                     },
                                     child: const Text(
                                       'Lihat Semua',
-                                      style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+                                      style: TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.bold),
                                     ),
                                   ),
                                 ],
@@ -243,92 +302,20 @@ class _DashboardClientState extends State<DashboardClient> {
                               height: 120,
                               child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
-                                itemCount: 5,
+                                itemCount: profileData['layanan_populer'].length,
                                 itemBuilder: (context, index) {
-                                  String muaName = 'Nama MUA $index';
-                                  String muaLocation = 'Lokasi MUA $index';
-                                  String muaImage = 'assets/images/mua.jpg';
+                                  String muaName = '${profileData['layanan_populer'][index]['nama']}';
+                                  String muaLocation = '${profileData['layanan_populer'][index]['lokasi']}';
+                                  String muaImage = '${profileData['layanan_populer'][index]['foto']}';
 
-                                  return InkWell(
-                                    onTap: () {
-                                      // Aksi ketika card ditekan
-                                    },
-                                    child: Card(
-                                      child: Column(
-                                        children: <Widget>[
-                                          Stack(
-                                            children: [
-                                              ClipRRect(
-                                                borderRadius: BorderRadius.circular(16.0),
-                                                child: Image.asset(
-                                                  muaImage,
-                                                  width: 180,
-                                                  height: 110,
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                              ClipRRect(
-                                                borderRadius: BorderRadius.circular(16.0),
-                                                child: Container(
-                                                  width: 180,
-                                                  height: 110,
-                                                  decoration: BoxDecoration(
-                                                    color: const Color(0xffC55977).withOpacity(0.2),
-                                                  ),
-                                                ),
-                                              ),
-                                              Positioned(
-                                                bottom: 10,
-                                                left: 10,
-                                                child: Container(
-                                                  padding: const EdgeInsets.all(8),
-                                                  child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [
-                                                      Row(
-                                                        children: [
-                                                          Text(
-                                                            muaName,
-                                                            style: const TextStyle(
-                                                              color: Colors.white,
-                                                              fontSize: 13,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                           const Icon(
-                                                            Icons.location_on,
-                                                            color: Colors.white,
-                                                            size: 12.0,
-                                                          ),
-                                                          Text(
-                                                            muaLocation, 
-                                                            style: const TextStyle(
-                                                              color: Colors.white,
-                                                              fontSize: 12,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ]
-                                          ) 
-                                        ],
-                                      ),
-                                    ),
-                                  );
+                                  return itemMUA(muaImage: muaImage, muaName: muaName, muaLocation: muaLocation);
                                 },
                               ),
                             ),
                           ],
                         ),
                       ),
-                      
+
                       // terdekat
                       Container(
                         padding: const EdgeInsets.all(16.0),
@@ -336,21 +323,27 @@ class _DashboardClientState extends State<DashboardClient> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 16.0),
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   const Text(
                                     'Terdekat',
-                                    style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
+                                    style: TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                   TextButton(
                                     onPressed: () {
-                                      // Aksi 
+                                      // Aksi
                                     },
                                     child: const Text(
                                       'Lihat Semua',
-                                      style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+                                      style: TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.bold),
                                     ),
                                   ),
                                 ],
@@ -363,88 +356,13 @@ class _DashboardClientState extends State<DashboardClient> {
                               height: 120,
                               child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
-                                itemCount: 5, 
+                                itemCount: profileData['layanan_terdekat'].length,
                                 itemBuilder: (context, index) {
-                                  String muaName = 'Nama MUA $index';
-                                  String muaLocation = 'Lokasi MUA $index';
-                                  String muaImage = 'assets/images/mua.jpg';
+                                  String muaName = '${profileData['layanan_terdekat'][index]['nama']}';
+                                  String muaLocation = '${profileData['layanan_terdekat'][index]['lokasi']}';
+                                  String muaImage = '${profileData['layanan_terdekat'][index]['foto']}';
 
-                                  return InkWell(
-                                    onTap: () {
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(builder: (context) => DashboardMua()), 
-                                      );
-                                    },
-                                    child: Card(
-                                      child: Column(
-                                        children: <Widget>[
-                                          Stack(
-                                            children: [
-                                              ClipRRect(
-                                                borderRadius: BorderRadius.circular(16.0),
-                                                child: Image.asset(
-                                                  muaImage,
-                                                  width: 180,
-                                                  height: 110,
-                                                  fit: BoxFit.cover,
-                                                ),
-                                              ),
-                                              ClipRRect(
-                                                borderRadius: BorderRadius.circular(16.0),
-                                                child: Container(
-                                                  width: 180,
-                                                  height: 110,
-                                                  decoration: BoxDecoration(
-                                                    color: const Color(0xffC55977).withOpacity(0.2),
-                                                  ),
-                                                ),
-                                              ),
-                                              Positioned(
-                                                bottom: 10,
-                                                left: 10,
-                                                child: Container(
-                                                  padding: const EdgeInsets.all(8),
-                                                  child: Column(
-                                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                                    children: [
-                                                      Row(
-                                                        children: [
-                                                          Text(
-                                                            muaName,
-                                                            style: const TextStyle(
-                                                              color: Colors.white,
-                                                              fontSize: 13,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                      Row(
-                                                        children: [
-                                                           const Icon(
-                                                            Icons.location_on,
-                                                            color: Colors.white,
-                                                            size: 12.0,
-                                                          ),
-                                                          Text(
-                                                            muaLocation, 
-                                                            style: const TextStyle(
-                                                              color: Colors.white,
-                                                              fontSize: 12,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      ),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ]
-                                          ) 
-                                        ],
-                                      ),
-                                    ),
-                                  );
+                                  return itemMUA(muaImage: muaImage, muaName: muaName, muaLocation: muaLocation);
                                 },
                               ),
                             ),
@@ -454,11 +372,8 @@ class _DashboardClientState extends State<DashboardClient> {
                     ],
                   ),
                 ),
-              ]
-          ),
-        ]
-      ),
-      
+              ]),
+            ]),
       bottomNavigationBar: BottomNavigationBar(
         showSelectedLabels: true,
         showUnselectedLabels: true,
@@ -498,7 +413,7 @@ class _DashboardClientState extends State<DashboardClient> {
       children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(16.0),
-          child: Image.asset(
+          child: Image.network(
             imagePath,
             width: 400,
             height: 180,
@@ -508,10 +423,102 @@ class _DashboardClientState extends State<DashboardClient> {
       ],
     );
   }
-
-
 }
 
+class itemMUA extends StatelessWidget {
+  const itemMUA({
+    super.key,
+    required this.muaImage,
+    required this.muaName,
+    required this.muaLocation,
+  });
+
+  final String muaImage;
+  final String muaName;
+  final String muaLocation;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () {
+        // Aksi ketika card ditekan
+      },
+      child: Card(
+        child: Column(
+          children: <Widget>[
+            Stack(children: [
+              ClipRRect(
+                borderRadius:
+                    BorderRadius.circular(16.0),
+                child: Image.network(
+                  muaImage,
+                  width: 180,
+                  height: 110,
+                  fit: BoxFit.cover,
+                ),
+              ),
+              ClipRRect(
+                borderRadius:
+                    BorderRadius.circular(16.0),
+                child: Container(
+                  width: 180,
+                  height: 110,
+                  decoration: BoxDecoration(
+                    color: const Color(0xffC55977)
+                        .withOpacity(0.2),
+                  ),
+                ),
+              ),
+              Positioned(
+                bottom: 10,
+                left: 10,
+                child: Container(
+                  padding:
+                      const EdgeInsets.all(8),
+                  child: Column(
+                    crossAxisAlignment:
+                        CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            muaName,
+                            style:
+                                const TextStyle(
+                              color: Colors.white,
+                              fontSize: 13,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.location_on,
+                            color: Colors.white,
+                            size: 12.0,
+                          ),
+                          Text(
+                            muaLocation,
+                            style:
+                                const TextStyle(
+                              color: Colors.white,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ])
+          ],
+        ),
+      ),
+    );
+  }
+}
 
 class Product {
   final String imagePath;

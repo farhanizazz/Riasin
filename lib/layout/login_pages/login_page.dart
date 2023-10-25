@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
+import 'package:riasin_app/Url.dart';
 import 'package:riasin_app/component/labeled_text_field.dart';
 import 'package:riasin_app/layout/mua/dashboard_mua.dart';
 import 'package:riasin_app/layout/register_pages/register_page.dart';
@@ -25,7 +26,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<http.Response> loginMUA(String email, String password) {
     return http.post(
-      Uri.parse('http://10.252.130.160:8000/api/login'),
+      Uri.parse('$baseUrl/api/login'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },

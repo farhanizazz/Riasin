@@ -8,6 +8,7 @@ import 'package:riasin_app/layout/login_pages/splash_screen.dart';
 import 'package:riasin_app/layout/register_pages/register_page.dart';
 import 'package:riasin_app/providers/form_data_provider.dart';
 
+import 'Url.dart';
 import 'layout/register_pages/register_page2.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:riasin_app/layout/mua/dashboard_mua.dart';
@@ -132,7 +133,7 @@ class Home extends StatelessWidget {
   final Dio = dio.Dio();
 
   Future<dio.Response<String>> getUser() async {
-    return await Dio.get('http://10.252.130.160:8000/api/profile', options: dio.Options(
+    return await Dio.get('$baseUrl/api/profile', options: dio.Options(
       headers: {
         'Authorization': 'Bearer ${await _checkToken()}'
       }
@@ -146,17 +147,18 @@ class Home extends StatelessWidget {
         resizeToAvoidBottomInset: false,
         body: InkWell(
             onTap: () async {
-              if(await _checkToken() != null) {
+              String? token = await _checkToken();
+              if(token != null) {
                 try {
                   dio.Response user = await getUser();
                   int idRole = jsonDecode(user.data)['data']['has_role']['id'];
                   print(idRole);
                   switch(idRole) {
-                    case 2:
-                      Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (context) => const DashboardClient()));
-                      break;
                     case 3:
+                      Navigator.pushReplacement(context,
+                          MaterialPageRoute(builder: (context) => DashboardClient(token: token,)));
+                      break;
+                    case 2:
                       Navigator.pushReplacement(context,
                           MaterialPageRoute(builder: (context) => DashboardMua()));
                       break;

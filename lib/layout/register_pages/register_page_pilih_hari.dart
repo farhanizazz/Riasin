@@ -13,6 +13,9 @@ import 'package:riasin_app/layout/register_pages/register_pilih_hari_pelanggan_k
 import 'package:riasin_app/layout/register_pages/register_pilih_hari_pelanggan_kategori/page_2.dart';
 import 'package:riasin_app/layout/register_pages/register_pilih_hari_pelanggan_kategori/page_3.dart';
 import 'package:riasin_app/providers/form_data_provider.dart';
+import 'package:riasin_app/Url.dart';
+
+
 import 'package:dio/dio.dart' as dio;
 
 class RegisterPilihHari extends StatefulWidget {
@@ -139,7 +142,7 @@ class _RegisterPilihHariState extends State<RegisterPilihHari> {
                         print(_formData.tanggalLahir);
                         await dio.Dio()
                             .post(
-                                "https://riasinajah.my.id/public/api/penyedia-jasa-mua/register",
+                                "$baseUrl/api/penyedia-jasa-mua/register",
                                 data: {
                                   "nama": _formData.namaLengkap,
                                   "nomor_telepon": _formData.nomorTelepon,
