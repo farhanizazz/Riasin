@@ -133,34 +133,37 @@ class Home extends StatelessWidget {
   final Dio = dio.Dio();
 
   Future<dio.Response<String>> getUser() async {
-    return await Dio.get('$baseUrl/api/profile', options: dio.Options(
-      headers: {
-        'Authorization': 'Bearer ${await _checkToken()}'
-      }
-    ));
+    return await Dio.get('$baseUrl/api/profile',
+        options: dio.Options(
+            headers: {'Authorization': 'Bearer ${await _checkToken()}'}));
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
         resizeToAvoidBottomInset: false,
         body: InkWell(
             onTap: () async {
               String? token = await _checkToken();
-              if(token != null) {
+              if (token != null) {
                 try {
                   dio.Response user = await getUser();
                   int idRole = jsonDecode(user.data)['data']['has_role']['id'];
                   print(idRole);
-                  switch(idRole) {
+                  switch (idRole) {
                     case 3:
-                      Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (context) => DashboardClient(token: token,)));
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DashboardClient(
+                                    token: token,
+                                  )));
                       break;
                     case 2:
-                      Navigator.pushReplacement(context,
-                          MaterialPageRoute(builder: (context) => DashboardMua()));
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => DashboardMua()));
                       break;
                   }
                 } on dio.DioException catch (e) {
@@ -169,8 +172,10 @@ class Home extends StatelessWidget {
 
                 return;
               } else {
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => const RegisterPage()));
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const RegisterPage()));
               }
             },
             child: const SplashScreen())
@@ -180,6 +185,6 @@ class Home extends StatelessWidget {
   }
 
   Future<String?> _checkToken() async {
-     return await _storage.read(key: 'token');
+    return await _storage.read(key: 'token');
   }
 }

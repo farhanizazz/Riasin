@@ -38,8 +38,10 @@ class _DashboardClientState extends State<DashboardClient> {
 
   void getDashboard() async {
     try {
-      Response<String> profileData = await dio.get('$baseUrl/api/pencari-jasa-mua/dashboard/3',
-          options: Options(headers: {'Authorization': 'Bearer ${widget.token}'}));
+      Response<String> profileData = await dio.get(
+          '$baseUrl/api/pencari-jasa-mua/dashboard/3',
+          options:
+              Options(headers: {'Authorization': 'Bearer ${widget.token}'}));
       setState(() {
         if (profileData.statusCode == 200) {
           this.profileData = jsonDecode(profileData.data!)['data'];
@@ -61,7 +63,6 @@ class _DashboardClientState extends State<DashboardClient> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: null,
       body: isLoading
@@ -238,12 +239,13 @@ class _DashboardClientState extends State<DashboardClient> {
                       ),
 
                       Container(
-                        padding: const EdgeInsets.all(16.0),
+                        padding: const EdgeInsets.only(left: 16.0, right: 16.0),
                         child: SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Row(
                             children: <Widget>[
-                              for (Map<String, dynamic> label in profileData['kategori'])
+                              for (Map<String, dynamic> label
+                                  in profileData['kategori'])
                                 Padding(
                                   padding: const EdgeInsets.all(2.0),
                                   // Spasi antara Chip
@@ -264,7 +266,7 @@ class _DashboardClientState extends State<DashboardClient> {
 
                       // popular
                       Container(
-                        padding: const EdgeInsets.all(16.0),
+                        padding: EdgeInsets.only(left: 16.0, right: 16.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -302,13 +304,20 @@ class _DashboardClientState extends State<DashboardClient> {
                               height: 120,
                               child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
-                                itemCount: profileData['layanan_populer'].length,
+                                itemCount:
+                                    profileData['layanan_populer'].length,
                                 itemBuilder: (context, index) {
-                                  String muaName = '${profileData['layanan_populer'][index]['nama']}';
-                                  String muaLocation = '${profileData['layanan_populer'][index]['lokasi']}';
-                                  String muaImage = '${profileData['layanan_populer'][index]['foto']}';
+                                  String muaName =
+                                      '${profileData['layanan_populer'][index]['nama']}';
+                                  String muaLocation =
+                                      '${profileData['layanan_populer'][index]['lokasi']}';
+                                  String muaImage =
+                                      '${profileData['layanan_populer'][index]['foto']}';
 
-                                  return itemMUA(muaImage: muaImage, muaName: muaName, muaLocation: muaLocation);
+                                  return itemMUA(
+                                      muaImage: muaImage,
+                                      muaName: muaName,
+                                      muaLocation: muaLocation);
                                 },
                               ),
                             ),
@@ -318,7 +327,7 @@ class _DashboardClientState extends State<DashboardClient> {
 
                       // terdekat
                       Container(
-                        padding: const EdgeInsets.all(16.0),
+                        padding: EdgeInsets.only(left: 16.0, right: 16.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -356,13 +365,20 @@ class _DashboardClientState extends State<DashboardClient> {
                               height: 120,
                               child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
-                                itemCount: profileData['layanan_terdekat'].length,
+                                itemCount:
+                                    profileData['layanan_terdekat'].length,
                                 itemBuilder: (context, index) {
-                                  String muaName = '${profileData['layanan_terdekat'][index]['nama']}';
-                                  String muaLocation = '${profileData['layanan_terdekat'][index]['lokasi']}';
-                                  String muaImage = '${profileData['layanan_terdekat'][index]['foto']}';
+                                  String muaName =
+                                      '${profileData['layanan_terdekat'][index]['nama']}';
+                                  String muaLocation =
+                                      '${profileData['layanan_terdekat'][index]['lokasi']}';
+                                  String muaImage =
+                                      '${profileData['layanan_terdekat'][index]['foto']}';
 
-                                  return itemMUA(muaImage: muaImage, muaName: muaName, muaLocation: muaLocation);
+                                  return itemMUA(
+                                      muaImage: muaImage,
+                                      muaName: muaName,
+                                      muaLocation: muaLocation);
                                 },
                               ),
                             ),
@@ -416,7 +432,7 @@ class _DashboardClientState extends State<DashboardClient> {
           child: Image.network(
             imagePath,
             width: 400,
-            height: 180,
+            height: 200,
             fit: BoxFit.cover,
           ),
         ),
@@ -448,8 +464,7 @@ class itemMUA extends StatelessWidget {
           children: <Widget>[
             Stack(children: [
               ClipRRect(
-                borderRadius:
-                    BorderRadius.circular(16.0),
+                borderRadius: BorderRadius.circular(16.0),
                 child: Image.network(
                   muaImage,
                   width: 180,
@@ -458,14 +473,12 @@ class itemMUA extends StatelessWidget {
                 ),
               ),
               ClipRRect(
-                borderRadius:
-                    BorderRadius.circular(16.0),
+                borderRadius: BorderRadius.circular(16.0),
                 child: Container(
                   width: 180,
                   height: 110,
                   decoration: BoxDecoration(
-                    color: const Color(0xffC55977)
-                        .withOpacity(0.2),
+                    color: const Color(0xffC55977).withOpacity(0.2),
                   ),
                 ),
               ),
@@ -473,18 +486,15 @@ class itemMUA extends StatelessWidget {
                 bottom: 10,
                 left: 10,
                 child: Container(
-                  padding:
-                      const EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(8),
                   child: Column(
-                    crossAxisAlignment:
-                        CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         children: [
                           Text(
                             muaName,
-                            style:
-                                const TextStyle(
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 13,
                             ),
@@ -500,8 +510,7 @@ class itemMUA extends StatelessWidget {
                           ),
                           Text(
                             muaLocation,
-                            style:
-                                const TextStyle(
+                            style: const TextStyle(
                               color: Colors.white,
                               fontSize: 12,
                             ),
