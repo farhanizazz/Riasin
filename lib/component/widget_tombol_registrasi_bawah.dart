@@ -7,6 +7,8 @@ class WidgetTombolRegistrasiBawah extends StatelessWidget {
   final String previousPageName;
   final bool useNextArrow;
   final bool usePrevButton;
+  final colorBackground;
+  final style;
 
   const WidgetTombolRegistrasiBawah({
     super.key,
@@ -15,6 +17,11 @@ class WidgetTombolRegistrasiBawah extends StatelessWidget {
     required this.previousPageName,
     this.useNextArrow = true,
     this.usePrevButton = true,
+    this.colorBackground = const Color(0xffC55977),
+    this.style = const TextStyle(
+                        color: Color(0xFFFFFFFF),
+                        fontWeight: FontWeight.w500,
+                      ),
   });
 
   @override
@@ -73,12 +80,13 @@ class WidgetTombolRegistrasiBawah extends StatelessWidget {
             style: ButtonStyle(
               padding: MaterialStateProperty.all(EdgeInsets.all(0)),
               backgroundColor:
-                  MaterialStateProperty.all<Color>(const Color(0xffC55977)),
+                  MaterialStateProperty.all<Color>(colorBackground),
               minimumSize:
                   MaterialStateProperty.all<Size>(const Size.fromHeight(60)),
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0),
+                  side: BorderSide(color: Color(0xffC55977)),
                 ),
               ),
               elevation: MaterialStateProperty.all<double>(0.0),
@@ -90,10 +98,7 @@ class WidgetTombolRegistrasiBawah extends StatelessWidget {
                 mainAxisAlignment: usePrevButton ? MainAxisAlignment.spaceBetween : MainAxisAlignment.center,
                 children: [
                   Text(nextPageName,
-                      style: const TextStyle(
-                        color: Color(0xFFFFFFFF),
-                        fontWeight: FontWeight.w500,
-                      )),
+                      style: style),
                   useNextArrow
                       ? Row(
                           children: [

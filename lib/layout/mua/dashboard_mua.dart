@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:riasin_app/layout/mua/order_in_client.dart';
 
 class DashboardMua extends StatefulWidget {
   @override
@@ -196,8 +197,38 @@ class _DashboardMuaState extends State<DashboardMua> {
                                       ),
                                     ],
                                   ),
+                                  onTap: () {
+                                  // Lakukan sesuatu ketika item diklik, misalnya tampilkan detail pesanan
+                                  // showDialog(
+                                  //   context: context,
+                                  //   builder: (context) {
+                                  //     return AlertDialog(
+                                  //       title: Text('Detail Pesanan'),
+                                  //       content: Text('Detail pesanan untuk $clientName'),
+                                  //       actions: [
+                                  //         TextButton(
+                                  //           onPressed: () {
+                                  //             Navigator.pop(context);
+                                  //           },
+                                  //           child: Text('Tutup'),
+                                  //         ),
+                                  //       ],
+                                  //     );
+                                  //   },
+                                  // );
+                                  Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => OrderInClient(
+                                            nama: 'Farhan Iz',
+                                            nomor: '0812345678',
+                                            gender: 'Laki-laki',
+                                            request: 'Alergi terhadap lorem ipsum..',
+                                          ),
+                                        ),
+                                      );
+                                },
                                 );
-
                               },
                             ),
                           ],

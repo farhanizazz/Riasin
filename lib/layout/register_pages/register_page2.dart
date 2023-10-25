@@ -72,7 +72,7 @@ class _RegisterPageDataDiriState extends State<RegisterPageDataDiri> {
                   ),
                   LabeledTextField(
                     field: "Nomor Telepon",
-                    hintText: 'Masukkan nama lengkap anda',
+                    hintText: 'Masukkan nomor telepon anda',
                     controller: _phoneController,
                     onChanged: formData.changeNomorTelepon,
                     validator: (value) {
@@ -114,7 +114,7 @@ class _RegisterPageDataDiriState extends State<RegisterPageDataDiri> {
                       return null;
                     },
                     field: "Tanggal Lahir",
-                    hintText: 'Masukkan nama lengkap anda',
+                    hintText: 'Masukkan tanggal lahir anda',
                     suffixIcon: Icon(
                       Icons.calendar_today_rounded,
                       color: Color(0xffC55977),

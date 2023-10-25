@@ -9,6 +9,7 @@ import 'package:riasin_app/providers/form_data_provider.dart';
 import 'layout/register_pages/register_page2.dart';
 import 'package:riasin_app/layout/mua/dashboard_mua.dart';
 import 'package:riasin_app/layout/client/dashboard_client.dart';
+import 'package:riasin_app/layout/mua/order_in_client.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -136,20 +137,20 @@ class Home extends StatelessWidget {
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        body: InkWell(
-            onTap: () async {
-              if(await _checkToken() != null) {
-                Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => const RegisterPageDataDiri()));
-                return;
-              } else {
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => const RegisterPage()));
-              }
-            },
-            child: const SplashScreen())
+        // body: InkWell(
+        //     onTap: () async {
+        //       if(await _checkToken() != null) {
+        //         Navigator.pushReplacement(context,
+        //             MaterialPageRoute(builder: (context) => const RegisterPageDataDiri()));
+        //         return;
+        //       } else {
+        //       Navigator.pushReplacement(context,
+        //           MaterialPageRoute(builder: (context) => const RegisterPage()));
+        //       }
+        //     },
+        //     child: const SplashScreen())
         // body: DashboardClient(),
-        // body: DashboardMua(),
+        body: DashboardMua(),
         );
   }
 }

@@ -86,8 +86,8 @@ class _RegisterPageDataDiriState extends State<RegisterPageDataJasa> {
               Column(
                 children: [
                   LabeledTextField(
-                    field: "Nama Lengkap",
-                    hintText: 'Masukkan nama lengkap anda',
+                    field: "Nama Jasa",
+                    hintText: 'Masukkan nama jasa anda',
                     controller: _namaMUAController,
                     onChanged: formData.changeNamaMUA,
                     validator: (value) {
@@ -100,7 +100,7 @@ class _RegisterPageDataDiriState extends State<RegisterPageDataJasa> {
                   SizedBox(height: 20),
                   DropdownButtonFormField<String>(
                       validator: (value) => value == null
-                          ? 'Jenis kelamin tidak boleh kosong'
+                          ? 'Kecamatan tidak boleh kosong'
                           : null,
                       icon: Icon(
                         Icons.arrow_drop_down,
