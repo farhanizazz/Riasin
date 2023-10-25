@@ -47,12 +47,10 @@ class _RegisterPageState extends State<RegisterPage> {
         "email": email,
         "password": password,
         "confirm_password": confirmPassword,
-        "role_id": 2,
+        "role_id": 3,
       }),
     );
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -181,14 +179,11 @@ class _RegisterPageState extends State<RegisterPage> {
                                                 value.body)['message'],
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(SnackBar(
-                                              content: Text(errors['email'] !=
-                                                      null
+                                              content: Text(errors['email'] != null
                                                   ? errors['email'][0]
                                                   : errors['password'] != null
                                                       ? errors['password'][0]
-                                                      : errors[
-                                                              'confirm_password']
-                                                          [0]),
+                                                      : errors['confirm_password'][0]),
                                             ))
                                           }
                                       });

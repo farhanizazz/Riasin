@@ -140,7 +140,7 @@ class Home extends StatelessWidget {
             onTap: () async {
               if(await _checkToken() != null) {
                 Navigator.pushReplacement(context,
-                    MaterialPageRoute(builder: (context) => const RegisterPageDataDiri()));
+                    MaterialPageRoute(builder: (context) => DashboardMua()));
                 return;
               } else {
               Navigator.pushReplacement(context,
