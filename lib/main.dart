@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -7,9 +9,9 @@ import 'package:riasin_app/layout/register_pages/register_page.dart';
 import 'package:riasin_app/providers/form_data_provider.dart';
 
 import 'layout/register_pages/register_page2.dart';
+import 'package:dio/dio.dart' as dio;
 import 'package:riasin_app/layout/mua/dashboard_mua.dart';
 import 'package:riasin_app/layout/client/dashboard_client.dart';
-import 'package:riasin_app/layout/mua/order_in_client.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -115,25 +117,30 @@ class MainPage extends StatelessWidget {
           useMaterial3: true,
         ),
         debugShowCheckedModeBanner: false,
-        home: const Home(),
+        home: Home(),
       ),
     );
   }
 }
 
 class Home extends StatelessWidget {
-  const Home({
+  Home({
     super.key,
   });
 
   final _storage = const FlutterSecureStorage();
+  final Dio = dio.Dio();
 
+  Future<dio.Response<String>> getUser() async {
+    return await Dio.get('http://10.252.130.160:8000/api/profile', options: dio.Options(
+      headers: {
+        'Authorization': 'Bearer ${await _checkToken()}'
+      }
+    ));
+  }
 
   @override
   Widget build(BuildContext context) {
-  Future<String?> _checkToken() async {
-     return await _storage.read(key: 'token');
-  }
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
@@ -152,5 +159,9 @@ class Home extends StatelessWidget {
         body: DashboardClient(),
         // body: DashboardMua(),
         );
+  }
+
+  Future<String?> _checkToken() async {
+     return await _storage.read(key: 'token');
   }
 }

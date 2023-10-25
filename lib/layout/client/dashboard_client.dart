@@ -3,6 +3,8 @@ import 'package:riasin_app/layout/mua/dashboard_mua.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class DashboardClient extends StatefulWidget {
+  const DashboardClient({super.key});
+
   @override
   _DashboardClientState createState() => _DashboardClientState();
 }
@@ -23,119 +25,123 @@ class _DashboardClientState extends State<DashboardClient> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // toolbarHeight: 150,
-        toolbarHeight: 100,
+        toolbarHeight: 150,
         backgroundColor: const Color(0xFFC55977),
-        title: Column(children: <Widget>[ 
-          Container(
-            padding: EdgeInsets.all(20.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(20),
-                  child: Container(
-                    width: 50, 
-                    height: 50, 
-                    child: Image.asset(
-                      'assets/images/profile.jpg', 
-                      fit: BoxFit.cover,
+        title: Column(
+          children: <Widget>[
+            // Profil Pengguna
+            Container(
+              padding: EdgeInsets.all(20.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: <Widget>[
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Container(
+                      width: 50, 
+                      height: 50, 
+                      child: Image.asset(
+                        'assets/images/profile.jpg', 
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(width: 10), 
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      'Hi,',
-                      style: TextStyle(fontSize: 10, color: Colors.white),
-                    ),
-                    Text(
-                      'Nama Client',
-                      style: TextStyle(fontSize: 12, color: Colors.white),
-                    ),
-                  ],
-                ),
-              ],
+                  SizedBox(width: 10), 
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Text(
+                        'Hi,',
+                        style: TextStyle(fontSize: 10, color: Colors.white),
+                      ),
+                      Text(
+                        'Nama Client',
+                        style: TextStyle(fontSize: 12, color: Colors.white),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-          // Container(
-          //   padding: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 20.0),
-          //   child: Row(
-          //     children: <Widget>[
-          //       Expanded(
-          //         flex: 5,
-          //         child: Container(
-          //           decoration: BoxDecoration(
-          //             color: Colors.white,
-          //             borderRadius: BorderRadius.circular(10.0),
-          //           ),
-          //           child: TextField(
-          //             decoration: InputDecoration(
-          //               hintText: "Cari Jasa MUA",
-          //               hintStyle: TextStyle(fontSize: 12),
-          //               border: InputBorder.none,
-          //               contentPadding: EdgeInsets.all(10.0),
-          //               prefixIcon: Icon(Icons.search), 
-          //             ),
-          //           ),
-          //         ),
-          //       ),
-          //       SizedBox(width: 10),
-          //       Expanded(
-          //         flex: 1,
-          //         child: Container(
-          //           padding: EdgeInsets.all(10.0), 
-          //           decoration: BoxDecoration(
-          //             border: Border.all(color: Colors.white), 
-          //             color: Colors.transparent,
-          //             borderRadius: BorderRadius.circular(10.0),
-          //           ),
-          //           child: PopupMenuButton<String>(
-          //             onSelected: (value) {
-          //               // Tindakan yang diambil saat salah satu item dropdown dipilih
-          //               if (value == "filter1") {
-          //                 // Aksi untuk Filter 1
-          //               } else if (value == "filter2") {
-          //                 // Aksi untuk Filter 2
-          //               } else if (value == "filter3") {
-          //                 // Aksi untuk Filter 3
-          //               }
-          //             },
-          //             itemBuilder: (BuildContext context) {
-          //               return <PopupMenuEntry<String>>[
-          //                 PopupMenuItem<String>(
-          //                   value: "filter1",
-          //                   child: Text("Filter 1"),
-          //                   onTap: () {
-          //                     // Aksi untuk Filter 1
-          //                   },
-          //                 ),
-          //                 PopupMenuItem<String>(
-          //                   value: "filter2",
-          //                   child: Text("Filter 2"),
-          //                   onTap: () {
-          //                     // Aksi untuk Filter 2
-          //                   },
-          //                 ),
-          //                 PopupMenuItem<String>(
-          //                   value: "filter3",
-          //                   child: Text("Filter 3"),
-          //                   onTap: () {
-          //                     // Aksi untuk Filter 3
-          //                   },
-          //                 ),
-          //               ];
-          //             },
-          //             child: Icon(Icons.filter_list, color: Colors.white), // Warna pink
-          //           ),
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // ),
-        ]) 
+
+            // Kolom Pencarian dan Filter
+            Container(
+              padding: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 20.0),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                    flex: 5,
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: TextField(
+                        decoration: InputDecoration(
+                          hintText: "Cari Jasa MUA",
+                          hintStyle: TextStyle(fontSize: 12),
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.all(10.0),
+                          prefixIcon: Icon(Icons.search), 
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(width: 10),
+                  Expanded(
+                    flex: 1,
+                    child: Container(
+                      padding: EdgeInsets.all(10.0), 
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.white), 
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: PopupMenuButton<String>(
+                        onSelected: (value) {
+                          // Tindakan yang diambil saat salah satu item dropdown dipilih
+                          if (value == "filter1") {
+                            // Aksi untuk Filter 1
+                          } else if (value == "filter2") {
+                            // Aksi untuk Filter 2
+                          } else if (value == "filter3") {
+                            // Aksi untuk Filter 3
+                          }
+                        },
+                        itemBuilder: (BuildContext context) {
+                          return <PopupMenuEntry<String>>[
+                            PopupMenuItem<String>(
+                              value: "filter1",
+                              child: Text("Filter 1"),
+                              onTap: () {
+                                // Aksi untuk Filter 1
+                              },
+                            ),
+                            PopupMenuItem<String>(
+                              value: "filter2",
+                              child: Text("Filter 2"),
+                              onTap: () {
+                                // Aksi untuk Filter 2
+                              },
+                            ),
+                            PopupMenuItem<String>(
+                              value: "filter3",
+                              child: Text("Filter 3"),
+                              onTap: () {
+                                // Aksi untuk Filter 3
+                              },
+                            ),
+                          ];
+                        },
+                        child: Icon(Icons.filter_list, color: Colors.white), // Warna pink
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        )
       ),
       body: ListView(
         children: <Widget>[
@@ -159,8 +165,8 @@ class _DashboardClientState extends State<DashboardClient> {
                           autoPlay: true,
                           enlargeCenterPage: true,
                           enableInfiniteScroll: true,
-                          autoPlayInterval: Duration(seconds: 3),
-                          autoPlayAnimationDuration: Duration(milliseconds: 800),
+                          autoPlayInterval: const Duration(seconds: 3),
+                          autoPlayAnimationDuration: const Duration(milliseconds: 800),
                           autoPlayCurve: Curves.fastOutSlowIn,
                           aspectRatio: 2.0,
                           onPageChanged: (index, reason) {
@@ -179,17 +185,17 @@ class _DashboardClientState extends State<DashboardClient> {
                             Container(
                               width: 8.0,
                               height: 8.0,
-                              margin: EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
+                              margin: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
                               decoration: BoxDecoration(
                                 shape: BoxShape.circle,
-                                color: _currentCarouselIndex == i ? Color.fromARGB(255, 197, 89, 120) : Colors.grey,
+                                color: _currentCarouselIndex == i ? const Color.fromARGB(255, 197, 89, 120) : Colors.grey,
                               ),
                             ),
                         ],
                       ),
 
                       Container(
-                        padding: EdgeInsets.all(16.0),
+                        padding: const EdgeInsets.only(left: 16.0, right: 16.0),
                         child: SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           child: Row(
@@ -198,7 +204,7 @@ class _DashboardClientState extends State<DashboardClient> {
                                 Padding(
                                   padding: const EdgeInsets.all(2.0), // Spasi antara Chip
                                   child: ActionChip(
-                                    label: Text(label, style: TextStyle(fontSize: 10, color: Color(0xffC55977))),
+                                    label: Text(label, style: const TextStyle(fontSize: 10, color: Color(0xffC55977))),
                                     onPressed: () {
                                       // Aksi yang diambil saat Chip diklik
                                     },
@@ -216,11 +222,11 @@ class _DashboardClientState extends State<DashboardClient> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 16.0),
+                              padding: const EdgeInsets.symmetric(horizontal: 16.0),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  Text(
+                                  const Text(
                                     'Popular',
                                     style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
                                   ),
@@ -228,7 +234,7 @@ class _DashboardClientState extends State<DashboardClient> {
                                     onPressed: () {
                                       // Aksi 
                                     },
-                                    child: Text(
+                                    child: const Text(
                                       'Lihat Semua',
                                       style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
                                     ),
@@ -236,10 +242,10 @@ class _DashboardClientState extends State<DashboardClient> {
                                 ],
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 8,
                             ),
-                            Container(
+                            SizedBox(
                               height: 120,
                               child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
@@ -273,7 +279,7 @@ class _DashboardClientState extends State<DashboardClient> {
                                                   width: 200,
                                                   height: 110,
                                                   decoration: BoxDecoration(
-                                                    color: Color(0xffC55977).withOpacity(0.2),
+                                                    color: const Color(0xffC55977).withOpacity(0.2),
                                                   ),
                                                 ),
                                               ),
@@ -281,7 +287,7 @@ class _DashboardClientState extends State<DashboardClient> {
                                                 bottom: 10,
                                                 left: 10,
                                                 child: Container(
-                                                  padding: EdgeInsets.all(8),
+                                                  padding: const EdgeInsets.all(8),
                                                   child: Column(
                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: [
@@ -289,7 +295,7 @@ class _DashboardClientState extends State<DashboardClient> {
                                                         children: [
                                                           Text(
                                                             muaName,
-                                                            style: TextStyle(
+                                                            style: const TextStyle(
                                                               color: Colors.white,
                                                               fontSize: 13,
                                                             ),
@@ -298,14 +304,14 @@ class _DashboardClientState extends State<DashboardClient> {
                                                       ),
                                                       Row(
                                                         children: [
-                                                           Icon(
+                                                           const Icon(
                                                             Icons.location_on,
                                                             color: Colors.white,
                                                             size: 12.0,
                                                           ),
                                                           Text(
                                                             muaLocation, 
-                                                            style: TextStyle(
+                                                            style: const TextStyle(
                                                               color: Colors.white,
                                                               fontSize: 12,
                                                             ),
@@ -336,11 +342,11 @@ class _DashboardClientState extends State<DashboardClient> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 16.0),
+                              padding: const EdgeInsets.symmetric(horizontal: 16.0),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  Text(
+                                  const Text(
                                     'Terdekat',
                                     style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
                                   ),
@@ -348,7 +354,7 @@ class _DashboardClientState extends State<DashboardClient> {
                                     onPressed: () {
                                       // Aksi 
                                     },
-                                    child: Text(
+                                    child: const Text(
                                       'Lihat Semua',
                                       style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
                                     ),
@@ -356,10 +362,10 @@ class _DashboardClientState extends State<DashboardClient> {
                                 ],
                               ),
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 8,
                             ),
-                            Container(
+                            SizedBox(
                               height: 120,
                               child: ListView.builder(
                                 scrollDirection: Axis.horizontal,
@@ -396,7 +402,7 @@ class _DashboardClientState extends State<DashboardClient> {
                                                   width: 200,
                                                   height: 110,
                                                   decoration: BoxDecoration(
-                                                    color: Color(0xffC55977).withOpacity(0.2),
+                                                    color: const Color(0xffC55977).withOpacity(0.2),
                                                   ),
                                                 ),
                                               ),
@@ -404,7 +410,7 @@ class _DashboardClientState extends State<DashboardClient> {
                                                 bottom: 10,
                                                 left: 10,
                                                 child: Container(
-                                                  padding: EdgeInsets.all(8),
+                                                  padding: const EdgeInsets.all(8),
                                                   child: Column(
                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                     children: [
@@ -412,7 +418,7 @@ class _DashboardClientState extends State<DashboardClient> {
                                                         children: [
                                                           Text(
                                                             muaName,
-                                                            style: TextStyle(
+                                                            style: const TextStyle(
                                                               color: Colors.white,
                                                               fontSize: 13,
                                                             ),
@@ -421,14 +427,14 @@ class _DashboardClientState extends State<DashboardClient> {
                                                       ),
                                                       Row(
                                                         children: [
-                                                           Icon(
+                                                           const Icon(
                                                             Icons.location_on,
                                                             color: Colors.white,
                                                             size: 12.0,
                                                           ),
                                                           Text(
                                                             muaLocation, 
-                                                            style: TextStyle(
+                                                            style: const TextStyle(
                                                               color: Colors.white,
                                                               fontSize: 12,
                                                             ),
@@ -469,9 +475,9 @@ class _DashboardClientState extends State<DashboardClient> {
           });
           // Aksi saat salah satu tombol navigasi ditekan
         },
-        selectedItemColor: Color(0xffC55977),
+        selectedItemColor: const Color(0xffC55977),
         unselectedItemColor: Colors.grey,
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
