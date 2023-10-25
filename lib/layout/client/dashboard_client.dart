@@ -25,7 +25,7 @@ class _DashboardClientState extends State<DashboardClient> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 150,
+        toolbarHeight: 100,
         backgroundColor: const Color(0xFFC55977),
         title: Column(
           children: <Widget>[
@@ -65,81 +65,81 @@ class _DashboardClientState extends State<DashboardClient> {
             ),
 
             // Kolom Pencarian dan Filter
-            Container(
-              padding: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 20.0),
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    flex: 5,
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      child: TextField(
-                        decoration: InputDecoration(
-                          hintText: "Cari Jasa MUA",
-                          hintStyle: TextStyle(fontSize: 12),
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.all(10.0),
-                          prefixIcon: Icon(Icons.search), 
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: 10),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      padding: EdgeInsets.all(10.0), 
-                      decoration: BoxDecoration(
-                        border: Border.all(color: Colors.white), 
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(10.0),
-                      ),
-                      child: PopupMenuButton<String>(
-                        onSelected: (value) {
-                          // Tindakan yang diambil saat salah satu item dropdown dipilih
-                          if (value == "filter1") {
-                            // Aksi untuk Filter 1
-                          } else if (value == "filter2") {
-                            // Aksi untuk Filter 2
-                          } else if (value == "filter3") {
-                            // Aksi untuk Filter 3
-                          }
-                        },
-                        itemBuilder: (BuildContext context) {
-                          return <PopupMenuEntry<String>>[
-                            PopupMenuItem<String>(
-                              value: "filter1",
-                              child: Text("Filter 1"),
-                              onTap: () {
-                                // Aksi untuk Filter 1
-                              },
-                            ),
-                            PopupMenuItem<String>(
-                              value: "filter2",
-                              child: Text("Filter 2"),
-                              onTap: () {
-                                // Aksi untuk Filter 2
-                              },
-                            ),
-                            PopupMenuItem<String>(
-                              value: "filter3",
-                              child: Text("Filter 3"),
-                              onTap: () {
-                                // Aksi untuk Filter 3
-                              },
-                            ),
-                          ];
-                        },
-                        child: Icon(Icons.filter_list, color: Colors.white), // Warna pink
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            // Container(
+            //   padding: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 20.0),
+            //   child: Row(
+            //     children: <Widget>[
+            //       Expanded(
+            //         flex: 5,
+            //         child: Container(
+            //           decoration: BoxDecoration(
+            //             color: Colors.white,
+            //             borderRadius: BorderRadius.circular(10.0),
+            //           ),
+            //           child: TextField(
+            //             decoration: InputDecoration(
+            //               hintText: "Cari Jasa MUA",
+            //               hintStyle: TextStyle(fontSize: 12),
+            //               border: InputBorder.none,
+            //               contentPadding: EdgeInsets.all(10.0),
+            //               prefixIcon: Icon(Icons.search), 
+            //             ),
+            //           ),
+            //         ),
+            //       ),
+            //       SizedBox(width: 10),
+            //       Expanded(
+            //         flex: 1,
+            //         child: Container(
+            //           padding: EdgeInsets.all(10.0), 
+            //           decoration: BoxDecoration(
+            //             border: Border.all(color: Colors.white), 
+            //             color: Colors.transparent,
+            //             borderRadius: BorderRadius.circular(10.0),
+            //           ),
+            //           child: PopupMenuButton<String>(
+            //             onSelected: (value) {
+            //               // Tindakan yang diambil saat salah satu item dropdown dipilih
+            //               if (value == "filter1") {
+            //                 // Aksi untuk Filter 1
+            //               } else if (value == "filter2") {
+            //                 // Aksi untuk Filter 2
+            //               } else if (value == "filter3") {
+            //                 // Aksi untuk Filter 3
+            //               }
+            //             },
+            //             itemBuilder: (BuildContext context) {
+            //               return <PopupMenuEntry<String>>[
+            //                 PopupMenuItem<String>(
+            //                   value: "filter1",
+            //                   child: Text("Filter 1"),
+            //                   onTap: () {
+            //                     // Aksi untuk Filter 1
+            //                   },
+            //                 ),
+            //                 PopupMenuItem<String>(
+            //                   value: "filter2",
+            //                   child: Text("Filter 2"),
+            //                   onTap: () {
+            //                     // Aksi untuk Filter 2
+            //                   },
+            //                 ),
+            //                 PopupMenuItem<String>(
+            //                   value: "filter3",
+            //                   child: Text("Filter 3"),
+            //                   onTap: () {
+            //                     // Aksi untuk Filter 3
+            //                   },
+            //                 ),
+            //               ];
+            //             },
+            //             child: Icon(Icons.filter_list, color: Colors.white), // Warna pink
+            //           ),
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
           ],
         )
       ),
