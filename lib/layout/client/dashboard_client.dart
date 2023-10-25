@@ -456,6 +456,7 @@ class _DashboardClientState extends State<DashboardClient> {
           ),
         ]
       ),
+      
       bottomNavigationBar: BottomNavigationBar(
         showSelectedLabels: true,
         showUnselectedLabels: true,
@@ -497,8 +498,8 @@ class _DashboardClientState extends State<DashboardClient> {
           borderRadius: BorderRadius.circular(16.0),
           child: Image.asset(
             imagePath,
-            width: 300,
-            height: 130,
+            width: 400,
+            height: 180,
             fit: BoxFit.cover,
           ),
         ),

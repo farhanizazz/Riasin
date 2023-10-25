@@ -209,6 +209,21 @@ class _DashboardMuaState extends State<DashboardMua> {
                                       ),
                                     ],
                                   ),
+                                  onTap: () {
+                                    Navigator.of(context).pop(); // Tutup BottomSheet
+                                    Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => OrderInClient(
+                                        nama: 'Farhan Iz',
+                                        nomor: '0812',
+                                        gender: 'Laki-Laki',
+                                        request: 'Request Tambahan untuk MUA',
+                                      ),
+                                    ),
+                                  );
+
+                                  },
                                 );
 
                               },
@@ -367,23 +382,23 @@ class _DashboardMuaState extends State<DashboardMua> {
           borderRadius: BorderRadius.circular(16.0),
           child: Image.asset(
             imagePath,
-            width: 300,
-            height: 130,
+            width: 400,
+            height: 180,
             fit: BoxFit.cover,
           ),
         ),
         ClipRRect(
           borderRadius: BorderRadius.circular(16.0),
           child: Container(
-            width: 300,
-            height: 130,
+            width: 400,
+            height: 180,
             decoration: BoxDecoration(
               color: const Color(0xffC55977).withOpacity(0.3),
             ),
           ),
         ),
         Positioned(
-          bottom: 50,
+          bottom: 60,
           left: 10,
           child: Container(
             padding: const EdgeInsets.all(8),
