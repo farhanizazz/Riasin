@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:http/http.dart' as http;
 import 'package:riasin_app/component/labeled_text_field.dart';
+import 'package:riasin_app/layout/mua/dashboard_mua.dart';
 import 'package:riasin_app/layout/register_pages/register_page.dart';
 
 class LoginPage extends StatefulWidget {
@@ -11,9 +16,30 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  final _storage = const FlutterSecureStorage();
+  bool _isLoading = false;
+
+
+  Future<http.Response> loginMUA(String email, String password) {
+    return http.post(
+      Uri.parse('https://riasinajah.my.id/public/api/login'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, dynamic>{
+        "email": email,
+        "password": password,
+      }),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 48, vertical: 80),
           child: Column(
@@ -28,16 +54,32 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(
                 height: 30,
               ),
-              const Column(
-                children: [
-                  LabeledTextField(
-                      field: 'Email', hintText: "Masukkan email anda"),
-                  LabeledTextField(
-                    field: 'Password',
-                    hintText: "Masukkan password anda",
-                    obscureText: true,
-                  ),
-                ],
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    LabeledTextField(
+                      field: 'Email',
+                      hintText: "Masukkan email anda",
+                      controller: emailController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Email tidak boleh kosong';
+                        }
+                        if(!value.contains('@')){
+                          return 'Email tidak valid';
+                        }
+                        return null;
+                      },
+                    ),
+                    LabeledTextField(
+                      field: 'Password',
+                      hintText: "Masukkan password anda",
+                      obscureText: true,
+                      controller: passwordController,
+                    ),
+                  ],
+                ),
               ),
               const SizedBox(
                 height: 30,
@@ -64,12 +106,33 @@ class _LoginPageState extends State<LoginPage> {
                     width: double.infinity,
                     height: 60,
                     child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            await loginMUA(
+                                emailController.text, passwordController.text).then((value) => {
+                            if (value.statusCode == 200) {
+                              _storage.write(key: 'token', value: jsonDecode(value.body)['data']['token']),
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => DashboardMua()))
+                            } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  backgroundColor: Colors.red,
+                                    content: Text(
+                                        "Email atau password salah")))
+                            }
+
+                            });
+    }
+                        },
                         style: ElevatedButton.styleFrom(
+                            elevation: 0,
                             backgroundColor: const Color(0xFFC55977),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20))),
-                        child: const Text("Masuk")),
+                        child: _isLoading ? const CircularProgressIndicator(color: Colors.white,) : const Text("Masuk")),
                   ),
                   const SizedBox(height: 20),
                   Row(
@@ -78,7 +141,7 @@ class _LoginPageState extends State<LoginPage> {
                       const Text(
                         "Belum punya akun?",
                         style: TextStyle(
-                            color: Color(0xff1b090e4d),
+                            color: Color(0x1b090e4d),
                             fontWeight: FontWeight.w600),
                       ),
                       const SizedBox(
@@ -89,7 +152,8 @@ class _LoginPageState extends State<LoginPage> {
                             Navigator.pushReplacement(
                                 context,
                                 MaterialPageRoute(
-                                    builder: (context) => const RegisterPage()));
+                                    builder: (context) =>
+                                        const RegisterPage()));
                           },
                           overlayColor:
                               MaterialStateProperty.all(Colors.transparent),
