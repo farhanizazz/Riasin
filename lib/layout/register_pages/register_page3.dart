@@ -7,9 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:riasin_app/component/labeled_text_field.dart';
-import 'package:intl/intl.dart';
 import 'package:riasin_app/component/widget_tombol_registrasi_bawah.dart';
-import 'package:riasin_app/layout/register_pages/register_page3.dart';
 import 'package:riasin_app/layout/register_pages/register_page_pilih_hari.dart';
 import 'package:riasin_app/providers/form_data_provider.dart';
 

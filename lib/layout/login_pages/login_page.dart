@@ -25,7 +25,7 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<http.Response> loginMUA(String email, String password) {
     return http.post(
-      Uri.parse('https://riasinajah.my.id/public/api/login'),
+      Uri.parse('http://10.252.130.160:8000/api/login'),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
       },
@@ -111,7 +111,7 @@ class _LoginPageState extends State<LoginPage> {
                             await loginMUA(
                                 emailController.text, passwordController.text).then((value) => {
                             if (value.statusCode == 200) {
-                              _storage.write(key: 'token', value: jsonDecode(value.body)['data']['token']),
+                              _storage.write(key: 'token', value: jsonDecode(value.body)['token']),
                               Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
