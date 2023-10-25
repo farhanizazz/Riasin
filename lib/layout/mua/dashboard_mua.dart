@@ -210,7 +210,6 @@ class _DashboardMuaState extends State<DashboardMua> {
                                     ],
                                   ),
                                   onTap: () {
-                                    Navigator.of(context).pop(); // Tutup BottomSheet
                                     Navigator.push(
                                     context,
                                     MaterialPageRoute(

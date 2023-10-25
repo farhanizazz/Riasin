@@ -22,131 +22,133 @@ class _DashboardClientState extends State<DashboardClient> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: null,
+      appBar: AppBar(
+        // toolbarHeight: 150,
+        toolbarHeight: 100,
+        backgroundColor: const Color(0xFFC55977),
+        title: Column(children: <Widget>[ 
+          Container(
+            padding: EdgeInsets.all(20.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(20),
+                  child: Container(
+                    width: 50, 
+                    height: 50, 
+                    child: Image.asset(
+                      'assets/images/profile.jpg', 
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                SizedBox(width: 10), 
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      'Hi,',
+                      style: TextStyle(fontSize: 10, color: Colors.white),
+                    ),
+                    Text(
+                      'Nama Client',
+                      style: TextStyle(fontSize: 12, color: Colors.white),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          // Container(
+          //   padding: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 20.0),
+          //   child: Row(
+          //     children: <Widget>[
+          //       Expanded(
+          //         flex: 5,
+          //         child: Container(
+          //           decoration: BoxDecoration(
+          //             color: Colors.white,
+          //             borderRadius: BorderRadius.circular(10.0),
+          //           ),
+          //           child: TextField(
+          //             decoration: InputDecoration(
+          //               hintText: "Cari Jasa MUA",
+          //               hintStyle: TextStyle(fontSize: 12),
+          //               border: InputBorder.none,
+          //               contentPadding: EdgeInsets.all(10.0),
+          //               prefixIcon: Icon(Icons.search), 
+          //             ),
+          //           ),
+          //         ),
+          //       ),
+          //       SizedBox(width: 10),
+          //       Expanded(
+          //         flex: 1,
+          //         child: Container(
+          //           padding: EdgeInsets.all(10.0), 
+          //           decoration: BoxDecoration(
+          //             border: Border.all(color: Colors.white), 
+          //             color: Colors.transparent,
+          //             borderRadius: BorderRadius.circular(10.0),
+          //           ),
+          //           child: PopupMenuButton<String>(
+          //             onSelected: (value) {
+          //               // Tindakan yang diambil saat salah satu item dropdown dipilih
+          //               if (value == "filter1") {
+          //                 // Aksi untuk Filter 1
+          //               } else if (value == "filter2") {
+          //                 // Aksi untuk Filter 2
+          //               } else if (value == "filter3") {
+          //                 // Aksi untuk Filter 3
+          //               }
+          //             },
+          //             itemBuilder: (BuildContext context) {
+          //               return <PopupMenuEntry<String>>[
+          //                 PopupMenuItem<String>(
+          //                   value: "filter1",
+          //                   child: Text("Filter 1"),
+          //                   onTap: () {
+          //                     // Aksi untuk Filter 1
+          //                   },
+          //                 ),
+          //                 PopupMenuItem<String>(
+          //                   value: "filter2",
+          //                   child: Text("Filter 2"),
+          //                   onTap: () {
+          //                     // Aksi untuk Filter 2
+          //                   },
+          //                 ),
+          //                 PopupMenuItem<String>(
+          //                   value: "filter3",
+          //                   child: Text("Filter 3"),
+          //                   onTap: () {
+          //                     // Aksi untuk Filter 3
+          //                   },
+          //                 ),
+          //               ];
+          //             },
+          //             child: Icon(Icons.filter_list, color: Colors.white), // Warna pink
+          //           ),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
+        ]) 
+      ),
       body: ListView(
         children: <Widget>[
           Stack(
             children: <Widget>[
               Container(
                 color: Color(0xFFC55977), 
-                height: MediaQuery.of(context).size.height / 3,
+                height: MediaQuery.of(context).size.height / 8,
               ),
               SingleChildScrollView(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      // Profil Pengguna
-                      Container(
-                        padding: EdgeInsets.all(20.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            ClipRRect(
-                              borderRadius: BorderRadius.circular(20),
-                              child: Container(
-                                width: 50, 
-                                height: 50, 
-                                child: Image.asset(
-                                  'assets/images/profile.jpg', 
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 10), 
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: <Widget>[
-                                Text(
-                                  'Hi,',
-                                  style: TextStyle(fontSize: 10, color: Colors.white),
-                                ),
-                                Text(
-                                  'Nama Client',
-                                  style: TextStyle(fontSize: 12, color: Colors.white),
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
-                      ),
-
-                      // Kolom Pencarian dan Filter
-                      Container(
-                        padding: EdgeInsets.only(left: 16.0, right: 16.0, bottom: 20.0),
-                        child: Row(
-                          children: <Widget>[
-                            Expanded(
-                              flex: 5,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                child: TextField(
-                                  decoration: InputDecoration(
-                                    hintText: "Cari Jasa MUA",
-                                    hintStyle: TextStyle(fontSize: 12),
-                                    border: InputBorder.none,
-                                    contentPadding: EdgeInsets.all(10.0),
-                                    prefixIcon: Icon(Icons.search), 
-                                  ),
-                                ),
-                              ),
-                            ),
-                            SizedBox(width: 10),
-                            Expanded(
-                              flex: 1,
-                              child: Container(
-                                padding: EdgeInsets.all(10.0), 
-                                decoration: BoxDecoration(
-                                  border: Border.all(color: Colors.white), 
-                                  color: Colors.transparent,
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                child: PopupMenuButton<String>(
-                                  onSelected: (value) {
-                                    // Tindakan yang diambil saat salah satu item dropdown dipilih
-                                    if (value == "filter1") {
-                                      // Aksi untuk Filter 1
-                                    } else if (value == "filter2") {
-                                      // Aksi untuk Filter 2
-                                    } else if (value == "filter3") {
-                                      // Aksi untuk Filter 3
-                                    }
-                                  },
-                                  itemBuilder: (BuildContext context) {
-                                    return <PopupMenuEntry<String>>[
-                                      PopupMenuItem<String>(
-                                        value: "filter1",
-                                        child: Text("Filter 1"),
-                                        onTap: () {
-                                          // Aksi untuk Filter 1
-                                        },
-                                      ),
-                                      PopupMenuItem<String>(
-                                        value: "filter2",
-                                        child: Text("Filter 2"),
-                                        onTap: () {
-                                          // Aksi untuk Filter 2
-                                        },
-                                      ),
-                                      PopupMenuItem<String>(
-                                        value: "filter3",
-                                        child: Text("Filter 3"),
-                                        onTap: () {
-                                          // Aksi untuk Filter 3
-                                        },
-                                      ),
-                                    ];
-                                  },
-                                  child: Icon(Icons.filter_list, color: Colors.white), // Warna pink
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-
                       CarouselSlider(
                         items: products.map((product) {
                           return _buildCarouselItem(
@@ -209,7 +211,7 @@ class _DashboardClientState extends State<DashboardClient> {
 
                       // popular
                       Container(
-                        padding: EdgeInsets.all(16.0), 
+                        padding: EdgeInsets.only(left: 16.0, right: 16.0), 
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -260,7 +262,7 @@ class _DashboardClientState extends State<DashboardClient> {
                                                 borderRadius: BorderRadius.circular(16.0),
                                                 child: Image.asset(
                                                   muaImage,
-                                                  width: 180,
+                                                  width: 200,
                                                   height: 110,
                                                   fit: BoxFit.cover,
                                                 ),
@@ -268,7 +270,7 @@ class _DashboardClientState extends State<DashboardClient> {
                                               ClipRRect(
                                                 borderRadius: BorderRadius.circular(16.0),
                                                 child: Container(
-                                                  width: 180,
+                                                  width: 200,
                                                   height: 110,
                                                   decoration: BoxDecoration(
                                                     color: Color(0xffC55977).withOpacity(0.2),
@@ -329,7 +331,7 @@ class _DashboardClientState extends State<DashboardClient> {
                       
                       // terdekat
                       Container(
-                        padding: EdgeInsets.all(16.0), 
+                        padding: EdgeInsets.only(left: 16.0, right: 16.0), 
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
@@ -383,7 +385,7 @@ class _DashboardClientState extends State<DashboardClient> {
                                                 borderRadius: BorderRadius.circular(16.0),
                                                 child: Image.asset(
                                                   muaImage,
-                                                  width: 180,
+                                                  width: 200,
                                                   height: 110,
                                                   fit: BoxFit.cover,
                                                 ),
@@ -391,7 +393,7 @@ class _DashboardClientState extends State<DashboardClient> {
                                               ClipRRect(
                                                 borderRadius: BorderRadius.circular(16.0),
                                                 child: Container(
-                                                  width: 180,
+                                                  width: 200,
                                                   height: 110,
                                                   decoration: BoxDecoration(
                                                     color: Color(0xffC55977).withOpacity(0.2),
@@ -499,7 +501,7 @@ class _DashboardClientState extends State<DashboardClient> {
           child: Image.asset(
             imagePath,
             width: 400,
-            height: 180,
+            height: 200,
             fit: BoxFit.cover,
           ),
         ),

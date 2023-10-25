@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+
 import 'package:flutter/material.dart';
 import 'package:riasin_app/component/widget_tombol_registrasi_bawah.dart';
 import 'package:riasin_app/layout/mua/dashboard_mua.dart';
@@ -14,14 +16,13 @@ class OrderInClient extends StatelessWidget {
       required this.nomor,
       required this.gender,
       required this.request});
-  final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Detail Pemesanan', style: TextStyle(fontWeight: FontWeight.bold)),
-      ),
+      ),                                    
       body: SingleChildScrollView(
         child:
          Center(
@@ -245,13 +246,7 @@ class OrderInClient extends StatelessWidget {
                     margin: EdgeInsets.only(left: 16.0, right: 16.0),
                     child: WidgetTombolRegistrasiBawah(
                       nextPageOnTap: () {
-                        if (_formKey.currentState!.validate()) {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DashboardMua(),
-                              ));
-                        }
+                        Navigator.pop(context);
                       },
                       usePrevButton: false,
                       useNextArrow: false,
@@ -271,13 +266,11 @@ class OrderInClient extends StatelessWidget {
                     margin: EdgeInsets.all(16.0),
                     child: WidgetTombolRegistrasiBawah(
                       nextPageOnTap: () {
-                        if (_formKey.currentState!.validate()) {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => DashboardMua(),
-                              ));
-                        }
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => DashboardMua(),
+                            ));
                       },
                       usePrevButton: false,
                       useNextArrow: false,
