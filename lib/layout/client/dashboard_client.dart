@@ -25,7 +25,8 @@ class _DashboardClientState extends State<DashboardClient> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 100,
+        toolbarHeight: 90,
+        // toolbarHeight: 150,
         backgroundColor: const Color(0xFFC55977),
         title: Column(
           children: <Widget>[
