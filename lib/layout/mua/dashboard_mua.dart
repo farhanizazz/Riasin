@@ -1,6 +1,12 @@
+import 'dart:convert';
+import 'dart:developer';
+
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:riasin_app/Url.dart';
 import 'package:riasin_app/layout/mua/order_in_client.dart';
 
 class DashboardMua extends StatefulWidget {
@@ -9,6 +15,13 @@ class DashboardMua extends StatefulWidget {
 }
 
 class _DashboardMuaState extends State<DashboardMua> {
+  final dio = Dio();
+  final _storage = const FlutterSecureStorage();
+
+  Future<String?> _checkToken() async {
+    return await _storage.read(key: 'token');
+  }
+
   int _selectedIndex = 0;
   int _currentCarouselIndex = 0;
   List<CarouselItem> products = [
@@ -16,9 +29,76 @@ class _DashboardMuaState extends State<DashboardMua> {
     CarouselItem('Nama Produk 2', 'assets/images/mua.jpg', 4.0, 40.0),
     CarouselItem('Nama Produk 3', 'assets/images/mua.jpg', 4.2, 45.0),
   ];
+  late Map<String, dynamic> dashboardData = {
+    'profile': {},
+    'layananMua': {},
+    'ulasan': {},
+    'pesananTerbaru': {}
+  };
+
+  Future<Response<String>> getProfile() async {
+    Response<String> data = await dio.get(
+        '$baseUrl/api/penyedia-jasa-mua/dashboard/profile',
+        options: Options(
+            headers: {'Authorization': 'Bearer ${await _checkToken()}'}));
+    return data;
+  }
+
+  Future<Response<String>> getLayananMua() async {
+    Response<String> data = await dio.get(
+        '$baseUrl/api/penyedia-jasa-mua/dashboard/layananmua',
+        options: Options(
+            headers: {'Authorization': 'Bearer ${await _checkToken()}'}));
+    return data;
+  }
+
+  Future<Response<String>> getUlasan() async {
+    Response<String> data = await dio.get(
+        '$baseUrl/api/penyedia-jasa-mua/dashboard/ulasan',
+        options: Options(
+            headers: {'Authorization': 'Bearer ${await _checkToken()}'}));
+    return data;
+  }
+
+  Future<Response<String>> getPesananTerbaru() async {
+    Response<String> data = await dio.get(
+        '$baseUrl/api/penyedia-jasa-mua/dashboard/pesananterbaru',
+        options: Options(
+            headers: {'Authorization': 'Bearer ${await _checkToken()}'}));
+    return data;
+  }
+
+  void getData() async {
+    List<Response<String>> data = await Future.wait([
+      getProfile(),
+      getLayananMua(),
+      getUlasan(),
+      getPesananTerbaru()
+    ]);
+
+    setState(() {
+      dashboardData = {
+        'profile': jsonDecode(data[0].data!)['data'],
+        'layananMua': jsonDecode(data[1].data!)['data'],
+        'ulasan': jsonDecode(data[2].data!)['data'],
+        'pesananTerbaru': jsonDecode(data[3].data!)['data']
+      };
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    try {
+      getData();
+    } on DioException catch (e) {
+      log(e.response!.data);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 100,
@@ -31,8 +111,8 @@ class _DashboardMuaState extends State<DashboardMua> {
               child: Container(
                   width: 50,
                   height: 50,
-                  child: Image.asset(
-                    'assets/images/profile.jpg',
+                  child: Image.network(
+                    dashboardData['profile']['foto'],
                     fit: BoxFit.cover,
                   )),
             ),
@@ -40,13 +120,13 @@ class _DashboardMuaState extends State<DashboardMua> {
         ],
         title: Container(
           padding: const EdgeInsets.symmetric(horizontal: 15.0),
-          child: const Column(
+          child: Column(
             children: [
               Align(
                 alignment: Alignment.bottomLeft,
                 child: Text(
-                  "Nama Jasa",
-                  style: TextStyle(
+                  dashboardData['profile']['nama_jasa_mua'],
+                  style: const TextStyle(
                     fontSize: 14,
                     color: Colors.white,
                     fontWeight: FontWeight.w700,
@@ -56,7 +136,7 @@ class _DashboardMuaState extends State<DashboardMua> {
               Align(
                 alignment: Alignment.bottomLeft,
                 child: Text(
-                  "Kecamatan lokasi jasa",
+                  dashboardData['profile']['lokasi_jasa_mua'],
                   style: TextStyle(fontSize: 14, color: Color(0xffE1CCD2)),
                 ),
               ),
@@ -76,15 +156,15 @@ class _DashboardMuaState extends State<DashboardMua> {
                 // Profil Pengguna
 
                 CarouselSlider(
-                  items: products.map((product) {
+                  items: dashboardData['layananMua'].map<Widget>((product) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20.0, vertical: 10.0),
                       child: _buildCarouselItem(
-                        product.name,
-                        product.imagePath,
-                        product.rating,
-                        product.price,
+                        product['nama'],
+                        product['foto'],
+                        product['rating'],
+                        double.parse(product['harga']),
                       ),
                     );
                   }).toList(),
@@ -109,7 +189,7 @@ class _DashboardMuaState extends State<DashboardMua> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    for (int i = 0; i < products.length; i++)
+                    for (int i = 0; i < dashboardData['layananMua'].length; i++)
                       Container(
                         width: 8.0,
                         height: 8.0,
@@ -151,12 +231,17 @@ class _DashboardMuaState extends State<DashboardMua> {
                           ],
                         ),
                       ),
-                      ...[1, 2, 3].map((e) => pesananItem(
-                          serviceIcon: 'assets/images/profile.jpg',
-                          clientName: 'Nama Client $e',
-                          serviceName: 'Nama Jasa $e',
-                          serviceLocation: 'Lokasi Jasa $e',
-                          bookingDate: 'Tanggal Booking: 01/01/2023'))
+                      dashboardData['pesananTerbaru'] == null ? SizedBox(height: 100, child: const Center(child: Text("Tidak ada pesanan terbaru"),)) :
+                      Column(
+                        children: [
+                          ...dashboardData['pesananTerbaru'].map((e) => pesananItem(
+                              serviceIcon: 'assets/images/profile.jpg',
+                              clientName: 'Nama Client $e',
+                              serviceName: 'Nama Jasa $e',
+                              serviceLocation: 'Lokasi Jasa $e',
+                              bookingDate: 'Tanggal Booking: 01/01/2023'))
+                        ],
+                      ),
                     ],
                   ),
                 ),
@@ -190,13 +275,13 @@ class _DashboardMuaState extends State<DashboardMua> {
                         ),
                       ),
                       // ListView untuk daftar review
-                      ...[1, 2, 3].map((e) => ReviewItem(
+                      ...dashboardData['ulasan'].map((e) => ReviewItem(
                           imagePath: 'assets/images/mua.jpg',
-                          serviceName: 'Pelayanan $e',
-                          serviceLocation: 'Lokasi $e',
-                          userRating: e,
+                          serviceName: '${e['nama_pencari']}',
+                          serviceLocation: 'Sukolilo',
+                          userRating: int.parse(e['rating']),
                           userReview:
-                              'Isi komentarnya disini lorem ipsum dolor sit amet ...'))
+                              e['komentar'] == null ? 'Tidak ada komentar' : e['komentar']))
                     ],
                   ),
                 ),
@@ -261,7 +346,6 @@ class _DashboardMuaState extends State<DashboardMua> {
             ),
           ]),
         ),
-
         Container(
           padding: const EdgeInsets.all(20),
           child: Column(
