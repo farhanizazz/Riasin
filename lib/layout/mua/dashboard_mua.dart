@@ -231,7 +231,7 @@ class _DashboardMuaState extends State<DashboardMua> {
                           ],
                         ),
                       ),
-                      dashboardData['pesananTerbaru'] == null ? SizedBox(height: 100, child: const Center(child: Text("Tidak ada pesanan terbaru"),)) :
+                      dashboardData['pesananTerbaru'].isEmpty ? SizedBox(height: 100, child: const Center(child: Text("Tidak ada pesanan terbaru"),)) :
                       Column(
                         children: [
                           ...dashboardData['pesananTerbaru'].map((e) => pesananItem(
