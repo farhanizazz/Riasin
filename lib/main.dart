@@ -5,6 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:riasin_app/layout/login_pages/splash_screen.dart';
+import 'package:riasin_app/layout/mua/detail_mua.dart';
 import 'package:riasin_app/layout/register_pages/register_page.dart';
 import 'package:riasin_app/providers/form_data_provider.dart';
 
