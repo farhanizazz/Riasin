@@ -38,7 +38,7 @@ class _DashboardClientState extends State<DashboardClient> {
   ];
   final dio = Dio();
   bool isLoading = true;
-  late Map<String, dynamic> profileData;
+  Map<String, dynamic> profileData = {};
 
   void getDashboard() async {
     try {
@@ -62,7 +62,11 @@ class _DashboardClientState extends State<DashboardClient> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    getDashboard();
+    try {
+      getDashboard();
+    } on DioException catch (e) {
+      print(e.response);
+    }
   }
 
   final _storage = const FlutterSecureStorage();
@@ -71,8 +75,8 @@ class _DashboardClientState extends State<DashboardClient> {
   Widget build(BuildContext context) {
     List<Widget> pages = [
       HomePage(profileData: profileData),
-      HomePage(profileData: profileData),
-      HomePage(profileData: profileData),
+      // HomePage(profileData: profileData),
+      // HomePage(profileData: profileData),
       Center(
         child: ElevatedButton(
           child: Text('Logout'),
@@ -115,14 +119,14 @@ class _DashboardClientState extends State<DashboardClient> {
             icon: Icon(Icons.home),
             label: 'Home',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.spa),
-            label: 'Pesanan',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.grid_on),
-            label: 'Katalog',
-          ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.spa),
+          //   label: 'Pesanan',
+          // ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.grid_on),
+          //   label: 'Katalog',
+          // ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
             label: 'Profil',

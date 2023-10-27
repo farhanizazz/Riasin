@@ -6,6 +6,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
 import 'package:riasin_app/Url.dart';
 import 'package:riasin_app/component/labeled_text_field.dart';
+import 'package:riasin_app/layout/client/dashboard_client.dart';
 import 'package:riasin_app/layout/mua/dashboard_mua.dart';
 import 'package:riasin_app/layout/register_pages/register_page.dart';
 
@@ -109,24 +110,48 @@ class _LoginPageState extends State<LoginPage> {
                     child: ElevatedButton(
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
-                            await loginMUA(
-                                emailController.text, passwordController.text).then((value) => {
-                            if (value.statusCode == 200) {
-                              _storage.write(key: 'token', value: jsonDecode(value.body)['token']),
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => DashboardMua()))
-                            } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  backgroundColor: Colors.red,
-                                    content: Text(
-                                        "Email atau password salah")))
+                            try {
+                              await loginMUA(emailController.text,
+                                      passwordController.text)
+                                  .then((value) => {
+                                        if (value.statusCode == 200)
+                                          {
+                                            // _storage.write(
+                                            //     key: 'token',
+                                            //     value: jsonDecode(
+                                            //         value.body)['token']),
+                                            if(jsonDecode(value.body)['data']['role_id'] == 2) {
+                                              Navigator.pushReplacement(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          DashboardMua()))
+                                            } else if (jsonDecode(value.body)['data']['role_id'] == 3) {
+                                              Navigator.pushReplacement(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          DashboardClient(token: jsonDecode(value.body)['token'],)))
+                                            }
+                                            // Navigator.pushReplacement(
+                                            //     context,
+                                            //     MaterialPageRoute(
+                                            //         builder: (context) =>
+                                            //             DashboardMua()))
+                                          }
+                                        else
+                                          {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(const SnackBar(
+                                                    backgroundColor: Colors.red,
+                                                    content: Text(
+                                                        "Email atau password salah")))
+                                          }
+                                      });
+                            } on Exception catch (e) {
+                              print(e);
                             }
-
-                            });
-    }
+                          }
                         },
                         style: ElevatedButton.styleFrom(
                             elevation: 0,

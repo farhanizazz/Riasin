@@ -41,8 +41,8 @@ class _HomePageState extends State<HomePage> {
                       child: SizedBox(
                         width: 50,
                         height: 50,
-                        child: Image.asset(
-                          'assets/images/profile.jpg',
+                        child: Image.network(
+                          widget.profileData['client']['foto'],
                           fit: BoxFit.cover,
                         ),
                       ),
