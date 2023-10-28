@@ -21,7 +21,7 @@ class ReviewItem extends StatelessWidget {
     return ListTile(
       leading: ClipRRect(
         borderRadius: BorderRadius.circular(10.0),
-        child: Image.asset(
+        child: Image.network(
           imagePath,
           width: 35,
           height: 35,

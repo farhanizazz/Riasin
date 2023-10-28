@@ -5,8 +5,9 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:riasin_app/layout/login_pages/splash_screen.dart';
-import 'package:riasin_app/layout/mua/detail_mua.dart';
+import 'package:riasin_app/layout/client/detail_mua.dart';
 import 'package:riasin_app/layout/register_pages/register_page.dart';
+import 'package:riasin_app/layout/register_pages/register_page3.dart';
 import 'package:riasin_app/providers/form_data_provider.dart';
 
 import 'Url.dart';
@@ -149,7 +150,7 @@ class Home extends StatelessWidget {
               if (token != null) {
                 try {
                   dio.Response user = await getUser();
-                  int idRole = jsonDecode(user.data)['data']['has_role']['id'];
+                  int idRole = jsonDecode(user.data)['data']['role_id'];
                   print(idRole);
                   switch (idRole) {
                     case 3:
@@ -169,6 +170,11 @@ class Home extends StatelessWidget {
                   }
                 } on dio.DioException catch (e) {
                   print(e.response);
+                  _storage.delete(key: 'token');
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const RegisterPage()));
                 }
 
                 return;
@@ -180,8 +186,9 @@ class Home extends StatelessWidget {
               }
             },
             child: const SplashScreen())
-        // body: DashboardClient(),
+        // body: DetailMua(idMua: 1,),
         // body: DashboardMua(),
+      // body: RegisterPageDataJasa(),
         );
   }
 

@@ -6,11 +6,12 @@ import 'package:flutter/material.dart';
 
 class UploadWithLabel extends StatelessWidget {
   const UploadWithLabel(
-      {super.key, required this.label, this.image, this.onTap, required this.icon});
+      {super.key, required this.label, this.image, this.onTap, required this.icon, required this.hint});
   final String label;
   final File? image;
   final void Function()? onTap;
   final Icon icon;
+  final String hint;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +48,7 @@ class UploadWithLabel extends StatelessWidget {
                             height: 18,
                           ),
                           Text(
-                            'Upload Foto',
+                            hint,
                             style: TextStyle(
                               color: Color(0xffC55977),
                               fontWeight: FontWeight.w600,

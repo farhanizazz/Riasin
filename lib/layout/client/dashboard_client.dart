@@ -43,7 +43,7 @@ class _DashboardClientState extends State<DashboardClient> {
   void getDashboard() async {
     try {
       Response<String> profileData = await dio.get(
-          '$baseUrl/api/pencari-jasa-mua/dashboard/3',
+          '$baseUrl/api/pencari-jasa-mua/dashboard/',
           options:
               Options(headers: {'Authorization': 'Bearer ${widget.token}'}));
       setState(() {

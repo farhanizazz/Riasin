@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:riasin_app/component/item_mua.dart';
 
 class lihatSemua extends StatelessWidget {
-  const lihatSemua({super.key});
+  const lihatSemua({super.key, required this.data});
+  final List data;
 
   @override
   Widget build(BuildContext context) {
@@ -22,15 +23,15 @@ class lihatSemua extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         child: Column(
-          children: [1, 1, 1, 1, 1, 1, 1]
+          children: data
               .map(
-                (e) => const SizedBox(
+                (e) => SizedBox(
                     width: double.infinity,
                     child: ItemMUA(
-                        muaName: "Test",
-                        muaLocation: "Test",
+                        muaName: e['nama'],
+                        muaLocation: e['lokasi'],
                         muaImage:
-                            "https://i0.wp.com/www.printmag.com/wp-content/uploads/2021/02/4cbe8d_f1ed2800a49649848102c68fc5a66e53mv2.gif?fit=476%2C280&ssl=1",
+                            e['foto'],
                         width: double.infinity)),
               )
               .toList(),

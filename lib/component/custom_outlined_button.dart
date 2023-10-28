@@ -30,29 +30,25 @@ class CustomOutlinedButton {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
-          width: 150,
-          height: 24,
-          child: OutlinedButton(
-            onPressed: _onPressed,
-            style: OutlinedButton.styleFrom(
-              primary: Colors.black,
-              side: BorderSide(
-                  color:
-                  Theme.of(context).colorScheme.primary.withOpacity(0.5)),
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-              ),
+        OutlinedButton(
+          onPressed: _onPressed,
+          style: OutlinedButton.styleFrom(
+            padding: EdgeInsets.symmetric(horizontal: 10),
+            primary: Colors.black,
+            side: BorderSide(
+                color:
+                Theme.of(context).colorScheme.primary.withOpacity(0.5)),
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10)),
             ),
-            child: Text(_label,
-                style: TextStyle(
-                    fontSize: _fontSize,
-                    fontFamily: "Inter",
-                    fontWeight: FontWeight.bold,
-                    color: Theme.of(context).colorScheme.primary)),
           ),
+          child: Text(_label,
+              style: TextStyle(
+                  fontSize: _fontSize,
+                  fontFamily: "Inter",
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.primary)),
         ),
-        SizedBox(height: _sizedBoxHeight)
       ],
     );
   }

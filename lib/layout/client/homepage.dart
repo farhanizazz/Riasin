@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:riasin_app/component/item_mua.dart';
+import 'package:riasin_app/layout/client/detail_mua.dart';
 import 'package:riasin_app/layout/client/lihat_semua.dart';
 
 class HomePage extends StatefulWidget {
@@ -67,83 +68,83 @@ class _HomePageState extends State<HomePage> {
               ),
 
               // Kolom Pencarian dan Filter
-              Container(
-                padding: const EdgeInsets.only(
-                    left: 16.0, right: 16.0, bottom: 20.0),
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      flex: 5,
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        child: const TextField(
-                          decoration: InputDecoration(
-                            hintText: "Cari Jasa MUA",
-                            hintStyle: TextStyle(fontSize: 12),
-                            border: InputBorder.none,
-                            contentPadding: EdgeInsets.all(10.0),
-                            prefixIcon: Icon(Icons.search),
-                          ),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      flex: 1,
-                      child: Container(
-                        padding: const EdgeInsets.all(10.0),
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.white),
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        child: PopupMenuButton<String>(
-                          onSelected: (value) {
-                            // Tindakan yang diambil saat salah satu item dropdown dipilih
-                            if (value == "filter1") {
-                              // Aksi untuk Filter 1
-                            } else if (value == "filter2") {
-                              // Aksi untuk Filter 2
-                            } else if (value == "filter3") {
-                              // Aksi untuk Filter 3
-                            }
-                          },
-                          itemBuilder: (BuildContext context) {
-                            return <PopupMenuEntry<String>>[
-                              PopupMenuItem<String>(
-                                value: "filter1",
-                                child: const Text("Filter 1"),
-                                onTap: () {
-                                  // Aksi untuk Filter 1
-                                },
-                              ),
-                              PopupMenuItem<String>(
-                                value: "filter2",
-                                child: const Text("Filter 2"),
-                                onTap: () {
-                                  // Aksi untuk Filter 2
-                                },
-                              ),
-                              PopupMenuItem<String>(
-                                value: "filter3",
-                                child: const Text("Filter 3"),
-                                onTap: () {
-                                  // Aksi untuk Filter 3
-                                },
-                              ),
-                            ];
-                          },
-                          child: const Icon(Icons.filter_list,
-                              color: Colors.white), // Warna pink
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              // Container(
+              //   padding: const EdgeInsets.only(
+              //       left: 16.0, right: 16.0, bottom: 20.0),
+              //   child: Row(
+              //     children: <Widget>[
+              //       Expanded(
+              //         flex: 5,
+              //         child: Container(
+              //           decoration: BoxDecoration(
+              //             color: Colors.white,
+              //             borderRadius: BorderRadius.circular(10.0),
+              //           ),
+              //           child: const TextField(
+              //             decoration: InputDecoration(
+              //               hintText: "Cari Jasa MUA",
+              //               hintStyle: TextStyle(fontSize: 12),
+              //               border: InputBorder.none,
+              //               contentPadding: EdgeInsets.all(10.0),
+              //               prefixIcon: Icon(Icons.search),
+              //             ),
+              //           ),
+              //         ),
+              //       ),
+              //       const SizedBox(width: 10),
+              //       Expanded(
+              //         flex: 1,
+              //         child: Container(
+              //           padding: const EdgeInsets.all(10.0),
+              //           decoration: BoxDecoration(
+              //             border: Border.all(color: Colors.white),
+              //             color: Colors.transparent,
+              //             borderRadius: BorderRadius.circular(10.0),
+              //           ),
+              //           child: PopupMenuButton<String>(
+              //             onSelected: (value) {
+              //               // Tindakan yang diambil saat salah satu item dropdown dipilih
+              //               if (value == "filter1") {
+              //                 // Aksi untuk Filter 1
+              //               } else if (value == "filter2") {
+              //                 // Aksi untuk Filter 2
+              //               } else if (value == "filter3") {
+              //                 // Aksi untuk Filter 3
+              //               }
+              //             },
+              //             itemBuilder: (BuildContext context) {
+              //               return <PopupMenuEntry<String>>[
+              //                 PopupMenuItem<String>(
+              //                   value: "filter1",
+              //                   child: const Text("Filter 1"),
+              //                   onTap: () {
+              //                     // Aksi untuk Filter 1
+              //                   },
+              //                 ),
+              //                 PopupMenuItem<String>(
+              //                   value: "filter2",
+              //                   child: const Text("Filter 2"),
+              //                   onTap: () {
+              //                     // Aksi untuk Filter 2
+              //                   },
+              //                 ),
+              //                 PopupMenuItem<String>(
+              //                   value: "filter3",
+              //                   child: const Text("Filter 3"),
+              //                   onTap: () {
+              //                     // Aksi untuk Filter 3
+              //                   },
+              //                 ),
+              //               ];
+              //             },
+              //             child: const Icon(Icons.filter_list,
+              //                 color: Colors.white), // Warna pink
+              //           ),
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
 
               CarouselSlider(
                 items: widget.profileData['banner'].map<Widget>((banner) {
@@ -238,7 +239,7 @@ class _HomePageState extends State<HomePage> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                      const lihatSemua()));
+                                          lihatSemua(data: widget.profileData['layanan_populer'])));
                             },
                             child: Text(
                               'Lihat Semua',
@@ -253,7 +254,7 @@ class _HomePageState extends State<HomePage> {
                       height: 120,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: widget.profileData['layanan_populer'].length,
+                        itemCount: widget.profileData['layanan_populer'].take(3).length,
                         itemBuilder: (context, index) {
                           String muaName =
                               '${widget.profileData['layanan_populer'][index]['nama']}';
@@ -265,7 +266,14 @@ class _HomePageState extends State<HomePage> {
                           return ItemMUA(
                               muaImage: muaImage,
                               muaName: muaName,
-                              muaLocation: muaLocation);
+                              muaLocation: muaLocation,
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            DetailMua(idMua: widget.profileData['layanan_populer'][index]['id'],)));
+                              });
                         },
                       ),
                     ),
@@ -295,7 +303,7 @@ class _HomePageState extends State<HomePage> {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) =>
-                                      const lihatSemua()));
+                                          lihatSemua(data: widget.profileData['layanan_terdekat'],)));
                             },
                             child: const Text(
                               'Lihat Semua',
@@ -311,7 +319,7 @@ class _HomePageState extends State<HomePage> {
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
                         itemCount:
-                        widget.profileData['layanan_terdekat'].length,
+                            widget.profileData['layanan_terdekat'].take(3).length,
                         itemBuilder: (context, index) {
                           String muaName =
                               '${widget.profileData['layanan_terdekat'][index]['nama']}';
@@ -336,7 +344,6 @@ class _HomePageState extends State<HomePage> {
       ]),
     ]);
   }
-
 
   Widget _buildCarouselItem(String imagePath) {
     return Stack(

@@ -116,10 +116,10 @@ class _LoginPageState extends State<LoginPage> {
                                   .then((value) => {
                                         if (value.statusCode == 200)
                                           {
-                                            // _storage.write(
-                                            //     key: 'token',
-                                            //     value: jsonDecode(
-                                            //         value.body)['token']),
+                                            _storage.write(
+                                                key: 'token',
+                                                value: jsonDecode(
+                                                    value.body)['token']),
                                             if(jsonDecode(value.body)['data']['role_id'] == 2) {
                                               Navigator.pushReplacement(
                                                   context,

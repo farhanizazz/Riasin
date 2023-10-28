@@ -221,7 +221,7 @@ Widget buildCarouselItem(
       ClipRRect(
         borderRadius: BorderRadius.circular(16.0),
         child: Stack(children: [
-          Image.asset(
+          Image.network(
             imagePath,
             width: double.infinity,
             height: 180,
@@ -392,7 +392,7 @@ class _HomepageState extends State<Homepage> {
                                   context,
                                   MaterialPageRoute(
                                     builder: (context) =>
-                                        lihatSemuaPesanan(
+                                        LihatSemuaPesanan(
                                       data:
                                           widget.dashboardData['pesananTerbaru'],
                                     ),
@@ -420,13 +420,12 @@ class _HomepageState extends State<Homepage> {
                                 ...widget.dashboardData['pesananTerbaru']
                                     .take(3)
                                     .map((e) => PesananItem(
-                                        serviceIcon:
-                                            'assets/images/profile.jpg',
-                                        clientName: 'Nama Client $e',
-                                        serviceName: 'Nama Jasa $e',
-                                        serviceLocation: 'Lokasi Jasa $e',
+                                        serviceIcon: e['foto'],
+                                        clientName: e['nama'],
+                                        serviceName: 'Nama Jasa ${e['nama']}',
+                                        serviceLocation: 'Sukolilo}',
                                         bookingDate:
-                                            'Tanggal Booking: 01/01/2023'))
+                                            'Tanggal Booking: ${e['tanggal_pemesanan']}'))
                               ],
                             ),
                     ],
@@ -481,7 +480,7 @@ class _HomepageState extends State<Homepage> {
                           : Column(children: [
                               ...widget.dashboardData['ulasan'].take(3).map(
                                   (e) => ReviewItem(
-                                      imagePath: 'assets/images/mua.jpg',
+                                      imagePath: e['foto'],
                                       serviceName: '${e['nama_pencari']}',
                                       serviceLocation: 'Sukolilo',
                                       userRating: int.parse(e['rating']),

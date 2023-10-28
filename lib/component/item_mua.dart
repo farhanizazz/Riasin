@@ -7,19 +7,19 @@ class ItemMUA extends StatelessWidget {
     required this.muaName,
     required this.muaLocation,
     this.width = 180,
+    this.onTap,
   });
 
   final String muaImage;
   final String muaName;
   final String muaLocation;
   final double? width;
+  final Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        // Aksi ketika card ditekan
-      },
+      onTap: onTap,
       child: Card(
         child: Column(
           children: <Widget>[

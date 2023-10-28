@@ -167,7 +167,6 @@ class _RegisterPilihHariState extends State<RegisterPilihHari> {
                                           "Bearer ${await _checkToken()}"
                                     }))
                             .then((value) => {
-                                  Navigator.pop(context),
                                   Navigator.pushReplacement(
                                       context,
                                       MaterialPageRoute(

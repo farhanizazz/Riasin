@@ -4,20 +4,19 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:riasin_app/Url.dart';
 import 'package:riasin_app/component/labeled_text_field.dart';
-import 'package:riasin_app/layout/client/dashboard_client.dart';
 import 'package:riasin_app/layout/login_pages/login_page.dart';
+import 'package:riasin_app/layout/register_pages/register_page.dart';
 import 'package:riasin_app/layout/register_pages/register_page2.dart';
 import 'package:http/http.dart' as http;
-import 'package:riasin_app/layout/register_pages/register_page_mua.dart';
 
-class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key});
+class RegisterPageMua extends StatefulWidget {
+  const RegisterPageMua({super.key});
 
   @override
-  State<RegisterPage> createState() => _RegisterPageState();
+  State<RegisterPageMua> createState() => _RegisterPageMuaState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class _RegisterPageMuaState extends State<RegisterPageMua> {
   final _formKey = GlobalKey<FormState>();
   final _storage = const FlutterSecureStorage();
   final TextEditingController _passwordController = TextEditingController();
@@ -50,7 +49,7 @@ class _RegisterPageState extends State<RegisterPage> {
         "email": email,
         "password": password,
         "confirm_password": confirmPassword,
-        "role_id": 3,
+        "role_id": 2,
       }),
     );
   }
@@ -138,7 +137,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                   Colors.transparent),
                             ),
                             child: const Text(
-                              'Daftar sebagai MUA',
+                              'Daftar sebagai Client',
                               style: TextStyle(
                                   color: Color.fromARGB(70, 27, 9, 14),
                                   fontWeight: FontWeight.w600),
@@ -147,8 +146,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          const RegisterPageMua()));
+                                      builder: (context) => const RegisterPage()));
                             })),
                     ElevatedButton(
                         onPressed: () {
@@ -169,18 +167,18 @@ class _RegisterPageState extends State<RegisterPage> {
                                         if (value.statusCode == 201)
                                           {
                                             print('berhasil'),
-                                            await _storage.write(
-                                                key: 'token',
-                                                value: jsonDecode(
-                                                    value.body)['token']),
-                                            Navigator.pushReplacement(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        DashboardClient(
-                                                            token: jsonDecode(
-                                                                    value.body)[
-                                                                'token'])))
+                                            await _storage
+                                                .write(
+                                                    key: 'token',
+                                                    value: jsonDecode(
+                                                        value.body)['token'])
+                                                .then((value) => {
+                                                      Navigator.pushReplacement(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  const RegisterPageDataDiri()))
+                                                    }),
                                           }
                                         else
                                           {
@@ -188,14 +186,11 @@ class _RegisterPageState extends State<RegisterPage> {
                                                 value.body)['message'],
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(SnackBar(
-                                              content: Text(errors['email'] !=
-                                                      null
+                                              content: Text(errors['email'] != null
                                                   ? errors['email'][0]
                                                   : errors['password'] != null
                                                       ? errors['password'][0]
-                                                      : errors[
-                                                              'confirm_password']
-                                                          [0]),
+                                                      : errors['confirm_password'][0]),
                                             ))
                                           }
                                       });
