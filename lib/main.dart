@@ -15,6 +15,7 @@ import 'layout/register_pages/register_page2.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:riasin_app/layout/mua/dashboard_mua.dart';
 import 'package:riasin_app/layout/client/dashboard_client.dart';
+import 'package:riasin_app/layout/coba.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -188,6 +189,7 @@ class Home extends StatelessWidget {
             child: const SplashScreen())
         // body: DetailMua(idMua: 1,),
         // body: DashboardMua(),
+        // body: Coba(),
       // body: RegisterPageDataJasa(),
         );
   }

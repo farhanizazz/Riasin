@@ -83,7 +83,6 @@ class lihatSemuaReview extends StatelessWidget {
                           width: double.infinity,
                           child: ReviewItem(
                             serviceName: e['nama_pencari'],
-                            serviceLocation: "Sukolilo",
                             imagePath: e['foto'],
                             userRating: int.parse(e['rating']),
                             userReview: e['komentar'],
