@@ -23,7 +23,7 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   final _storage = const FlutterSecureStorage();
   bool _isLoading = false;
-
+  bool _isObscure = true;
 
   Future<http.Response> loginMUA(String email, String password) {
     return http.post(
@@ -68,16 +68,32 @@ class _LoginPageState extends State<LoginPage> {
                         if (value == null || value.isEmpty) {
                           return 'Email tidak boleh kosong';
                         }
-                        if(!value.contains('@')){
+                        if (!value.contains('@')) {
                           return 'Email tidak valid';
                         }
                         return null;
                       },
                     ),
                     LabeledTextField(
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _isObscure = !_isObscure;
+                          });
+                        },
+                        icon: _isObscure
+                            ? const Icon(
+                                Icons.visibility,
+                                color: Color(0xffC55977),
+                              )
+                            : const Icon(
+                                Icons.visibility_off,
+                                color: Color(0xffC55977),
+                              ),
+                      ),
                       field: 'Password',
                       hintText: "Masukkan password anda",
-                      obscureText: true,
+                      obscureText: _isObscure,
                       controller: passwordController,
                     ),
                   ],
@@ -109,30 +125,44 @@ class _LoginPageState extends State<LoginPage> {
                     height: 60,
                     child: ElevatedButton(
                         onPressed: () async {
+                          _isLoading = true;
                           if (_formKey.currentState!.validate()) {
                             try {
                               await loginMUA(emailController.text,
                                       passwordController.text)
                                   .then((value) => {
-                                        if (value.statusCode == 200)
+                                        _isLoading = false,
+                                        if (jsonDecode(value.body)['status'])
                                           {
                                             _storage.write(
                                                 key: 'token',
                                                 value: jsonDecode(
                                                     value.body)['token']),
-                                            if(jsonDecode(value.body)['data']['role_id'] == 2) {
-                                              Navigator.pushReplacement(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          DashboardMua()))
-                                            } else if (jsonDecode(value.body)['data']['role_id'] == 3) {
-                                              Navigator.pushReplacement(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          DashboardClient(token: jsonDecode(value.body)['token'],)))
-                                            }
+                                            if (jsonDecode(value.body)['data']
+                                                    ['role_id'] ==
+                                                2)
+                                              {
+                                                Navigator.pushReplacement(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            DashboardMua()))
+                                              }
+                                            else if (jsonDecode(value.body)[
+                                                    'data']['role_id'] ==
+                                                3)
+                                              {
+                                                Navigator.pushReplacement(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            DashboardClient(
+                                                              token: jsonDecode(
+                                                                      value
+                                                                          .body)[
+                                                                  'token'],
+                                                            )))
+                                              }
                                             // Navigator.pushReplacement(
                                             //     context,
                                             //     MaterialPageRoute(
@@ -149,7 +179,10 @@ class _LoginPageState extends State<LoginPage> {
                                           }
                                       });
                             } on Exception catch (e) {
-                              print(e);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      backgroundColor: Colors.red,
+                                      content: Text(e.toString())));
                             }
                           }
                         },
@@ -158,7 +191,11 @@ class _LoginPageState extends State<LoginPage> {
                             backgroundColor: const Color(0xFFC55977),
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(20))),
-                        child: _isLoading ? const CircularProgressIndicator(color: Colors.white,) : const Text("Masuk")),
+                        child: _isLoading
+                            ? const CircularProgressIndicator(
+                                color: Colors.white,
+                              )
+                            : const Text("Masuk")),
                   ),
                   const SizedBox(height: 20),
                   Row(

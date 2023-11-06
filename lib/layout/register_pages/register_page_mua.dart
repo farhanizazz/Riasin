@@ -161,10 +161,11 @@ class _RegisterPageMuaState extends State<RegisterPageMua> {
                                       _formData['password']!,
                                       _formData['confirm_password']!)
                                   .then((value) async => {
+                                    print(value.body),
                                         setState(() {
                                           _isLoading = !_isLoading;
                                         }),
-                                        if (value.statusCode == 201)
+                                        if (jsonDecode(value.body)['status'])
                                           {
                                             print('berhasil'),
                                             await _storage
