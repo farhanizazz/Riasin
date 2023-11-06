@@ -482,7 +482,6 @@ class _HomepageState extends State<Homepage> {
                                   (e) => ReviewItem(
                                       imagePath: e['foto'],
                                       serviceName: '${e['nama_pencari']}',
-                                      serviceLocation: 'Sukolilo',
                                       userRating: int.parse(e['rating']),
                                       userReview: e['komentar'] == null
                                           ? 'Tidak ada komentar'
