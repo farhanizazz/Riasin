@@ -49,12 +49,10 @@ class _DashboardClientState extends State<DashboardClient> {
       setState(() {
         if (profileData.statusCode == 200) {
           this.profileData = jsonDecode(profileData.data!)['data'];
-          print(this.profileData);
           isLoading = false;
         }
       });
     } on DioException catch (e) {
-      print(e.response);
     }
   }
 

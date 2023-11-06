@@ -167,10 +167,10 @@ class _RegisterPilihHariState extends State<RegisterPilihHari> {
                                           "Bearer ${await _checkToken()}"
                                     }))
                             .then((value) => {
-                                  Navigator.pushReplacement(
+                                  Navigator.pushAndRemoveUntil(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => DashboardMua()))
+                                          builder: (context) => DashboardMua()), (route) => false)
                                 });
                       } on dio.DioException catch (e) {
                         log(e.message!);

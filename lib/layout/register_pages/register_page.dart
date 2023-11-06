@@ -26,6 +26,7 @@ class _RegisterPageState extends State<RegisterPage> {
   bool _isLoading = false;
   String id = '';
   String? value;
+  bool _isObscure = true;
 
   final Map<String, String> _formData = {
     "email": "",
@@ -87,7 +88,20 @@ class _RegisterPageState extends State<RegisterPage> {
                     LabeledTextField(
                       field: 'Password',
                       hintText: 'Masukkan password anda',
-                      obscureText: true,
+                      obscureText: _isObscure,
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _isObscure
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                            color: Color(0xffC55977),
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isObscure = !_isObscure;
+                          });
+                        },
+                      ),
                       controller: _passwordController,
                       onSaved: (value) => {
                         _formData["password"] = value!,
@@ -99,7 +113,20 @@ class _RegisterPageState extends State<RegisterPage> {
                     LabeledTextField(
                         field: 'Repeat Password',
                         hintText: 'Ulangi password anda',
-                        obscureText: true,
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _isObscure
+                                ? Icons.visibility
+                                : Icons.visibility_off,
+                            color: Color(0xffC55977),
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _isObscure = !_isObscure;
+                            });
+                          },
+                        ),
+                        obscureText: _isObscure,
                         controller: _repeatPasswordController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -166,7 +193,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                         setState(() {
                                           _isLoading = !_isLoading;
                                         }),
-                                        if (value.statusCode == 201)
+                                        if (jsonDecode(value.body)['status'])
                                           {
                                             print('berhasil'),
                                             await _storage.write(

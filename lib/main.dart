@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
@@ -126,12 +127,18 @@ class MainPage extends StatelessWidget {
   }
 }
 
-class Home extends StatelessWidget {
+class Home extends StatefulWidget {
   Home({
     super.key,
   });
 
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
   final _storage = const FlutterSecureStorage();
+
   final Dio = dio.Dio();
 
   Future<dio.Response<String>> getUser() async {
@@ -141,51 +148,57 @@ class Home extends StatelessWidget {
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: InkWell(
-            onTap: () async {
-              String? token = await _checkToken();
-              if (token != null) {
-                try {
-                  dio.Response user = await getUser();
-                  int idRole = jsonDecode(user.data)['data']['role_id'];
-                  print(idRole);
-                  switch (idRole) {
-                    case 3:
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => DashboardClient(
-                                    token: token,
-                                  )));
-                      break;
-                    case 2:
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => DashboardMua()));
-                      break;
-                  }
-                } on dio.DioException catch (e) {
-                  print(e.response);
-                  _storage.delete(key: 'token');
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const RegisterPage()));
-                }
+  void initState() {
+    // TODO: implement initState
+    Timer(Duration(seconds: 1), () async {
+      String? token = await _checkToken();
+      if (token != null) {
+        try {
+          dio.Response user = await getUser();
+          int idRole = jsonDecode(user.data)['data']['role_id'];
+          print(idRole);
+          switch (idRole) {
+            case 3:
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => DashboardClient(
+                        token: token,
+                      )));
+              break;
+            case 2:
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => DashboardMua()));
+              break;
+          }
+        } on dio.DioException catch (e) {
+          print(e.response);
+          _storage.delete(key: 'token');
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => const RegisterPage()));
+        }
 
-                return;
-              } else {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const RegisterPage()));
-              }
-            },
-            child: const SplashScreen())
+        return;
+      } else {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const RegisterPage()));
+      }
+    });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    return const Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: SplashScreen()
         // body: DetailMua(idMua: 1,),
         // body: DashboardMua(),
       // body: RegisterPageDataJasa(),
