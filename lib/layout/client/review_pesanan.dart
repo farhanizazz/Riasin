@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:riasin_app/component/inkwell_animation.dart';
 // import 'package:riasin_app/main.dart';
 
-class Coba extends StatefulWidget {
+class ReviewPesanan extends StatefulWidget {
   @override
-  _CobaState createState() => _CobaState();
+  _ReviewPesananState createState() => _ReviewPesananState();
 }
 
-class _CobaState extends State<Coba> {
+class _ReviewPesananState extends State<ReviewPesanan> {
   int rating = 0;
   @override
   Widget build(BuildContext context) {
