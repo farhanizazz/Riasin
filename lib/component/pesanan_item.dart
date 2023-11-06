@@ -44,11 +44,13 @@ class PesananItem extends StatelessWidget {
                 size: 12.0,
               ),
               const SizedBox(width: 5),
-              Text(
-                serviceName,
-                style: TextStyle(
-                  color: Color.fromARGB(255, 197, 89, 120),
-                  fontSize: 10,
+              Flexible(
+                child:Text(
+                  serviceName,
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 197, 89, 120),
+                    fontSize: 10,
+                  ),
                 ),
               ),
               SizedBox(width: 10),
@@ -58,11 +60,13 @@ class PesananItem extends StatelessWidget {
                 size: 12.0,
               ),
               const SizedBox(width: 5),
-              Text(
-                serviceLocation,
-                style: TextStyle(
-                  color: Color.fromARGB(255, 197, 89, 120),
-                  fontSize: 10,
+              Flexible(
+                child:Text(
+                  serviceLocation,
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 197, 89, 120),
+                    fontSize: 10,
+                  ),
                 ),
               ),
             ],

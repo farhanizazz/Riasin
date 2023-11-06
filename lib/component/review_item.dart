@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:riasin_app/component/card_detail_review.dart';
 
 class ReviewItem extends StatelessWidget {
   const ReviewItem({
@@ -20,9 +21,6 @@ class ReviewItem extends StatelessWidget {
       margin: EdgeInsets.only(left: 10, right:10), 
       child: Card(
         child: InkWell(
-          onTap: () {
-            // Tambahkan aksi ketika card ditekan
-          },
           child: Container(
             padding: const EdgeInsets.all(20.0),
             child: Column( // Ganti dari Row() menjadi Column()
@@ -114,6 +112,26 @@ class ReviewItem extends StatelessWidget {
               ],
             ),
           ),
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CardDetailReview(
+                  clientName: 'Farhan Iz',
+                  bookingDate: '17 Agustus 2023',
+                  serviceType: 'Nail Art',
+                  rating: 4.5, // Misalnya, rating 4.5
+                  comment: 'Isi review komentar disini lorem ipsum dolor sit amet...',
+                  reviewImages: [
+                    'https://upload.wikimedia.org/wikipedia/commons/b/be/Joko_Widodo_2019_official_portrait.jpg',
+                    'https://upload.wikimedia.org/wikipedia/commons/b/be/Joko_Widodo_2019_official_portrait.jpg',
+                    'https://upload.wikimedia.org/wikipedia/commons/b/be/Joko_Widodo_2019_official_portrait.jpg',
+                    // Tambahkan URL gambar sesuai kebutuhan
+                  ],
+                )
+              ),
+            );
+          },
         ),
       ),
     );

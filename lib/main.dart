@@ -145,51 +145,51 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        body: InkWell(
-            onTap: () async {
-              String? token = await _checkToken();
-              if (token != null) {
-                try {
-                  dio.Response user = await getUser();
-                  int idRole = jsonDecode(user.data)['data']['role_id'];
-                  print(idRole);
-                  switch (idRole) {
-                    case 3:
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => DashboardClient(
-                                    token: token,
-                                  )));
-                      break;
-                    case 2:
-                      Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => DashboardMua()));
-                      break;
-                  }
-                } on dio.DioException catch (e) {
-                  print(e.response);
-                  _storage.delete(key: 'token');
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const RegisterPage()));
-                }
+        // body: InkWell(
+        //     onTap: () async {
+        //       String? token = await _checkToken();
+        //       if (token != null) {
+        //         try {
+        //           dio.Response user = await getUser();
+        //           int idRole = jsonDecode(user.data)['data']['role_id'];
+        //           print(idRole);
+        //           switch (idRole) {
+        //             case 3:
+        //               Navigator.pushReplacement(
+        //                   context,
+        //                   MaterialPageRoute(
+        //                       builder: (context) => DashboardClient(
+        //                             token: token,
+        //                           )));
+        //               break;
+        //             case 2:
+        //               Navigator.pushReplacement(
+        //                   context,
+        //                   MaterialPageRoute(
+        //                       builder: (context) => DashboardMua()));
+        //               break;
+        //           }
+        //         } on dio.DioException catch (e) {
+        //           print(e.response);
+        //           _storage.delete(key: 'token');
+        //           Navigator.pushReplacement(
+        //               context,
+        //               MaterialPageRoute(
+        //                   builder: (context) => const RegisterPage()));
+        //         }
 
-                return;
-              } else {
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const RegisterPage()));
-              }
-            },
-            child: const SplashScreen())
+        //         return;
+        //       } else {
+        //         Navigator.pushReplacement(
+        //             context,
+        //             MaterialPageRoute(
+        //                 builder: (context) => const RegisterPage()));
+        //       }
+        //     },
+        //     child: const SplashScreen())
         // body: DetailMua(idMua: 1,),
         // body: DashboardMua(),
-        // body: Coba(),
+        body: Coba(),
       // body: RegisterPageDataJasa(),
         );
   }
