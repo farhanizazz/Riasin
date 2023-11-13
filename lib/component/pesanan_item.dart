@@ -8,7 +8,7 @@ class PesananItem extends StatelessWidget {
     required this.clientName,
     required this.serviceName,
     required this.serviceLocation,
-    required this.bookingDate,
+    required this.bookingDate, this.onTap,
   });
 
   final String serviceIcon;
@@ -16,6 +16,7 @@ class PesananItem extends StatelessWidget {
   final String serviceName;
   final String serviceLocation;
   final String bookingDate;
+  final Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -77,19 +78,7 @@ class PesananItem extends StatelessWidget {
           ),
         ],
       ),
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => OrderInClient(
-              nama: 'Farhan Iz',
-              nomor: '0812',
-              gender: 'Laki-Laki',
-              request: 'Request Tambahan untuk MUA',
-            ),
-          ),
-        );
-      },
+      onTap: onTap,
     );
   }
 }

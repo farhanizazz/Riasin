@@ -8,12 +8,14 @@ class ReviewItem extends StatelessWidget {
     required this.serviceName,
     required this.userRating,
     required this.userReview,
+    this.onTap,
   });
 
   final String imagePath;
   final String serviceName;
   final int userRating;
   final String userReview;
+  final Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -112,26 +114,7 @@ class ReviewItem extends StatelessWidget {
               ],
             ),
           ),
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => CardDetailReview(
-                  clientName: 'Farhan Iz',
-                  bookingDate: '17 Agustus 2023',
-                  serviceType: 'Nail Art',
-                  rating: 4.5, // Misalnya, rating 4.5
-                  comment: 'Isi review komentar disini lorem ipsum dolor sit amet...',
-                  reviewImages: [
-                    'https://upload.wikimedia.org/wikipedia/commons/b/be/Joko_Widodo_2019_official_portrait.jpg',
-                    'https://upload.wikimedia.org/wikipedia/commons/b/be/Joko_Widodo_2019_official_portrait.jpg',
-                    'https://upload.wikimedia.org/wikipedia/commons/b/be/Joko_Widodo_2019_official_portrait.jpg',
-                    // Tambahkan URL gambar sesuai kebutuhan
-                  ],
-                )
-              ),
-            );
-          },
+          onTap: onTap,
         ),
       ),
     );

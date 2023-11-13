@@ -25,113 +25,109 @@ class CardDetailReview extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12),
       ),
-      child: Column(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  'Nama Client',
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromARGB(255, 197, 89, 120),
-                  ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Text(
+              'Nama Client',
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 197, 89, 120),
+              ),
+            ),
+            Text(
+              clientName,
+              style: TextStyle(fontSize: 13, color: Colors.black),
+            ),
+            SizedBox(height: 10),
+            Text(
+              'Tanggal Booking',
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 197, 89, 120),
+              ),
+            ),
+            Text(
+              bookingDate,
+              style: TextStyle(fontSize: 13, color: Colors.black),
+            ),
+            SizedBox(height: 10),
+            Text(
+              'Jenis Jasa',
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 197, 89, 120),
+              ),
+            ),
+            Text(
+              serviceType,
+              style: TextStyle(fontSize: 13, color: Colors.black),
+            ),
+            SizedBox(height: 10),
+            Text(
+              'Rating',
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 197, 89, 120),
+              ),
+            ),
+            Row(
+              children: List.generate(
+                5,
+                (i) => Icon(
+                  i < rating ? Icons.star : Icons.star_border,
+                  color: Colors.amber,
+                  size: 12.0,
                 ),
-                Text(
-                  clientName,
-                  style: TextStyle(fontSize: 13, color: Colors.black),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  'Tanggal Booking',
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromARGB(255, 197, 89, 120),
-                  ),
-                ),
-                Text(
-                  bookingDate,
-                  style: TextStyle(fontSize: 13, color: Colors.black),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  'Jenis Jasa',
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromARGB(255, 197, 89, 120),
-                  ),
-                ),
-                Text(
-                  serviceType,
-                  style: TextStyle(fontSize: 13, color: Colors.black),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  'Rating',
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromARGB(255, 197, 89, 120),
-                  ),
-                ),
-                Row(
-                  children: List.generate(
-                    5,
-                    (i) => Icon(
-                      i < rating ? Icons.star : Icons.star_border,
-                      color: Colors.amber,
-                      size: 12.0,
+              ),
+            ),
+            SizedBox(height: 10),
+            Text(
+              'Komentar',
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 197, 89, 120),
+              ),
+            ),
+            Text(
+              comment,
+              style: TextStyle(fontSize: 13, color: Colors.black),
+            ),
+            SizedBox(height: 10),
+            Text(
+              'Foto Review',
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.bold,
+                color: Color.fromARGB(255, 197, 89, 120),
+              ),
+            ),
+            Wrap(
+              spacing: 10,
+              runSpacing: 10,
+              children: reviewImages.map((imageURL) {
+                return ClipRRect(
+                  borderRadius: BorderRadius.circular(5),
+                  child: SizedBox(
+                    width: 70,
+                    height: 70,
+                    child: Image.network(
+                      imageURL,
+                      fit: BoxFit.cover,
                     ),
                   ),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  'Komentar',
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromARGB(255, 197, 89, 120),
-                  ),
-                ),
-                Text(
-                  comment,
-                  style: TextStyle(fontSize: 13, color: Colors.black),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  'Foto Review',
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromARGB(255, 197, 89, 120),
-                  ),
-                ),
-                Wrap(
-                  spacing: 10,
-                  runSpacing: 10,
-                  children: reviewImages.map((imageURL) {
-                    return ClipRRect(
-                      borderRadius: BorderRadius.circular(5),
-                      child: SizedBox(
-                        width: 70,
-                        height: 70,
-                        child: Image.network(
-                          imageURL,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    );
-                  }).toList(),
-                )
-              ],
-            ),
-          ),
-        ],
+                );
+              }).toList(),
+            )
+          ],
+        ),
       ),
     );
   }

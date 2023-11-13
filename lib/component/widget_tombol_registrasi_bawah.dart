@@ -27,6 +27,7 @@ class WidgetTombolRegistrasiBawah extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
+      
       children: [
       usePrevButton ? Expanded(
           child: ElevatedButton(
@@ -78,6 +79,7 @@ class WidgetTombolRegistrasiBawah extends StatelessWidget {
               nextPageOnTap();
             },
             style: ButtonStyle(
+
               padding: MaterialStateProperty.all(EdgeInsets.all(0)),
               backgroundColor:
                   MaterialStateProperty.all<Color>(colorBackground),
@@ -86,7 +88,7 @@ class WidgetTombolRegistrasiBawah extends StatelessWidget {
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                 RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(20.0),
-                  side: BorderSide(color: Color(0xffC55977)),
+                  side: BorderSide(color: Color(0xffC55977), width: 0),
                 ),
               ),
               elevation: MaterialStateProperty.all<double>(0.0),

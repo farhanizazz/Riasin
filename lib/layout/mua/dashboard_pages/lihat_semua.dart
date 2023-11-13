@@ -4,7 +4,7 @@ import 'package:riasin_app/component/pesanan_item.dart';
 import 'package:riasin_app/component/review_item.dart';
 
 class LihatSemuaPesanan extends StatelessWidget {
-  const LihatSemuaPesanan({super.key, this.data = const []});
+  const LihatSemuaPesanan({super.key, required this.data});
 
   final List data;
 
@@ -12,7 +12,7 @@ class LihatSemuaPesanan extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Padding(
+        leading: !Navigator.canPop(context) ? null : Padding(
           padding: const EdgeInsets.only(left: 10.0),
           child: IconButton(
             onPressed: () => Navigator.pop(context),
@@ -22,6 +22,11 @@ class LihatSemuaPesanan extends StatelessWidget {
         centerTitle: true,
         title: Text(
           "Lihat Semua",
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 16,
+          ),
         ),
       ),
       body: data.isEmpty

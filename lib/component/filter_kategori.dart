@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 class FilterKategori extends StatefulWidget {
   FilterKategori({
     super.key,
-    required this.kategori,
+    required this.ArrayData,
     required this.nama,
     required this.value,
     required this.onSelected,
   });
 
-  final List<String> kategori;
+  final List<String> ArrayData;
   final String nama;
   final String value;
   final Function(bool) onSelected;
@@ -26,13 +26,13 @@ class _FilterKategoriState extends State<FilterKategori> {
       label: Text(
         widget.nama,
         style: TextStyle(
-          color: widget.kategori.contains(widget.value)
+          color: widget.ArrayData.contains(widget.value)
               ? const Color(0xffffffff)
               : const Color(0xffC55977),
           fontWeight: FontWeight.w600,
         ),
       ),
-      selected: widget.kategori.contains(widget.value),
+      selected: widget.ArrayData.contains(widget.value),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(50),
       ),
