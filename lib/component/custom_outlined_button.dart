@@ -34,7 +34,7 @@ class CustomOutlinedButton {
           onPressed: _onPressed,
           style: OutlinedButton.styleFrom(
             padding: EdgeInsets.symmetric(horizontal: 10),
-            primary: Colors.black,
+            foregroundColor: Colors.black,
             side: BorderSide(
                 color:
                 Theme.of(context).colorScheme.primary.withOpacity(0.5)),
