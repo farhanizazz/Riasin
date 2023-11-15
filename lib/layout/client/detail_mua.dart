@@ -70,21 +70,22 @@ class _DetailMuaState extends State<DetailMua> {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: Column(
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(dataMua['profil']['nama_jasa_mua']),
-                            CustomOutlinedButton()
-                                .setLabel("Lihat Portofolio Saya")
-                                .setFontSize(10)
-                                .setOnPressed(() async {
-                              if (!await launchUrl(Uri.parse(dataMua['portofolio'][0]['file']))) {
-                                throw Exception('Could not launch portofolio');
-                              }
-                            })
-                                .build(context),
-                          ],
-                        ),
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //   children: [
+                        //     Text(dataMua['profil']['nama_jasa_mua']),
+                        //     CustomOutlinedButton()
+                        //         .setLabel("Lihat Portofolio Saya")
+                        //         .setFontSize(10)
+                        //         .setOnPressed(() async {
+                        //       if (!await launchUrl(Uri.parse(dataMua['portofolio'][0]['file']))) {
+                        //         throw Exception('Could not launch portofolio');
+                        //       }
+                        //     })
+                        //         .build(context),
+                        //   ],
+                        // ),
+                        SizedBox(height: 20),
                         Row(
                           children: [
                             Icon(Icons.star, color: Colors.yellow, size: 20,),
@@ -135,7 +136,7 @@ class _DetailMuaState extends State<DetailMua> {
                             ),
                           ],
                         ),
-                            SizedBox(height: 20),
+                          SizedBox(height: 20),
                       ],
                     ),
                   ),
