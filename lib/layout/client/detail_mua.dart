@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:riasin_app/Url.dart';
 import 'package:riasin_app/component/custom_outlined_button.dart';
-import 'package:riasin_app/layout/mua/lihat_semua.dart';
+import 'package:riasin_app/layout/mua/dashboard_pages/lihat_semua.dart';
 import 'package:riasin_app/main.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:riasin_app/component/inkwell_animation.dart';

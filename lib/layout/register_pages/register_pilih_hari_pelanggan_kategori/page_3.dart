@@ -61,19 +61,19 @@ class _Page3State extends State<Page3> {
               spacing: 10,
               children: [
                 FilterKategori(
-                    kategori: _formData.kategori, nama: "Make Up", value: "1", onSelected: (value) {
+                    ArrayData: _formData.kategori, nama: "Make Up", value: "1", onSelected: (value) {
                       setKategori("1");
                 },),
                 FilterKategori(
-                    kategori: _formData.kategori, nama: "Hair Do", value: "2", onSelected: (value) {
+                    ArrayData: _formData.kategori, nama: "Hair Do", value: "2", onSelected: (value) {
                       setKategori("2");}),
-                FilterKategori(kategori: kategori, nama: "Hena", value: "3", onSelected: (value) {
+                FilterKategori(ArrayData: _formData.kategori, nama: "Hena", value: "3", onSelected: (value) {
                       setKategori("3");}),
                 FilterKategori(
-                    kategori: _formData.kategori, nama: "Hijab Do", value: "4", onSelected: (value) {
+                    ArrayData: _formData.kategori, nama: "Hijab Do", value: "4", onSelected: (value) {
                       setKategori("4");}),
                 FilterKategori(
-                    kategori: _formData.kategori, nama: "Nail Art", value: "5", onSelected: (value) {
+                    ArrayData: _formData.kategori, nama: "Nail Art", value: "5", onSelected: (value) {
                       setKategori("5");}),
               ],
             ),
