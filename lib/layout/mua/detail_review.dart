@@ -20,9 +20,9 @@ class CardDetailReview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Detail Review', style: TextStyle(fontWeight: FontWeight.bold)),
-      ),                                    
+      // appBar: AppBar(
+      //   title: Text('Detail Review', style: TextStyle(fontWeight: FontWeight.bold)),
+      // ),                                    
       body: SingleChildScrollView(
         child:
          Center(
