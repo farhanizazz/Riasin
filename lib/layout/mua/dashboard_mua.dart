@@ -73,7 +73,6 @@ class _DashboardMuaState extends State<DashboardMua> {
     return data;
   }
 
-
   void getData() async {
     List<Response<String>> data = await Future.wait(
         [getProfile(), getLayananMua(), getUlasan(), getPesananTerbaru()]);
@@ -87,25 +86,31 @@ class _DashboardMuaState extends State<DashboardMua> {
       };
       _loading = false;
       pages = [
-        Homepage(dashboardData: dashboardData, notifyParent: () {
-          setState(() {
-            _selectedIndex = 1;
-          });
-        },),
-        LihatSemuaPesanan(data: dashboardData['pesananTerbaru'],),
+        Homepage(
+          dashboardData: dashboardData,
+          notifyParent: () {
+            setState(() {
+              _selectedIndex = 1;
+            });
+          },
+        ),
+        LihatSemuaPesanan(
+          data: dashboardData['pesananTerbaru'],
+        ),
         KatalogPage(),
         ProfileRead(
-          imagePath: 'https://upload.wikimedia.org/wikipedia/commons/b/be/Joko_Widodo_2019_official_portrait.jpg',
+          imagePath:
+              'https://upload.wikimedia.org/wikipedia/commons/b/be/Joko_Widodo_2019_official_portrait.jpg',
           muaName: 'Farhan Iz',
           muaPhone: '0812345',
           muaBorn: '17 Agustus 1945',
           muaGender: 'Laki-Laki',
-          onTap:() { 
+          onTap: () {
             _storage.delete(key: 'token').then((value) =>
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const LoginPage())));
+                Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const LoginPage())));
           },
         ),
         // Center(
