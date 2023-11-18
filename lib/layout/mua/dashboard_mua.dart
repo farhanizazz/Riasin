@@ -12,7 +12,7 @@ import 'package:riasin_app/component/review_item.dart';
 import 'package:riasin_app/icons/spa_icon.dart';
 import 'package:riasin_app/layout/login_pages/login_page.dart';
 import 'package:riasin_app/layout/mua/dashboard_pages/homepage.dart';
-import 'package:riasin_app/layout/mua/dashboard_pages/katalog_page.dart';
+import 'package:riasin_app/layout/mua/dashboard_pages/katalog/katalog_page.dart';
 import 'package:riasin_app/layout/mua/dashboard_pages/lihat_semua.dart';
 import 'package:riasin_app/layout/mua/order_in_client.dart';
 
@@ -23,15 +23,14 @@ class DashboardMua extends StatefulWidget {
 
 class _DashboardMuaState extends State<DashboardMua> {
   final dio = Dio();
-  final _storage = const FlutterSecureStorage();
   bool _loading = true;
+  final _storage = const FlutterSecureStorage();
 
   Future<String?> _checkToken() async {
     return await _storage.read(key: 'token');
   }
 
   int _selectedIndex = 0;
-  int _currentCarouselIndex = 0;
   List<CarouselItem> products = [
     CarouselItem('Nama Produk 1', 'assets/images/mua.jpg', 4.5, 50.0),
     CarouselItem('Nama Produk 2', 'assets/images/mua.jpg', 4.0, 40.0),

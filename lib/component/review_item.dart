@@ -1,28 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:riasin_app/component/card_detail_review.dart';
 
 class ReviewItem extends StatelessWidget {
   const ReviewItem({
     super.key,
-    required this.imagePath,
+    required this.profilePictureUrl,
     required this.serviceName,
     required this.userRating,
     required this.userReview,
-    this.onTap,
+    this.onTap, this.imageReview,
   });
 
-  final String imagePath;
+  final String profilePictureUrl;
   final String serviceName;
   final int userRating;
   final String userReview;
+  final List? imageReview;
   final Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(left: 10, right:10), 
+      margin: const EdgeInsets.only(left: 10, right:10),
       child: Card(
         child: InkWell(
+          onTap: onTap,
           child: Container(
             padding: const EdgeInsets.all(20.0),
             child: Column( // Ganti dari Row() menjadi Column()
@@ -37,7 +38,7 @@ class ReviewItem extends StatelessWidget {
                         width: 35,
                         height: 35,
                         child: Image.network(
-                          imagePath,
+                          profilePictureUrl,
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -52,7 +53,7 @@ class ReviewItem extends StatelessWidget {
                         ),
                         Row(
                           children: <Widget>[
-                            Icon(
+                            const Icon(
                               Icons.spa,
                               color: Color.fromARGB(255, 197, 89, 120),
                               size: 12.0,
@@ -60,13 +61,13 @@ class ReviewItem extends StatelessWidget {
                             const SizedBox(width: 5),
                             Text(
                               serviceName,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Color.fromARGB(255, 197, 89, 120),
                                 fontSize: 10,
                               ),
                             ),
-                            SizedBox(width: 10),
-                            Icon(
+                            const SizedBox(width: 10),
+                            const Icon(
                               Icons.star,
                               color: Colors.amber,
                               size: 12.0,
@@ -74,7 +75,7 @@ class ReviewItem extends StatelessWidget {
                             const SizedBox(width: 5),
                             Text(
                               userRating.toString(),
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Color.fromARGB(255, 197, 89, 120),
                                 fontSize: 10,
                               ),
@@ -86,35 +87,39 @@ class ReviewItem extends StatelessWidget {
                   ],
                 ),
                 const SizedBox(height: 10),
-                Row(
-                  children: List<Widget>.generate(3, (int index) {
-                    return Row(
-                      children: <Widget>[
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(5),
-                          child: SizedBox(
-                            width: 60,
-                            height: 60,
-                            child: Image.network(
-                              'https://upload.wikimedia.org/wikipedia/commons/b/be/Joko_Widodo_2019_official_portrait.jpg',
-                              fit: BoxFit.cover,
-                            ),
-                          ),
+                imageReview == null ? SizedBox() : Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: SizedBox(
+                        height: 100,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: imageReview!.take(3).length,
+                          itemBuilder: (context, index) {
+                            return Container(
+                              margin: const EdgeInsets.only(right: 10),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: Image.network(
+                                  imageReview![index],
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            );
+                          },
                         ),
-                        const SizedBox(width: 10),
-                      ],
-                    );
-                  }),
+                      ),
+                    ),
+                  ],
                 ),
                 const SizedBox(height: 10),
                 Text(
                   userReview,
-                  style: TextStyle(fontSize: 10, color: Colors.black),
+                  style: const TextStyle(fontSize: 10, color: Colors.black),
                 ),
               ],
             ),
           ),
-          onTap: onTap,
         ),
       ),
     );

@@ -246,12 +246,12 @@ class _HomepageState extends State<Homepage> {
                                               builder: (context) => Scaffold(
                                                     appBar: AppBar(
                                                         title: Text(
-                                                            "Review ${e['nama_pencari']}")),
+                                                            "Review ${e['nama']}")),
                                                     body: Center(
                                                       child: CardDetailReview(
-                                                        clientName: 'Farhan Iz',
+                                                        clientName: e['nama_pencari'],
                                                         bookingDate:
-                                                            '17 Agustus 2023',
+                                                            e['tanggal_pemesanan'],
                                                         serviceType: 'Nail Art',
                                                         rating: 4.5,
                                                         // Misalnya, rating 4.5
@@ -268,7 +268,8 @@ class _HomepageState extends State<Homepage> {
                                                   )),
                                         );
                                       },
-                                      imagePath: e['foto'],
+                                      imageReview: e[''],
+                                      profilePictureUrl: e['foto'],
                                       serviceName: '${e['nama_pencari']}',
                                       userRating: int.parse(e['rating']),
                                       userReview: e['komentar'] == null
