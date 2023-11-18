@@ -8,6 +8,7 @@ import 'package:riasin_app/component/item_mua.dart';
 import 'package:riasin_app/layout/client/lihat_semua.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:riasin_app/layout/login_pages/login_page.dart';
+import 'package:riasin_app/component/profile_read.dart';
 
 import 'homepage.dart';
 
@@ -75,18 +76,32 @@ class _DashboardClientState extends State<DashboardClient> {
       HomePage(profileData: profileData),
       // HomePage(profileData: profileData),
       // HomePage(profileData: profileData),
-      Center(
-        child: ElevatedButton(
-          child: Text('Logout'),
-          onPressed: () {
-            _storage.delete(key: 'token').then((value) =>
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const LoginPage())));
-          },
-        ),
-      )
+      ProfileRead(
+        imagePath: 'https://upload.wikimedia.org/wikipedia/commons/b/be/Joko_Widodo_2019_official_portrait.jpg',
+        muaName: 'Farhan Iz',
+        muaPhone: '0812345',
+        muaBorn: '17 Agustus 1945',
+        muaGender: 'Laki-Laki',
+        onTap:() { 
+          _storage.delete(key: 'token').then((value) =>
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const LoginPage())));
+        },
+      ),
+      // Center(
+      //   child: ElevatedButton(
+      //     child: Text('Logout'),
+      //     onPressed: () {
+      //       _storage.delete(key: 'token').then((value) =>
+      //           Navigator.pushReplacement(
+      //               context,
+      //               MaterialPageRoute(
+      //                   builder: (context) => const LoginPage())));
+      //     },
+      //   ),
+      // )
     ];
 
     return Scaffold(

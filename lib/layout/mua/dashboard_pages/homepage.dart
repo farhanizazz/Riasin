@@ -1,6 +1,7 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:riasin_app/component/card_detail_review.dart';
+import 'package:riasin_app/layout/mua/detail_review.dart';
+// import 'package:riasin_app/mua/detail_review.dart';
 import 'package:riasin_app/component/pesanan_item.dart';
 import 'package:riasin_app/component/review_item.dart';
 import 'package:riasin_app/layout/mua/dashboard_pages/lihat_semua.dart';

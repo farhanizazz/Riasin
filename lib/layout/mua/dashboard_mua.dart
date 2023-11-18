@@ -7,14 +7,12 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:riasin_app/Url.dart';
-import 'package:riasin_app/component/pesanan_item.dart';
-import 'package:riasin_app/component/review_item.dart';
+import 'package:riasin_app/component/profile_read.dart';
 import 'package:riasin_app/icons/spa_icon.dart';
 import 'package:riasin_app/layout/login_pages/login_page.dart';
 import 'package:riasin_app/layout/mua/dashboard_pages/homepage.dart';
 import 'package:riasin_app/layout/mua/dashboard_pages/katalog/katalog_page.dart';
 import 'package:riasin_app/layout/mua/dashboard_pages/lihat_semua.dart';
-import 'package:riasin_app/layout/mua/order_in_client.dart';
 
 class DashboardMua extends StatefulWidget {
   @override
@@ -96,18 +94,32 @@ class _DashboardMuaState extends State<DashboardMua> {
         },),
         LihatSemuaPesanan(data: dashboardData['pesananTerbaru'],),
         KatalogPage(),
-        Center(
-          child: ElevatedButton(
-            child: Text('Logout'),
-            onPressed: () {
-              _storage.delete(key: 'token').then((value) =>
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const LoginPage())));
-            },
-          ),
-        )
+        ProfileRead(
+          imagePath: 'https://upload.wikimedia.org/wikipedia/commons/b/be/Joko_Widodo_2019_official_portrait.jpg',
+          muaName: 'Farhan Iz',
+          muaPhone: '0812345',
+          muaBorn: '17 Agustus 1945',
+          muaGender: 'Laki-Laki',
+          onTap:() { 
+            _storage.delete(key: 'token').then((value) =>
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const LoginPage())));
+          },
+        ),
+        // Center(
+        //   child: ElevatedButton(
+        //     child: Text('Logout'),
+        //     onPressed: () {
+        //       _storage.delete(key: 'token').then((value) =>
+        //           Navigator.pushReplacement(
+        //               context,
+        //               MaterialPageRoute(
+        //                   builder: (context) => const LoginPage())));
+        //     },
+        //   ),
+        // )
       ];
     });
   }
