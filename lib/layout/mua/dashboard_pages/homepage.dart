@@ -159,7 +159,7 @@ class _HomepageState extends State<Homepage> {
                           ],
                         ),
                       ),
-                      widget.dashboardData['pesananTerbaru'].isEmpty
+                      widget.dashboardData['pesananTerbaru'].take(3).isEmpty
                           ? SizedBox(
                               height: 100,
                               child: const Center(
@@ -185,6 +185,7 @@ class _HomepageState extends State<Homepage> {
                                             ),
                                           );
                                         },
+                                        status: e['status'],
                                         serviceIcon: e['foto'],
                                         clientName: e['nama'],
                                         serviceName: 'Nama Jasa ${e['nama']}',
@@ -250,28 +251,25 @@ class _HomepageState extends State<Homepage> {
                                                             "Review ${e['nama']}")),
                                                     body: Center(
                                                       child: CardDetailReview(
-                                                        clientName: e['nama_pencari'],
+                                                        clientName: e['nama'],
                                                         bookingDate:
                                                             e['tanggal_pemesanan'],
-                                                        serviceType: 'Nail Art',
-                                                        rating: 4.5,
+                                                        serviceType: e['nama_layanan'],
+                                                        rating: double.parse(e['rating']).floorToDouble(),
                                                         // Misalnya, rating 4.5
                                                         comment:
-                                                            'Isi review komentar disini lorem ipsum dolor sit amet...',
-                                                        reviewImages: [
-                                                          'https://upload.wikimedia.org/wikipedia/commons/b/be/Joko_Widodo_2019_official_portrait.jpg',
-                                                          'https://upload.wikimedia.org/wikipedia/commons/b/be/Joko_Widodo_2019_official_portrait.jpg',
-                                                          'https://upload.wikimedia.org/wikipedia/commons/b/be/Joko_Widodo_2019_official_portrait.jpg',
-                                                          // Tambahkan URL gambar sesuai kebutuhan
-                                                        ],
+                                                            e['komentar'] == null
+                                                                ? 'Tidak ada komentar'
+                                                                : e['komentar'],
+                                                        reviewImages: e['foto_ulasan'],
                                                       ),
                                                     ),
                                                   )),
                                         );
                                       },
-                                      imageReview: e[''],
+                                      imageReview: e['foto_ulasan'],
                                       profilePictureUrl: e['foto'],
-                                      serviceName: '${e['nama_pencari']}',
+                                      serviceName: '${e['nama']}',
                                       userRating: int.parse(e['rating']),
                                       userReview: e['komentar'] == null
                                           ? 'Tidak ada komentar'

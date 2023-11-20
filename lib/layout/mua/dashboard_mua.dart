@@ -38,7 +38,8 @@ class _DashboardMuaState extends State<DashboardMua> {
     'profile': {},
     'layananMua': {},
     'ulasan': {},
-    'pesananTerbaru': {}
+    'pesananTerbaru': {},
+    'pesanan': {}
   };
 
   Future<Response<String>> getProfile() async {
@@ -73,16 +74,26 @@ class _DashboardMuaState extends State<DashboardMua> {
     return data;
   }
 
+  Future<Response<String>> getPesanan() async {
+    Response<String> data = await dio.get(
+        '$baseUrl/api/penyedia-jasa-mua/dashboard/seluruhpesanan',
+        options: Options(
+            headers: {'Authorization': 'Bearer ${await _checkToken()}'}));
+    return data;
+  }
+
+
   void getData() async {
     List<Response<String>> data = await Future.wait(
-        [getProfile(), getLayananMua(), getUlasan(), getPesananTerbaru()]);
+        [getProfile(), getLayananMua(), getUlasan(), getPesananTerbaru(), getPesanan()]);
 
     setState(() {
       dashboardData = {
         'profile': jsonDecode(data[0].data!)['data'],
         'layananMua': jsonDecode(data[1].data!)['data'],
         'ulasan': jsonDecode(data[2].data!)['data'],
-        'pesananTerbaru': jsonDecode(data[3].data!)['data']
+        'pesananTerbaru': jsonDecode(data[3].data!)['data'],
+        'pesanan': jsonDecode(data[4].data!)['data']
       };
       _loading = false;
       pages = [
@@ -95,16 +106,18 @@ class _DashboardMuaState extends State<DashboardMua> {
           },
         ),
         LihatSemuaPesanan(
-          data: dashboardData['pesananTerbaru'],
+          data: dashboardData['pesanan'],
         ),
         KatalogPage(),
-        ProfileRead(
+        ProfilePage(
           imagePath:
-              'https://upload.wikimedia.org/wikipedia/commons/b/be/Joko_Widodo_2019_official_portrait.jpg',
-          muaName: 'Farhan Iz',
-          muaPhone: '0812345',
-          muaBorn: '17 Agustus 1945',
-          muaGender: 'Laki-Laki',
+              dashboardData['profile']['foto'] ?? 'assets/images/mua.jpg',
+          muaName: dashboardData['profile']['nama'] ?? 'Nama MUA',
+          muaPhone: dashboardData['profile']['nomor_telepon'] ?? 'Tidak ada Nomor Telepon',
+          muaBorn: dashboardData['profile']['tanggal_lahir'] ?? 'Tidak ada Tanggal Lahir',
+          muaGender: dashboardData['profile']['jenis_kelamin'] == 'L'
+              ? 'Laki-laki'
+              : 'Perempuan',
           onTap: () {
             _storage.delete(key: 'token').then((value) =>
                 Navigator.pushReplacement(

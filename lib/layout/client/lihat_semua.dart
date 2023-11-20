@@ -28,7 +28,8 @@ class _LihatSemuaState extends State<LihatSemua> {
   int? _selectedKecamatanIndex;
   final _searchController = TextEditingController();
 
-  void _fetchData({String? search, int? wilayah, int? hargaMin, int? hargaMax}) async {
+  void _fetchData(
+      {String? search, int? wilayah, int? hargaMin, int? hargaMax}) async {
     Response res = await dio.post('$baseUrl/api/pencari-jasa-mua/search-mua',
         data: {
           'search': search,
@@ -95,7 +96,14 @@ class _LihatSemuaState extends State<LihatSemua> {
                             setState(() {
                               _isLoading = true;
                             });
-                            _fetchData(search: _searchController.text, wilayah: _selectedKecamatanIndex == null ? null : kecamatans![_selectedKecamatanIndex!]['id'], hargaMin: _currentRangeValues.start.round(), hargaMax: _currentRangeValues.end.round());
+                            _fetchData(
+                                search: _searchController.text,
+                                wilayah: _selectedKecamatanIndex == null
+                                    ? null
+                                    : kecamatans![_selectedKecamatanIndex!]
+                                        ['id'],
+                                hargaMin: _currentRangeValues.start.round(),
+                                hargaMax: _currentRangeValues.end.round());
                           },
                           child: Padding(
                             padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -123,23 +131,28 @@ class _LihatSemuaState extends State<LihatSemua> {
                         ),
                         SizedBox(
                           height: 200,
-                          child: kecamatans == null ? Center(child: CircularProgressIndicator(),) : SingleChildScrollView(
-                            child: Wrap(
-                                spacing: 4,
-                                children: kecamatans!
-                                    .map((e) => SelectMultipleChip(
-                                          label: e['nama_kecamatan'],
-                                          selected: _selectedKecamatanIndex ==
-                                              kecamatans!.indexOf(e),
-                                          onPressed: () {
-                                            setState(() {
-                                              _selectedKecamatanIndex =
-                                                  kecamatans!.indexOf(e);
-                                            });
-                                          },
-                                        ))
-                                    .toList()),
-                          ),
+                          child: kecamatans == null
+                              ? Center(
+                                  child: CircularProgressIndicator(),
+                                )
+                              : SingleChildScrollView(
+                                  child: Wrap(
+                                      spacing: 4,
+                                      children: kecamatans!
+                                          .map((e) => SelectMultipleChip(
+                                                label: e['nama_kecamatan'],
+                                                selected:
+                                                    _selectedKecamatanIndex ==
+                                                        kecamatans!.indexOf(e),
+                                                onPressed: () {
+                                                  setState(() {
+                                                    _selectedKecamatanIndex =
+                                                        kecamatans!.indexOf(e);
+                                                  });
+                                                },
+                                              ))
+                                          .toList()),
+                                ),
                         ),
                         const SizedBox(height: 16),
                         Container(
@@ -214,7 +227,13 @@ class _LihatSemuaState extends State<LihatSemua> {
                         setState(() {
                           _isLoading = true;
                         });
-                        _fetchData(search: _searchController.text, wilayah: _selectedKecamatanIndex == null ? null : kecamatans![_selectedKecamatanIndex!]['id'], hargaMin: _currentRangeValues.start.round(), hargaMax: _currentRangeValues.end.round());
+                        _fetchData(
+                            search: _searchController.text,
+                            wilayah: _selectedKecamatanIndex == null
+                                ? null
+                                : kecamatans![_selectedKecamatanIndex!]['id'],
+                            hargaMin: _currentRangeValues.start.round(),
+                            hargaMax: _currentRangeValues.end.round());
                       },
                       decoration: const InputDecoration(
                         hintText: "Cari Jasa MUA",

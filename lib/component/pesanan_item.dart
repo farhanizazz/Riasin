@@ -8,7 +8,8 @@ class PesananItem extends StatelessWidget {
     required this.clientName,
     required this.serviceName,
     required this.serviceLocation,
-    required this.bookingDate, this.onTap,
+    required this.bookingDate,
+    this.onTap, required this.status,
   });
 
   final String serviceIcon;
@@ -16,6 +17,7 @@ class PesananItem extends StatelessWidget {
   final String serviceName;
   final String serviceLocation;
   final String bookingDate;
+  final String status;
   final Function()? onTap;
 
   @override
@@ -30,9 +32,25 @@ class PesananItem extends StatelessWidget {
           fit: BoxFit.cover,
         ),
       ),
-      title: Text(
-        clientName,
-        style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+      title: Row(
+        children: [
+          Text(
+            clientName,
+            style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+          ),
+          Spacer(),
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 2),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Color(0xffE1CCD2),
+            ),
+            child: Text(
+                status,
+                style: TextStyle(fontSize: 10, color: Color(0xffC55977)),
+              ),
+          ),
+        ],
       ),
       subtitle: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,7 +64,7 @@ class PesananItem extends StatelessWidget {
               ),
               const SizedBox(width: 5),
               Flexible(
-                child:Text(
+                child: Text(
                   serviceName,
                   style: TextStyle(
                     color: Color.fromARGB(255, 197, 89, 120),
@@ -62,7 +80,7 @@ class PesananItem extends StatelessWidget {
               ),
               const SizedBox(width: 5),
               Flexible(
-                child:Text(
+                child: Text(
                   serviceLocation,
                   style: TextStyle(
                     color: Color.fromARGB(255, 197, 89, 120),

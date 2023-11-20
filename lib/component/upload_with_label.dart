@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 
 class UploadWithLabel extends StatelessWidget {
   const UploadWithLabel(
-      {super.key, required this.label, this.image, this.onTap, required this.icon, required this.hint});
-  final String label;
+      {super.key, this.label, this.image, this.onTap, required this.icon, required this.hint});
+  final String? label;
   final File? image;
   final void Function()? onTap;
   final Icon icon;
@@ -17,9 +17,9 @@ class UploadWithLabel extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Align(
+        label == null ? SizedBox() : Align(
           alignment: Alignment.centerLeft,
-          child: Text(label,
+          child: Text(label!,
               style: TextStyle(
                 color: Color(0x1B090E61),
                 fontWeight: FontWeight.w600,

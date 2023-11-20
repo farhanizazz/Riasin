@@ -21,42 +21,26 @@ class _InkWellWithAnimationState extends State<InkWellWithAnimation> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: widget.onTap,
-      onTapDown: (details) {
-        setState(() {
-          isPressed = true;
-        });
-      },
-      onTapCancel: () {
-        setState(() {
-          isPressed = false;
-        });
-      },
-      onTapUp: (details) {
-        setState(() {
-          isPressed = false;
-        });
-      },
-      child: Ink(
-        decoration: BoxDecoration(
-          color: isPressed ? widget.color.withOpacity(0.5) : widget.color,
-        ),
-        child: InkWell(
-          // Dalam Ink, gunakan InkWell yang memiliki child
-          child: Container(
-            padding: EdgeInsets.symmetric(vertical: 20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  widget.text,
-                  style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: isPressed ? Colors.grey : widget.textColor),
-                ),
-              ],
-            ),
+    return Ink(
+      decoration: BoxDecoration(
+        color: isPressed ? widget.color.withOpacity(0.5) : widget.color,
+      ),
+      child: InkWell(
+        onTap: widget.onTap,
+        overlayColor: MaterialStateProperty.all(Colors.black.withOpacity(0.1)),
+        // Dalam Ink, gunakan InkWell yang memiliki child
+        child: Container(
+          padding: EdgeInsets.symmetric(vertical: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                widget.text,
+                style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: isPressed ? Colors.grey : widget.textColor),
+              ),
+            ],
           ),
         ),
       ),

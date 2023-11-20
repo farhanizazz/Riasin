@@ -179,34 +179,35 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
 
-                // Container(
-                //   padding: const EdgeInsets.only(left: 16.0, right: 16.0),
-                //   child: SingleChildScrollView(
-                //     scrollDirection: Axis.horizontal,
-                //     child: Row(
-                //       children: <Widget>[
-                //         for (Map<String, dynamic> label
-                //             in profileData['kategori'])
-                //           Padding(
-                //             padding: const EdgeInsets.all(2.0),
-                //             // Spasi antara Chip
-                //             child: ActionChip(
-                //               backgroundColor: Color(0xffD5F0E9),
-                //               side: const BorderSide(
-                //                   color: Colors.transparent),
-                //               label: Text(label['nama'],
-                //                   style: const TextStyle(
-                //                       fontSize: 10,
-                //                       color: Color(0xffC55977))),
-                //               onPressed: () {
-                //                 // Aksi yang diambil saat Chip diklik
-                //               },
-                //             ),
-                //           ),
-                //       ],
-                //     ),
-                //   ),
-                // ),
+                Container(
+                  padding: const EdgeInsets.only(left: 16.0, right: 16.0),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      children: <Widget>[
+                        for (Map<String, dynamic> label
+                            in widget.profileData['kategori'])
+                          Padding(
+                            padding: const EdgeInsets.all(2.0),
+                            // Spasi antara Chip
+                            child: ActionChip(
+                              backgroundColor: Color(0xffD5F0E9),
+                              side: const BorderSide(
+                                  color: Colors.transparent),
+                              label: Text(label['nama'],
+                                  style: const TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xffC55977))),
+                              onPressed: () {
+                                // Aksi yang diambil saat Chip diklik
+                              },
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
 
                 // popular
                 Container(

@@ -6,7 +6,7 @@ class CardDetailReview extends StatelessWidget {
   final String serviceType;
   final double rating;
   final String comment;
-  final List<String> reviewImages;
+  final List<dynamic> reviewImages;
 
   CardDetailReview({
     required this.clientName,

@@ -3,6 +3,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:intl/intl.dart';
 import 'package:riasin_app/Url.dart';
 import 'package:riasin_app/component/widget_tombol_registrasi_bawah.dart';
 import 'package:riasin_app/layout/mua/dashboard_mua.dart';
@@ -31,6 +32,7 @@ class _OrderInClientState extends State<OrderInClient> {
   final _storage = const FlutterSecureStorage();
   final dio = Dio();
   bool _isLoading = true;
+  final formatter = NumberFormat("#,##,000");
 
   Future<String?> _checkToken() async {
     return await _storage.read(key: 'token');
@@ -191,7 +193,7 @@ class _OrderInClientState extends State<OrderInClient> {
                                                           CrossAxisAlignment
                                                               .end,
                                                       children: [
-                                                    Text('Rp 600.000',
+                                                    Text('Rp. ${formatter.format(int.parse(data['total_harga']))}',
                                                         style: TextStyle(
                                                           color: primaryColor,
                                                           fontWeight:
@@ -328,7 +330,22 @@ class _OrderInClientState extends State<OrderInClient> {
                             margin: EdgeInsets.symmetric(horizontal: 16),
                             child: WidgetTombolRegistrasiBawah(
                               nextPageOnTap: () {
-                                Navigator.pop(context);
+                                nextPageOnTap: () async {
+                                  dio.get(
+                                      '$baseUrl/api/penyedia-jasa-mua/pemesanan/acceptpemesanan/${widget.id}',
+                                      options: Options(headers: {
+                                      'Authorization':
+                                      'Bearer ${await _checkToken()}'
+                                      })).then((value) => Navigator.pushReplacement(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              DashboardMua())))
+                                      .catchError((e) =>
+                                      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                        content: Text(e.response.toString()),
+                                      )));
+                                };
                               },
                               usePrevButton: false,
                               useNextArrow: false,
@@ -346,12 +363,12 @@ class _OrderInClientState extends State<OrderInClient> {
                           child: Container(
                             margin: EdgeInsets.all(16.0),
                             child: WidgetTombolRegistrasiBawah(
-                              nextPageOnTap: () {
+                              nextPageOnTap: () async {
                                 dio.get(
                                         '$baseUrl/api/penyedia-jasa-mua/pemesanan/declinepemesanan/${widget.id}',
                                         options: Options(headers: {
                                           'Authorization':
-                                              'Bearer ${_checkToken()}'
+                                              'Bearer ${await _checkToken()}'
                                         })).then((value) => Navigator.pushReplacement(
                                         context,
                                         MaterialPageRoute(

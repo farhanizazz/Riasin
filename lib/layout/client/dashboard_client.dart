@@ -7,6 +7,8 @@ import 'package:riasin_app/Url.dart';
 import 'package:riasin_app/component/item_mua.dart';
 import 'package:riasin_app/layout/client/lihat_semua.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:riasin_app/layout/client/lihat_semua_review.dart';
+import 'package:riasin_app/layout/client/review_pesanan.dart';
 import 'package:riasin_app/layout/login_pages/login_page.dart';
 import 'package:riasin_app/component/profile_read.dart';
 
@@ -38,22 +40,51 @@ class _DashboardClientState extends State<DashboardClient> {
     Product('assets/images/mua.jpg'),
   ];
   final dio = Dio();
-  bool isLoading = true;
+  bool isHomeLoading = true;
+  bool isProfileLoading = true;
+  Map<String, dynamic> dashboardData = {};
   Map<String, dynamic> profileData = {};
+
+  void showSnackbar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red,
+      ),
+    );
+  }
 
   void getDashboard() async {
     try {
-      Response<String> profileData = await dio.get(
+      Response<String> res = await dio.get(
           '$baseUrl/api/pencari-jasa-mua/dashboard/',
           options:
               Options(headers: {'Authorization': 'Bearer ${widget.token}'}));
       setState(() {
-        if (profileData.statusCode == 200) {
-          this.profileData = jsonDecode(profileData.data!)['data'];
-          isLoading = false;
+        if (res.statusCode == 200) {
+          dashboardData = jsonDecode(res.data!)['data'];
+          isHomeLoading = false;
         }
       });
     } on DioException catch (e) {
+      showSnackbar(e.response!.data['message']);
+    }
+  }
+
+  void getProfile() async {
+    try {
+      Response<String> res = await dio.get(
+          '$baseUrl/api/pencari-jasa-mua/autofill-pemesanan',
+          options:
+              Options(headers: {'Authorization': 'Bearer ${widget.token}'}));
+      setState(() {
+        if (res.statusCode == 200) {
+          profileData = jsonDecode(res.data!)['data'];
+          isProfileLoading = false;
+        }
+      });
+    } on DioException catch (e) {
+      showSnackbar(e.response!.data['message']);
     }
   }
 
@@ -63,6 +94,7 @@ class _DashboardClientState extends State<DashboardClient> {
     super.initState();
     try {
       getDashboard();
+      getProfile();
     } on DioException catch (e) {
       print(e.response);
     }
@@ -73,35 +105,22 @@ class _DashboardClientState extends State<DashboardClient> {
   @override
   Widget build(BuildContext context) {
     List<Widget> pages = [
-      HomePage(profileData: profileData),
+      HomePage(profileData: dashboardData),
+      ReviewPage(),
       // HomePage(profileData: profileData),
-      // HomePage(profileData: profileData),
-      ProfileRead(
-        imagePath: 'https://upload.wikimedia.org/wikipedia/commons/b/be/Joko_Widodo_2019_official_portrait.jpg',
-        muaName: 'Farhan Iz',
-        muaPhone: '0812345',
-        muaBorn: '17 Agustus 1945',
-        muaGender: 'Laki-Laki',
-        onTap:() { 
+      isProfileLoading ? Center(child: CircularProgressIndicator(),) : ProfilePage(
+        imagePath:
+            profileData['foto'],
+        muaName: profileData['nama'],
+        muaPhone: profileData['nomor_telepon'],
+        muaBorn: profileData['tanggal_lahir'],
+        muaGender: profileData['gender'] == 'L' ? 'Laki-laki' : 'Perempuan',
+        onTap: () {
           _storage.delete(key: 'token').then((value) =>
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const LoginPage())));
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => const LoginPage())));
         },
       ),
-      // Center(
-      //   child: ElevatedButton(
-      //     child: Text('Logout'),
-      //     onPressed: () {
-      //       _storage.delete(key: 'token').then((value) =>
-      //           Navigator.pushReplacement(
-      //               context,
-      //               MaterialPageRoute(
-      //                   builder: (context) => const LoginPage())));
-      //     },
-      //   ),
-      // )
     ];
 
     return Scaffold(
@@ -110,7 +129,7 @@ class _DashboardClientState extends State<DashboardClient> {
           child: AppBar(
             backgroundColor: const Color(0xFFC55977),
           )),
-      body: isLoading
+      body: isHomeLoading
           ? const Center(
               child: CircularProgressIndicator(),
             )
@@ -132,10 +151,10 @@ class _DashboardClientState extends State<DashboardClient> {
             icon: Icon(Icons.home),
             label: 'Home',
           ),
-          // BottomNavigationBarItem(
-          //   icon: Icon(Icons.spa),
-          //   label: 'Pesanan',
-          // ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.rate_review_rounded),
+            label: 'Pesanan',
+          ),
           // BottomNavigationBarItem(
           //   icon: Icon(Icons.grid_on),
           //   label: 'Katalog',

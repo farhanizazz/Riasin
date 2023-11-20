@@ -17,7 +17,9 @@ class DetailMua extends StatefulWidget {
 }
 
 class _DetailMuaState extends State<DetailMua> {
-
+  int _jumlahPemesan = 0;
+  List<String> jasa = ["MakeUp", "Nail Art", "Hijab Do"];
+  List<String> _selectedJasa = [];
   final dio = Dio();
   Map dataMua = {};
   final _storage = const FlutterSecureStorage();
@@ -31,8 +33,8 @@ class _DetailMuaState extends State<DetailMua> {
     try {
       var response = await dio.get('$baseUrl/api/pencari-jasa-mua/detail-mua/${widget.idMua}', options: Options(
         headers: {
-          // 'Authorization': 'Bearer ${await _checkToken()}'
-          'Authorization': 'Bearer 6|24zDjFbCwtQcshhdHBxiKoTXHdWlnOFX4d8qP6qn530b6331'
+          'Authorization': 'Bearer ${await _checkToken()}'
+          // 'Authorization': 'Bearer 6|24zDjFbCwtQcshhdHBxiKoTXHdWlnOFX4d8qP6qn530b6331'
         }
       ));
       setState(() {
@@ -56,6 +58,7 @@ class _DetailMuaState extends State<DetailMua> {
 
   @override
   Widget build(BuildContext context) {
+    print("Masuk");
     return Scaffold(
       body: _isLoading ? Center(child: CircularProgressIndicator(),) : SingleChildScrollView(
         child: Column(
@@ -248,45 +251,174 @@ class _DetailMuaState extends State<DetailMua> {
           ),
           Expanded(
             child: InkWellWithAnimation(
-              color: Colors.pink,
+              color: Color(0xffC55977),
               textColor: Colors.white,
               text: 'Pesan Jasa MUA',
               onTap: () {
                 // modal bottom sheet
                 showModalBottomSheet(
                   context: context,
-                  builder: (BuildContext context) {
-                    return Scaffold(
-                      bottomNavigationBar: Row(
-                        children: [
-                          Expanded(
-                            child: InkWellWithAnimation(
-                              color: Colors.pink,
-                              textColor: Colors.white,
-                              text: 'Pesan MUA',
-                            ),
-                          ),
-                          SizedBox()
-                        ],
-                      ),
-                      body: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            Text(
-                              'Formulir pemesanan',
-                              style: TextStyle(
-                                  fontSize: 20, fontWeight: FontWeight.bold),
-                            ),
-                            SizedBox(height: 10.0),
-                            Text(
-                              "Harga",
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
+                  builder: (context) {
+                    return StatefulBuilder(
+                        builder: (BuildContext context, StateSetter setState) {
+                          return Scaffold(
+                              bottomNavigationBar: Row(
+                                children: [
+                                  Expanded(
+                                    child: InkWellWithAnimation(
+                                      onTap: () {},
+                                      color: Color(0xffC55977),
+                                      textColor: Colors.white,
+                                      text: 'Pesan MUA',
+                                    ),
+                                  ),
+                                  SizedBox()
+                                ],
+                              ),
+                              body: Padding(
+                                padding: const EdgeInsets.all(24.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    const SizedBox(height: 12.0),
+                                    Row(
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text("Harga", style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),),
+                                        Text("Rp. 10.000", style: TextStyle(
+                                        color: Color(0xffC55977),
+                                      ),)],
+                                    ),
+                                    const SizedBox(height: 12.0),
+                                    const Divider(
+                                      color: Color(0xffE1CCD2),
+                                    ),
+                                    const SizedBox(height: 12.0),
+                                    Text("Pesan Jasa", style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),),
+                                    Row(
+                                      children: [
+                                        Column(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: [
+                                              Wrap(
+                                                spacing: 8.0,
+                                                runSpacing: 4.0,
+                                                children: List<Widget>.generate(
+                                                  jasa.length,
+                                                      (int index) {
+                                                    return ChoiceChip(
+                                                      showCheckmark: false,
+                                                      selectedColor: Color(0xffC55977),
+                                                      side: BorderSide(
+                                                          color: Color(0xffC55977),
+                                                          width: 1.2),
+                                                      label: Text(jasa[index], style: TextStyle(
+                                                        color: _selectedJasa.contains(jasa[index]) ? Colors.white : Color(0xffC55977),
+                                                        fontWeight: FontWeight.bold,
+                                                      ),),
+                                                      selected: _selectedJasa.contains(jasa[index]),
+                                                      onSelected: (bool selected) {
+                                                        setState(() {
+                                                          if (selected) {
+                                                            _selectedJasa.add(jasa[index]);
+                                                          } else {
+                                                            _selectedJasa.remove(jasa[index]);
+                                                          }
+                                                        });
+                                                      },
+                                                    );
+                                                  },
+                                                ).toList(),
+                                              ),
+                                            ]),
+                                      ],
+                                    ),
+                                    SizedBox(height: 12.0),
+                                    const Divider(
+                                      color: Color(0xffE1CCD2),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text("Banyak Orang", style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),),
+                                        Row(
+                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          children: [
+                                            ElevatedButton(
+                                              child: Text("-", style: TextStyle(
+                                                color: Color(0xffC55977),
+                                              ),),
+                                              style: ElevatedButton.styleFrom(
+                                                  backgroundColor: Colors.transparent,
+                                                  elevation: 0,
+                                                  padding: EdgeInsets.symmetric(
+                                                      vertical: 5, horizontal: 10),
+                                                  minimumSize: const Size(0, 0),
+                                                  // tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                                  shape: RoundedRectangleBorder(
+                                                      side: BorderSide(
+                                                          color: Color(0xffC55977),
+                                                          width: 1.2),
+                                                      borderRadius: BorderRadius.zero)),
+                                              onPressed: () {
+                                                if (_jumlahPemesan <= 0) {
+                                                  setState(() {
+                                                    _jumlahPemesan = 0;
+                                                  });
+                                                } else {
+                                                  setState(() {
+                                                    _jumlahPemesan--;
+                                                  });
+                                                }
+                                              },
+                                            ),
+                                            Text(
+                                              _jumlahPemesan.toString(),
+                                              style: TextStyle(
+                                                  fontSize: 12.0,
+                                                  color: Color(0xffC55977),
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            ElevatedButton(
+                                              child: Text("+"),
+                                              style: ElevatedButton.styleFrom(
+                                                  elevation: 0,
+                                                  padding: EdgeInsets.symmetric(
+                                                      vertical: 5, horizontal: 10),
+                                                  minimumSize: Size(0, 0),
+                                                  // tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius: BorderRadius.zero)),
+                                              onPressed: () {
+                                                setState(() {
+                                                  _jumlahPemesan++;
+                                                });
+                                              },
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                    const Divider(
+                                      color: Color(0xffE1CCD2),
+                                    ),
+                                    Row(children: [
+                                      Text("Tanggal Booking", style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                      ),),
+                                    ],)
+                                  ],
+                                ),
+                              ));
+                        });
                   },
                 );
               },

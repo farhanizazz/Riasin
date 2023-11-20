@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:riasin_app/main.dart';
 import 'package:riasin_app/component/widget_tombol_registrasi_bawah.dart';
 
-class ProfileRead extends StatelessWidget {
-  const ProfileRead({
+class ProfilePage extends StatelessWidget {
+  const ProfilePage({
       super.key,
       required this.imagePath,
       required this.muaName,

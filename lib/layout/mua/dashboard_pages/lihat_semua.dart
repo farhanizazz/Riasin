@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:riasin_app/component/item_mua.dart';
 import 'package:riasin_app/component/pesanan_item.dart';
 import 'package:riasin_app/component/review_item.dart';
+import 'package:riasin_app/layout/mua/order_in_client.dart';
 
 class LihatSemuaPesanan extends StatelessWidget {
   const LihatSemuaPesanan({super.key, required this.data});
@@ -40,10 +41,32 @@ class LihatSemuaPesanan extends StatelessWidget {
                       (e) => SizedBox(
                           width: double.infinity,
                           child: PesananItem(
+                              onTap: () {
+                                e['status'] == "pending" ? Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        OrderInClient(
+                                          id: e['id'],
+                                          nama: 'Farhan Iz',
+                                          nomor: '0812',
+                                          gender: 'Laki-Laki',
+                                          request:
+                                          'Request Tambahan untuk MUA',
+                                        ),
+                                  ),
+                                ) : ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text('Pesanan sudah ${e['status'] == "accept" ? "diterima" : e['status'] == "decline" ? "ditolak" : "selesai"}'),
+                                    duration: Duration(seconds: 2),
+                                  ),
+                                );
+                              },
+                              status: e['status'],
                               serviceIcon: e['foto'],
                               clientName: '${e['nama']}',
                               serviceName: '${e['nama']}',
-                              serviceLocation: 'Sukolilo}',
+                              serviceLocation: 'Sukolilo',
                               bookingDate:
                               'Tanggal Booking: ${e['tanggal_pemesanan']}'
                           )),
@@ -87,10 +110,11 @@ class lihatSemuaReview extends StatelessWidget {
                       (e) => SizedBox(
                           width: double.infinity,
                           child: ReviewItem(
-                            serviceName: e['nama_pencari'],
+                            serviceName: e['nama'],
                             profilePictureUrl: e['foto'],
                             userRating: int.parse(e['rating']),
                             userReview: e['komentar'],
+                            imageReview: e['foto_ulasan'],
                           )),
                     )
                     .toList(),

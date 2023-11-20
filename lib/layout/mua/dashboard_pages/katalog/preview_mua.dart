@@ -9,7 +9,9 @@ import 'package:image_picker/image_picker.dart';
 import '../../../../Url.dart';
 
 class PreviewMUA extends StatefulWidget {
-  const PreviewMUA({super.key, required this.previewData, this.getData, this.notifyParent});
+  const PreviewMUA(
+      {super.key, required this.previewData, this.getData, this.notifyParent});
+
   final List previewData;
   final Function()? getData;
   final Function()? notifyParent;
@@ -24,42 +26,43 @@ class _PreviewMUAState extends State<PreviewMUA> {
   final dio = Dio();
   final _storage = const FlutterSecureStorage();
 
-
   Future<String?> _checkToken() async {
     return await _storage.read(key: 'token');
   }
 
   Future _pickAndSendImage() async {
-    final returnedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+    final returnedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
     setState(() {
       selectedPhoto = File(returnedImage!.path);
     });
 
     try {
-      final res = await dio.post('$baseUrl/api/penyedia-jasa-mua/katalog/createpreviewmua',
-          data: FormData.fromMap({
-            'foto': base64Encode(selectedPhoto!.readAsBytesSync()),
-          }),
-          onSendProgress: (int sent, int total) {
-            print("$sent $total");
-          },
-          cancelToken: cancelToken,
-          options: Options(
-              headers: {'Authorization': 'Bearer ${await _checkToken()}'}));
-      if(res.data['status'] == 'success') {
+      final res = await dio
+          .post('$baseUrl/api/penyedia-jasa-mua/katalog/createpreviewmua',
+              data: FormData.fromMap({
+                'foto': base64Encode(selectedPhoto!.readAsBytesSync()),
+              }), onSendProgress: (int sent, int total) {
+        print("$sent $total");
+      },
+              cancelToken: cancelToken,
+              options: Options(
+                  headers: {'Authorization': 'Bearer ${await _checkToken()}'}));
+      if (res.data['status'] == 'success') {
         widget.notifyParent!();
         final Response newImageRes = await widget.getData!();
-        final String newImage = jsonDecode(newImageRes.data)['data'].last['foto'];
+        final Map<String, dynamic> newImage =
+            jsonDecode(newImageRes.data)['data'].last;
         setState(() {
-          widget.previewData.add({'foto': newImage});
+          widget.previewData.add(newImage);
           selectedPhoto = null;
         });
       }
     } on DioException catch (e) {
       print(e.response);
     }
-
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -131,7 +134,41 @@ class _PreviewMUAState extends State<PreviewMUA> {
                         ),
                         Center(
                           child: IconButton(
-                            onPressed: () {},
+                            onPressed: () async {
+                              try {
+                                Response res = await dio.post(
+                                  '$baseUrl/api/penyedia-jasa-mua/katalog/deletepreviewmua/${e['id']}',
+                                  options: Options(
+                                      headers: {
+                                        'Authorization':
+                                        'Bearer ${await _checkToken()}'
+                                      },
+                                      followRedirects: false,
+                                      validateStatus: (status) {
+                                        return status! < 500;
+                                      }),
+                                );
+                                if(res.data['success'] == true) {
+                                  widget.notifyParent!();
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text("Berhasil menghapus foto"),
+                                      backgroundColor: Colors.green,
+                                    ),
+                                  );
+                                }
+                              } on DioException catch (e) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(e.response!.data['message']),
+                                    backgroundColor: Colors.red,
+                                  ),
+                                );
+                              }
+                              setState(() {
+                                widget.previewData.remove(e);
+                              });
+                            },
                             icon: const Icon(
                               Icons.delete,
                               color: Color(0xffC55977),
@@ -147,67 +184,71 @@ class _PreviewMUAState extends State<PreviewMUA> {
                       color: Color(0xffE1CCD2),
                     ),
                     child: Center(
-                      child: selectedPhoto == null ? Container(
-                        color: Color(0xffE1CCD2),
-                        child: Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              IconButton(
-                                style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(
-                                      Color(0xffC55967)),
-                                  shape:
-                                  MaterialStateProperty.all(CircleBorder()),
-                                ),
-                                onPressed: () async {
-                                  _pickAndSendImage();
-                                },
-                                icon: Icon(
-                                  Icons.add,
-                                  color: Colors.white,
+                      child: selectedPhoto == null
+                          ? Container(
+                              color: Color(0xffE1CCD2),
+                              child: Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    IconButton(
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                Color(0xffC55967)),
+                                        shape: MaterialStateProperty.all(
+                                            CircleBorder()),
+                                      ),
+                                      onPressed: () async {
+                                        _pickAndSendImage();
+                                      },
+                                      icon: Icon(
+                                        Icons.add,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Tambah Foto',
+                                      style: TextStyle(
+                                          fontSize: 10,
+                                          color: Color(0xffC55967)),
+                                    )
+                                  ],
                                 ),
                               ),
-                              Text(
-                                'Tambah Foto',
-                                style: TextStyle(
-                                    fontSize: 10, color: Color(0xffC55967)),
-                              )
-                            ],
-                          ),
-                        ),
-                      ) : Stack(
-                        children: [
-                          Image.file(
-                            selectedPhoto!,
-                            fit: BoxFit.cover,
-                            height: double.infinity,
-                            width: double.infinity,
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.3),
+                            )
+                          : Stack(
+                              children: [
+                                Image.file(
+                                  selectedPhoto!,
+                                  fit: BoxFit.cover,
+                                  height: double.infinity,
+                                  width: double.infinity,
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.black.withOpacity(0.3),
+                                  ),
+                                ),
+                                Center(
+                                  child: CircularProgressIndicator(),
+                                ),
+                                Center(
+                                  child: IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        cancelToken.cancel();
+                                        selectedPhoto = null;
+                                      });
+                                    },
+                                    icon: const Icon(
+                                      Icons.cancel,
+                                      color: Color(0xffC55977),
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                          Center(
-                            child: CircularProgressIndicator(),
-                          ),
-                          Center(
-                            child: IconButton(
-                              onPressed: () {
-                                setState(() {
-                                  cancelToken.cancel();
-                                  selectedPhoto = null;
-                                });
-                              },
-                              icon: const Icon(
-                                Icons.cancel,
-                                color: Color(0xffC55977),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
                     ),
                   ),
                 ],
