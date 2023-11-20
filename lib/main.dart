@@ -1,14 +1,18 @@
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:riasin_app/layout/login_pages/splash_screen.dart';
+import 'package:riasin_app/layout/mua/detail_pesanan.dart';
 import 'package:riasin_app/layout/mua/detail_mua.dart';
-import 'package:riasin_app/layout/mua/galery_pemesanan.dart';
 import 'package:riasin_app/layout/register_pages/register_page.dart';
 import 'package:riasin_app/providers/form_data_provider.dart';
 
-import 'layout/register_pages/register_page2.dart';
+import 'Url.dart';
+import 'package:dio/dio.dart' as dio;
 import 'package:riasin_app/layout/mua/dashboard_mua.dart';
 import 'package:riasin_app/layout/client/dashboard_client.dart';
 
@@ -38,7 +42,7 @@ const colorScheme = ColorScheme(
   onTertiary: accentFgColor,
   surface: backgroundColor,
   onSurface: textColor,
-  error: Brightness.light == Brightness.light 
+  error: Brightness.light == Brightness.light
       ? Color(0xffB3261E)
       : Color(0xffF2B8B5),
   onError: Brightness.light == Brightness.light
@@ -116,42 +120,80 @@ class MainPage extends StatelessWidget {
           useMaterial3: true,
         ),
         debugShowCheckedModeBanner: false,
-        home: const Home(),
+        home: DetailPesanan(),
       ),
     );
   }
 }
 
-class Home extends StatelessWidget {
-  const Home({
+class Home extends StatefulWidget {
+  Home({
     super.key,
   });
 
+  @override
+  State<Home> createState() => _HomeState();
+}
+
+class _HomeState extends State<Home> {
   final _storage = const FlutterSecureStorage();
 
+  final Dio = dio.Dio();
+
+  Future<dio.Response<String>> getUser() async {
+    return await Dio.get('$baseUrl/api/profile',
+        options: dio.Options(
+            headers: {'Authorization': 'Bearer ${await _checkToken()}'}));
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    Timer(const Duration(seconds: 1), () async {
+      String? token = await _checkToken();
+      if (token != null) {
+        try {
+          dio.Response user = await getUser();
+          int idRole = jsonDecode(user.data)['data']['role_id'];
+          switch (idRole) {
+            case 3:
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => DashboardClient(
+                            token: token,
+                          )));
+              break;
+            case 2:
+              Navigator.pushReplacement(context,
+                  MaterialPageRoute(builder: (context) => DashboardMua()));
+              break;
+          }
+        } on dio.DioException catch (e) {
+          _storage.delete(key: 'token');
+          Navigator.pushReplacement(context,
+              MaterialPageRoute(builder: (context) => const RegisterPage()));
+        }
+
+        return;
+      } else {
+        Navigator.pushReplacement(context,
+            MaterialPageRoute(builder: (context) => const RegisterPage()));
+      }
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-  Future<String?> _checkToken() async {
-     return await _storage.read(key: 'token');
+    return const Scaffold(resizeToAvoidBottomInset: false, body: SplashScreen()
+        // body: DetailMua(idMua: 1,),
+        // body: DashboardMua(),
+        // body: RegisterPageDataJasa(),
+        );
   }
 
-    return Scaffold(
-        resizeToAvoidBottomInset: false,
-        // body: InkWell(
-        //     onTap: () async {
-        //       if(_checkToken() != null) {
-        //         Navigator.pushReplacement(context,
-        //             MaterialPageRoute(builder: (context) => const RegisterPageDataDiri()));
-        //         return;
-        //       } else {
-        //       Navigator.pushReplacement(context,
-        //           MaterialPageRoute(builder: (context) => const RegisterPage()));
-        //       }
-        //     },
-        //     child: SplashScreen())
-        body: DetailMua(),
-        // body: DashboardMua(),
-        );
+  Future<String?> _checkToken() async {
+    return await _storage.read(key: 'token');
   }
 }

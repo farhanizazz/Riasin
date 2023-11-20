@@ -46,6 +46,9 @@ dependencies:
   file_picker: ^6.0.0
   flutter_secure_storage: ^9.0.0
   carousel_slider: 4.2.1
+  dio: ^5.3.3
+  url_launcher: ^6.2.1
+  cool_alert: ^2.0.1
 
 dev_dependencies:
   flutter_test:
@@ -63,6 +66,10 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  fonts:
+  - family: SpaIcon
+    fonts:
+    - asset: assets/icons/SpaIcon.ttf
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
@@ -72,6 +79,7 @@ flutter:
     - assets/svg/
     - assets/images/
     - assets/images/wisuda.png
+    - assets/icons/SpaIcon.ttf
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
