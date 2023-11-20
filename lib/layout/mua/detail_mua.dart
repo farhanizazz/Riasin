@@ -1,3 +1,4 @@
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:multi_select_flutter/multi_select_flutter.dart';
 import 'package:riasin_app/component/custom_outlined_button.dart';
@@ -15,6 +16,7 @@ class _DetailMuaState extends State<DetailMua> {
   int _number = 0;
   List<String> jasa = ["MakeUp", "Nail Art", "Hijab Do"];
   List<String> selectedChips = [];
+  DateTime? _selectedDate;
 
   @override
   Widget build(BuildContext context) {
@@ -233,10 +235,16 @@ class _DetailMuaState extends State<DetailMua> {
                             children: [
                               Expanded(
                                 child: InkWellWithAnimation(
-                                  color: Colors.pink,
-                                  textColor: Colors.white,
-                                  text: 'Pesan MUA',
-                                ),
+                                    color: Colors.pink,
+                                    textColor: Colors.white,
+                                    text: 'Pesan MUA',
+                                    onTap: () {
+                                      CoolAlert.show(
+                                          context: context,
+                                          type: CoolAlertType.error,
+                                          text:
+                                              "Pesanan penuh pada tanggal yang dipilih!");
+                                    }),
                               ),
                               SizedBox()
                             ],
@@ -260,44 +268,50 @@ class _DetailMuaState extends State<DetailMua> {
                                     Text("Pesan Jasa"),
                                   ],
                                 ),
-                            Row(
-                              children: [
-                                Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
+                                Row(
                                   children: [
-                                    Wrap(
-                                      spacing: 8.0,
-                                      runSpacing: 4.0,
-                                      children: List<Widget>.generate(
-                                        jasa.length,
-                                            (int index) {
-                                          return ChoiceChip(
-                                            label: Text(jasa[index]),
-                                            selected: selectedChips.contains(jasa[index]),
-                                            onSelected: (bool selected) {
-                                              setState(() {
-                                                if (selected) {
-                                                  selectedChips.add(jasa[index]);
-                                                } else {
-                                                  selectedChips.remove(jasa[index]);
-                                                }
-                                              });
-                                            },
-                                          );
-                                        },
-                                      ).toList(),
-                                    ),
-                                    ]),
-                              ],
-                            ),
+                                    Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Wrap(
+                                            spacing: 8.0,
+                                            runSpacing: 4.0,
+                                            children: List<Widget>.generate(
+                                              jasa.length,
+                                              (int index) {
+                                                return ChoiceChip(
+                                                  label: Text(jasa[index]),
+                                                  selected: selectedChips
+                                                      .contains(jasa[index]),
+                                                  onSelected: (bool selected) {
+                                                    setState(() {
+                                                      if (selected) {
+                                                        selectedChips
+                                                            .add(jasa[index]);
+                                                      } else {
+                                                        selectedChips.remove(
+                                                            jasa[index]);
+                                                      }
+                                                    });
+                                                  },
+                                                );
+                                              },
+                                            ).toList(),
+                                          ),
+                                        ]),
+                                  ],
+                                ),
                                 SizedBox(height: 12.0),
                                 const Divider(),
                                 Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text("Banyak Orang"),
                                     Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
                                         ElevatedButton(
                                           child: Text("-"),
@@ -307,7 +321,8 @@ class _DetailMuaState extends State<DetailMua> {
                                               minimumSize: Size(0, 0),
                                               // tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                               shape: RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.zero)),
+                                                  borderRadius:
+                                                      BorderRadius.zero)),
                                           onPressed: () {
                                             if (_number <= 0) {
                                               setState(() {
@@ -334,7 +349,8 @@ class _DetailMuaState extends State<DetailMua> {
                                               minimumSize: Size(0, 0),
                                               // tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                                               shape: RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.zero)),
+                                                  borderRadius:
+                                                      BorderRadius.zero)),
                                           onPressed: () {
                                             setState(() {
                                               _number++;
@@ -346,9 +362,25 @@ class _DetailMuaState extends State<DetailMua> {
                                   ],
                                 ),
                                 const Divider(),
-                                Row(children: [
-                                  Text("Tanggal Booking")
-                                ],)
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text("Tanggal Booking"),
+                                    IconButton(
+                                      color: Theme.of(context).colorScheme.primary,
+                                      icon: const Icon(
+                                          Icons.calendar_month_rounded),
+                                      onPressed: () {
+                                        showDatePicker(
+                                            context: context,
+                                            initialDate: DateTime.now(),
+                                            firstDate: DateTime.now(),
+                                            lastDate: DateTime.now().add(
+                                                const Duration(days: 365)));
+                                      },
+                                    )
+                                  ],
+                                )
                               ],
                             ),
                           ));
