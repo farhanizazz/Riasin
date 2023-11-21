@@ -8,8 +8,6 @@ import 'package:provider/provider.dart';
 import 'package:riasin_app/layout/login_pages/splash_screen.dart';
 import 'package:riasin_app/layout/register_pages/register_page.dart';
 import 'package:riasin_app/providers/form_data_provider.dart';
-
-import 'Url.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:riasin_app/layout/mua/dashboard_mua.dart';
 import 'package:riasin_app/layout/client/dashboard_client.dart';
@@ -135,6 +133,7 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final _storage = const FlutterSecureStorage();
+  final String baseUrl = "http://taek.com";
 
   final Dio = dio.Dio();
 

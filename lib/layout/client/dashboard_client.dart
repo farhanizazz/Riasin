@@ -101,19 +101,25 @@ class _DashboardClientState extends State<DashboardClient> {
       HomePage(profileData: dashboardData),
       ReviewPage(),
       // HomePage(profileData: profileData),
-      isProfileLoading ? Center(child: CircularProgressIndicator(),) : ProfilePage(
-        imagePath:
-            profileData['foto'],
-        muaName: profileData['nama'],
-        muaPhone: profileData['nomor_telepon'],
-        muaBorn: profileData['tanggal_lahir'],
-        muaGender: profileData['gender'] == 'L' ? 'Laki-laki' : 'Perempuan',
-        onTap: () {
-          _storage.delete(key: 'token').then((value) =>
-              Navigator.pushReplacement(context,
-                  MaterialPageRoute(builder: (context) => const LoginPage())));
-        },
-      ),
+      isProfileLoading
+          ? Center(
+              child: CircularProgressIndicator(),
+            )
+          : ProfilePage(
+              imagePath: profileData['foto'],
+              muaName: profileData['nama'],
+              muaPhone: profileData['nomor_telepon'],
+              muaBorn: profileData['tanggal_lahir'],
+              muaGender:
+                  profileData['gender'] == 'L' ? 'Laki-laki' : 'Perempuan',
+              onTap: () {
+                _storage.delete(key: 'token').then((value) =>
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const LoginPage())));
+              },
+            ),
     ];
 
     return Scaffold(
