@@ -3,6 +3,9 @@ import 'package:riasin_app/layout/mua/dashboard_mua.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 class DashboardClient extends StatefulWidget {
+  final String token;
+
+  DashboardClient({required this.token});
   @override
   _DashboardClientState createState() => _DashboardClientState();
 }
