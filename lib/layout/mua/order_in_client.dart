@@ -329,8 +329,7 @@ class _OrderInClientState extends State<OrderInClient> {
                           child: Container(
                             margin: EdgeInsets.symmetric(horizontal: 16),
                             child: WidgetTombolRegistrasiBawah(
-                              nextPageOnTap: () {
-                                nextPageOnTap: () async {
+                              nextPageOnTap: () async {
                                   dio.get(
                                       '$baseUrl/api/penyedia-jasa-mua/pemesanan/acceptpemesanan/${widget.id}',
                                       options: Options(headers: {
@@ -345,7 +344,6 @@ class _OrderInClientState extends State<OrderInClient> {
                                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                         content: Text(e.response.toString()),
                                       )));
-                                };
                               },
                               usePrevButton: false,
                               useNextArrow: false,

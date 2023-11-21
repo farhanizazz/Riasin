@@ -26,6 +26,7 @@ class _HomepageState extends State<Homepage> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.dashboardData['ulasan']);
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 100,
@@ -270,7 +271,7 @@ class _HomepageState extends State<Homepage> {
                                       imageReview: e['foto_ulasan'],
                                       profilePictureUrl: e['foto'],
                                       serviceName: '${e['nama']}',
-                                      userRating: int.parse(e['rating']),
+                                      userRating: e['rating'] == "" ? 0 : int.parse(e['rating']),
                                       userReview: e['komentar'] == null
                                           ? 'Tidak ada komentar'
                                           : e['komentar']))

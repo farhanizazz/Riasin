@@ -4,6 +4,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:riasin_app/Url.dart';
 import 'package:riasin_app/component/custom_outlined_button.dart';
 import 'package:riasin_app/layout/mua/dashboard_pages/lihat_semua.dart';
+import 'package:riasin_app/layout/mua/galery_pemesanan.dart';
 import 'package:riasin_app/main.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:riasin_app/component/inkwell_animation.dart';
@@ -19,7 +20,7 @@ class DetailMua extends StatefulWidget {
 class _DetailMuaState extends State<DetailMua> {
   int _jumlahPemesan = 0;
   List<String> jasa = ["MakeUp", "Nail Art", "Hijab Do"];
-  List<String> _selectedJasa = [];
+  String _selectedJasa = "";
   final dio = Dio();
   Map dataMua = {};
   final _storage = const FlutterSecureStorage();
@@ -200,6 +201,22 @@ class _DetailMuaState extends State<DetailMua> {
                 ),
               ),
             ),
+            Container(
+              height: 350,
+              child: GridView.builder(
+                itemCount: 2,
+                scrollDirection: Axis.horizontal,
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return const Padding(
+                    padding: EdgeInsets.all(50.0),
+                    child: SizedBox(child: CardGallery()),
+                  );
+                },
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 1),
+              ),
+            ),
             Column(
               children: <Widget>[
                 Container(
@@ -230,7 +247,7 @@ class _DetailMuaState extends State<DetailMua> {
                 ...dataMua['review'].take(3)
                     .map((e) => ReviewItem(
                         imagePath: e['foto'],
-                        serviceName: e['nama_layanan'],
+                        serviceName: e['nama'],
                         serviceLocation: e['nama_kecamatan'],
                         userRating: int.parse(e['rating']),
                         userReview:
@@ -319,17 +336,13 @@ class _DetailMuaState extends State<DetailMua> {
                                                           color: Color(0xffC55977),
                                                           width: 1.2),
                                                       label: Text(jasa[index], style: TextStyle(
-                                                        color: _selectedJasa.contains(jasa[index]) ? Colors.white : Color(0xffC55977),
+                                                        color: _selectedJasa == jasa[index] ? Colors.white : Color(0xffC55977),
                                                         fontWeight: FontWeight.bold,
                                                       ),),
-                                                      selected: _selectedJasa.contains(jasa[index]),
+                                                      selected: _selectedJasa == jasa[index],
                                                       onSelected: (bool selected) {
                                                         setState(() {
-                                                          if (selected) {
-                                                            _selectedJasa.add(jasa[index]);
-                                                          } else {
-                                                            _selectedJasa.remove(jasa[index]);
-                                                          }
+                                                          _selectedJasa = selected ? jasa[index] : "";
                                                         });
                                                       },
                                                     );

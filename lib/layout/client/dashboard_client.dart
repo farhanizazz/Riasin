@@ -24,13 +24,6 @@ class DashboardClient extends StatefulWidget {
 }
 
 class _DashboardClientState extends State<DashboardClient> {
-  List<String> chipLabels = [
-    'Semua',
-    'Make Up',
-    'Hair Do',
-    'Hijab Do',
-    'Nail Art'
-  ];
   String? selectedFilter = 'Semua';
   List<String> filterOptions = ['Semua', 'Paket 1', 'Paket 2', 'Paket 3'];
   int _selectedIndex = 0;

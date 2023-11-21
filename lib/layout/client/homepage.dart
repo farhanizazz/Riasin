@@ -191,6 +191,7 @@ class _HomePageState extends State<HomePage> {
                             padding: const EdgeInsets.all(2.0),
                             // Spasi antara Chip
                             child: ActionChip(
+
                               backgroundColor: Color(0xffD5F0E9),
                               side: const BorderSide(
                                   color: Colors.transparent),
@@ -201,6 +202,13 @@ class _HomePageState extends State<HomePage> {
                                       color: Color(0xffC55977))),
                               onPressed: () {
                                 // Aksi yang diambil saat Chip diklik
+                                print(label['nama']);
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => LihatSemua(
+                                              data: label['layanan'],
+                                            )));
                               },
                             ),
                           ),
@@ -211,7 +219,7 @@ class _HomePageState extends State<HomePage> {
 
                 // popular
                 Container(
-                  padding: EdgeInsets.only(left: 16.0, right: 16.0),
+                  padding: EdgeInsets.symmetric(horizontal: 16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
@@ -330,6 +338,16 @@ class _HomePageState extends State<HomePage> {
                                 '${widget.profileData['layanan_terdekat'][index]['foto']}';
 
                             return ItemMUA(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => DetailMua(
+                                          idMua: widget.profileData[
+                                          'layanan_terdekat']
+                                          [index]['id'],
+                                        )));
+                              },
                                 muaImage: muaImage,
                                 muaName: muaName,
                                 muaLocation: muaLocation);

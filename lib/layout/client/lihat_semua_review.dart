@@ -40,7 +40,7 @@ class _ReviewPageState extends State<ReviewPage> {
         data = res.data['data'];
       });
     } on DioException catch (e) {
-      showSnackbar(e.response!.data['message']);
+      showSnackbar(e.response!.data.toString());
     }
   }
 
