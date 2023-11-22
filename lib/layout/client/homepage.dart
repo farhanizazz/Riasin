@@ -23,7 +23,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return widget.profileData == null
+    return widget.profileData['client'] == null
         ? Center(
             child: CircularProgressIndicator(),
           )

@@ -100,7 +100,7 @@ class _DetailMuaState extends State<DetailMua> {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      // Image.network(dataMua['galeri'][0]['foto'][0]),
+                      Image.network(dataMua['galeri'][0]['foto'][0]),
                       Stack(
                         children: [
                           Container(
@@ -466,12 +466,41 @@ class _DetailMuaState extends State<DetailMua> {
                             children: [
                               Expanded(
                                 child: InkWellWithAnimation(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                DetailPesanan()));
+                                  onTap: () async {
+                                    print("${selectedDate!.year}-${selectedDate!.month}-${selectedDate!.day}");
+                                    try {
+                                      Response res = await dio.post('$baseUrl/api/pencari-jasa-mua/cek-pemesanan',
+                                          data: {
+                                            "id": widget.idMua,
+                                            'tanggal_pemesanan':
+                                            "${selectedDate!.year}-${selectedDate!.month}-${selectedDate!.day}",
+                                          },
+                                          options: Options(headers: {
+                                            'Authorization':
+                                            'Bearer ${await _storage.read(key: 'token')}'
+                                          }));
+                                      if (res.data['status'] == "success") {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    DetailPesanan()));
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(SnackBar(
+                                          content: Text(
+                                              res.data['message']),
+                                          duration: Duration(seconds: 2),
+                                        ));
+                                      }
+                                    } on DioException catch (e) {
+                                      print(e.response);
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(SnackBar(
+                                        content: Text(e.response.toString()),
+                                        duration: Duration(seconds: 2),
+                                      ));
+                                    }
                                   },
                                   color: Color(0xffC55977),
                                   textColor: Colors.white,

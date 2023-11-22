@@ -92,7 +92,7 @@ class _HomepageState extends State<Homepage> {
                       child: buildCarouselItem(
                         product['nama'],
                         product['foto'],
-                        product['rating'].floor().toDouble(),
+                        product['ulasan'] == null ? 0.0 : product['ulasan'].floor().toDouble(),
                         double.parse(product['harga']),
                       ),
                     );
