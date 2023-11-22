@@ -23,7 +23,7 @@ class UploadWithLabel extends StatelessWidget {
               style: TextStyle(
                 color: Color(0x1B090E61),
                 fontWeight: FontWeight.w600,
-                fontSize: 20,
+                fontSize: 16,
               )),
         ),
         SizedBox(
@@ -45,14 +45,14 @@ class UploadWithLabel extends StatelessWidget {
                         children: [
                           icon,
                           SizedBox(
-                            height: 18,
+                            height: 10,
                           ),
                           Text(
                             hint,
                             style: TextStyle(
                               color: Color(0xffC55977),
                               fontWeight: FontWeight.w600,
-                              fontSize: 20,
+                              fontSize: 16,
                             ),
                           )
                         ],
