@@ -61,6 +61,7 @@ class _KatalogJasaState extends State<KatalogJasa> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: Colors.white,
         centerTitle: true,
