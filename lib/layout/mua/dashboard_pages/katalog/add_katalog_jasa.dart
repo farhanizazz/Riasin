@@ -151,6 +151,12 @@ class _KatalogJasaState extends State<KatalogJasa> {
                           if (value == null || value.isEmpty) {
                             return "Harga jasa harus diisi";
                           }
+                          if (int.parse(value) < 0) {
+                            return 'Tolong masukkan harga yang benar';
+                          }
+                          if (!RegExp(r'^-?[0-9]+$').hasMatch(value)) {
+                            return 'Tolong hanya masukkan angka saja';
+                          }
                         },
                         onChanged: (value) {
                           setState(() {
@@ -174,6 +180,12 @@ class _KatalogJasaState extends State<KatalogJasa> {
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return "Durasi jasa harus diisi";
+                          }
+                          if (int.parse(value) < 0) {
+                            return 'Tolong masukkan harga yang benar';
+                          }
+                          if (!RegExp(r'^-?[0-9]+$').hasMatch(value)) {
+                            return 'Tolong hanya masukkan angka saja';
                           }
                         },
                         onChanged: (value) {
@@ -246,6 +258,7 @@ class _KatalogJasaState extends State<KatalogJasa> {
                           'harga': data['harga'],
                           'deskripsi': data['deskripsi'],
                           'durasi': data['durasi'],
+                          'foto': base64Encode(data['foto'].readAsBytesSync()),
 
                         });
                         var response = await dio.post(
@@ -264,6 +277,7 @@ class _KatalogJasaState extends State<KatalogJasa> {
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                             content: Text(response.data['message']),
                           ));
+                          print(response.data);
                         }
                       } on DioException catch (e) {
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(

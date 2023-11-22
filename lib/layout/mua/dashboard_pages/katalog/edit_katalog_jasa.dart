@@ -174,6 +174,9 @@ class _EditKatalogJasaState extends State<EditKatalogJasa> {
                                   if (!RegExp(r'^-?[0-9]+$').hasMatch(value)) {
                                     return 'Tolong hanya masukkan angka saja';
                                   }
+                                  if (int.parse(value) < 0) {
+                                    return 'Tolong masukkan durasi yang benar';
+                                  }
                                 },
                                 onSaved: (value) {
                                   _formData['Durasi'] = int.parse(value!);
@@ -208,6 +211,9 @@ class _EditKatalogJasaState extends State<EditKatalogJasa> {
                                   }
                                   if (!RegExp(r'^-?[0-9]+$').hasMatch(value)) {
                                     return 'Tolong hanya masukkan angka saja';
+                                  }
+                                  if (int.parse(value) < 0) {
+                                    return 'Tolong masukkan harga yang benar';
                                   }
                                 },
                                 onSaved: (value) {
@@ -296,9 +302,7 @@ class _EditKatalogJasaState extends State<EditKatalogJasa> {
                   nextPageOnTap: () async {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
-                      print(_formData);
-                      dio
-                          .post(
+                      dio.post(
                         "$baseUrl/api/penyedia-jasa-mua/katalog/updatekatalogjasa",
                         data: jsonEncode({
                           "id": widget.id,
