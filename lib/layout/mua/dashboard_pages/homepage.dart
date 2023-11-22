@@ -177,11 +177,6 @@ class _HomepageState extends State<Homepage> {
                                               builder: (context) =>
                                                   OrderInClient(
                                                 id: e['id'],
-                                                nama: 'Farhan Iz',
-                                                nomor: '0812',
-                                                gender: 'Laki-Laki',
-                                                request:
-                                                    'Request Tambahan untuk MUA',
                                               ),
                                             ),
                                           );
@@ -189,7 +184,7 @@ class _HomepageState extends State<Homepage> {
                                         status: e['status'],
                                         serviceIcon: e['foto'],
                                         clientName: e['nama'],
-                                        serviceName: 'Nama Jasa ${e['nama']}',
+                                        serviceName: '${e['kategori']}',
                                         serviceLocation: 'Sukolilo',
                                         bookingDate:
                                             'Tanggal Booking: ${e['tanggal_pemesanan']}'))

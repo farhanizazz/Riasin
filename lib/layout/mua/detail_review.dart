@@ -31,11 +31,11 @@ class CardDetailReview extends StatelessWidget {
               Row(
                 children: [
                   Expanded(
-                    child: Card(
-                      elevation: 4,
+                    child: Container(
                       margin: EdgeInsets.all(16),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(10),
                       ),
                       child: Column(
                         children: <Widget>[

@@ -80,6 +80,7 @@ class _KatalogPageState extends State<KatalogPage> {
 
   Future _pickAndSendImage() async {
     final returnedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if(returnedImage == null) return;
     setState(() {
       selectedPhoto = File(returnedImage!.path);
     });

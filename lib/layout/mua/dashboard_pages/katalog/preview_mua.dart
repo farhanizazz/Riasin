@@ -33,9 +33,11 @@ class _PreviewMUAState extends State<PreviewMUA> {
   Future _pickAndSendImage() async {
     final returnedImage =
         await ImagePicker().pickImage(source: ImageSource.gallery);
-    setState(() {
-      selectedPhoto = File(returnedImage!.path);
-    });
+    if (returnedImage != null) {
+      setState(() {
+        selectedPhoto = File(returnedImage!.path);
+      });
+    }
 
     try {
       final res = await dio

@@ -10,19 +10,10 @@ import 'package:riasin_app/layout/mua/dashboard_mua.dart';
 import 'package:riasin_app/main.dart';
 
 class OrderInClient extends StatefulWidget {
-  final String nama;
-  final String nomor;
-  final String gender;
-  final String request;
   final int id;
 
   const OrderInClient(
-      {super.key,
-      required this.nama,
-      required this.nomor,
-      required this.gender,
-      required this.request,
-      required this.id});
+      {super.key, required this.id});
 
   @override
   State<OrderInClient> createState() => _OrderInClientState();
@@ -32,7 +23,7 @@ class _OrderInClientState extends State<OrderInClient> {
   final _storage = const FlutterSecureStorage();
   final dio = Dio();
   bool _isLoading = true;
-  final formatter = NumberFormat("#,##,000");
+  final formatter = NumberFormat("#,###");
 
   Future<String?> _checkToken() async {
     return await _storage.read(key: 'token');
@@ -71,6 +62,7 @@ class _OrderInClientState extends State<OrderInClient> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.id);
     return Scaffold(
         backgroundColor: Color(0xFFECF8F5),
         appBar: AppBar(

@@ -49,11 +49,6 @@ class LihatSemuaPesanan extends StatelessWidget {
                           builder: (context) =>
                               OrderInClient(
                                 id: e['id'],
-                                nama: 'Farhan Iz',
-                                nomor: '0812',
-                                gender: 'Laki-Laki',
-                                request:
-                                'Request Tambahan untuk MUA',
                               ),
                         ),
                       ) : ScaffoldMessenger.of(context).showSnackBar(

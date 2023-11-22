@@ -216,6 +216,15 @@ class _KatalogJasaState extends State<KatalogJasa> {
                           labelText: "Deskripsi Jasa",
                         ),
                       ),
+                      SizedBox(height: 20),
+                      UploadWithLabel(
+                        hint: "Upload Foto Jasa",
+                        icon: Icon(Icons.upload, color: Color(0xffC55977),),
+                        onTap: () {
+                          pickImage();
+                        },
+                        image: data['foto'] == '' ? null : data['foto'],
+                      ),
                     ],
                   ),
                 ),
@@ -223,6 +232,13 @@ class _KatalogJasaState extends State<KatalogJasa> {
                 WidgetTombolRegistrasiBawah(
                   nextPageOnTap: () async {
                     if(_formKey.currentState!.validate()){
+                      if(data['foto'] == ''){
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          content: Text('Foto harus diisi'),
+                          backgroundColor: Colors.red,
+                        ));
+                        return;
+                      }
                       try {
                         var formData = FormData.fromMap({
                           'kategori_layanan_id': data['kategori_layanan_id'],
@@ -230,6 +246,7 @@ class _KatalogJasaState extends State<KatalogJasa> {
                           'harga': data['harga'],
                           'deskripsi': data['deskripsi'],
                           'durasi': data['durasi'],
+
                         });
                         var response = await dio.post(
                             '$baseUrl/api/penyedia-jasa-mua/katalog/createkatalogjasa',
