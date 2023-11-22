@@ -33,35 +33,36 @@ class _PreviewMUAState extends State<PreviewMUA> {
   Future _pickAndSendImage() async {
     final returnedImage =
         await ImagePicker().pickImage(source: ImageSource.gallery);
+    
     if (returnedImage != null) {
       setState(() {
-        selectedPhoto = File(returnedImage!.path);
+        selectedPhoto = File(returnedImage.path);
       });
-    }
 
-    try {
-      final res = await dio
-          .post('$baseUrl/api/penyedia-jasa-mua/katalog/createpreviewmua',
-              data: FormData.fromMap({
-                'foto': base64Encode(selectedPhoto!.readAsBytesSync()),
-              }), onSendProgress: (int sent, int total) {
-        print("$sent $total");
-      },
-              cancelToken: cancelToken,
-              options: Options(
-                  headers: {'Authorization': 'Bearer ${await _checkToken()}'}));
-      if (res.data['status'] == 'success') {
-        widget.notifyParent!();
-        final Response newImageRes = await widget.getData!();
-        final Map<String, dynamic> newImage =
-            jsonDecode(newImageRes.data)['data'].last;
-        setState(() {
-          widget.previewData.add(newImage);
-          selectedPhoto = null;
-        });
+      try {
+        final res = await dio
+            .post('$baseUrl/api/penyedia-jasa-mua/katalog/createpreviewmua',
+            data: FormData.fromMap({
+              'foto': base64Encode(selectedPhoto!.readAsBytesSync()),
+            }), onSendProgress: (int sent, int total) {
+              print("$sent $total");
+            },
+            cancelToken: cancelToken,
+            options: Options(
+                headers: {'Authorization': 'Bearer ${await _checkToken()}'}));
+        if (res.data['status'] == 'success') {
+          widget.notifyParent!();
+          final Response newImageRes = await widget.getData!();
+          final Map<String, dynamic> newImage =
+              jsonDecode(newImageRes.data)['data'].last;
+          setState(() {
+            widget.previewData.add(newImage);
+            selectedPhoto = null;
+          });
+        }
+      } on DioException catch (e) {
+        print(e.response);
       }
-    } on DioException catch (e) {
-      print(e.response);
     }
   }
 

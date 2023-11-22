@@ -13,61 +13,46 @@ class LihatSemuaPesanan extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        leading: !Navigator.canPop(context) ? null : Padding(
-          padding: const EdgeInsets.only(left: 10.0),
-          child: IconButton(
-            onPressed: () => Navigator.pop(context),
-            icon: const Icon(Icons.arrow_back_ios_new_rounded),
-          ),
-        ),
-        centerTitle: true,
-        title: Text(
-          "Lihat Semua",
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.bold,
-            fontSize: 16,
-          ),
-        ),
-      ),
       body: data.isEmpty
           ? Center(
               child: Text("Tidak ada pesanan terbaru"),
             )
           : SingleChildScrollView(
-              child: Column(
-                children: data
-                    .map(
-                      (e) => SizedBox(
-                          width: double.infinity,
-                          child: PesananItem(
-                              onTap: () {
-                                e['status'] == "pending" ? Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) =>
-                                        OrderInClient(
-                                          id: e['id'],
-                                        ),
-                                  ),
-                                ) : ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text('Pesanan sudah ${e['status'] == "accept" ? "diterima" : e['status'] == "decline" ? "ditolak" : "selesai"}'),
-                                    duration: Duration(seconds: 2),
-                                  ),
-                                );
-                              },
-                              status: e['status'],
-                              serviceIcon: e['foto'],
-                              clientName: '${e['nama']}',
-                              serviceName: '${e['nama']}',
-                              serviceLocation: 'Sukolilo',
-                              bookingDate:
-                              'Tanggal Booking: ${e['tanggal_pemesanan']}'
-                          )),
-                    )
-                    .toList(),
+              child: Padding(
+                padding: const EdgeInsets.only(top: 30.0),
+                child: Column(
+                  children: data
+                      .map(
+                        (e) => SizedBox(
+                            width: double.infinity,
+                            child: PesananItem(
+                                onTap: () {
+                                  e['status'] == "pending" ? Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          OrderInClient(
+                                            id: e['id'],
+                                          ),
+                                    ),
+                                  ) : ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text('Pesanan sudah ${e['status'] == "accept" ? "diterima" : e['status'] == "decline" ? "ditolak" : "selesai"}'),
+                                      duration: Duration(seconds: 2),
+                                    ),
+                                  );
+                                },
+                                status: e['status'],
+                                serviceIcon: e['foto'],
+                                clientName: '${e['nama']}',
+                                serviceName: '${e['nama']}',
+                                serviceLocation: 'Sukolilo',
+                                bookingDate:
+                                'Tanggal Booking: ${e['tanggal_pemesanan']}'
+                            )),
+                      )
+                      .toList(),
+                ),
               ),
             ),
     );
@@ -97,7 +82,7 @@ class lihatSemuaReview extends StatelessWidget {
       ),
       body: data.isEmpty
           ? Center(
-              child: Text("Tidak ada pesanan terbaru"),
+              child: Text("Tidak ada review terbaru"),
             )
           : SingleChildScrollView(
               child: Column(
