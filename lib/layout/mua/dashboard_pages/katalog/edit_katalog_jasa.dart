@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:intl/intl.dart';
 import 'package:riasin_app/component/widget_tombol_registrasi_bawah.dart';
 import 'package:riasin_app/Url.dart';
 
@@ -24,15 +25,39 @@ class _EditKatalogJasaState extends State<EditKatalogJasa> {
   bool _isEdit = false;
   final dio = Dio();
   final _storage = const FlutterSecureStorage();
+  var formatter = NumberFormat('#,###');
 
   final _formKey = GlobalKey<FormState>();
-  final Map<String, String> _formData = {
-    "Durasi": "",
-    "Harga": "",
+  bool _isLoading = true;
+  final Map<String, int?> _formData = {
+    "Durasi": null,
+    "Harga": null,
   };
 
   Future<String?> _checkToken() async {
     return await _storage.read(key: 'token');
+  }
+  
+  void getDetailJasa() async {
+    try {
+      Response res = await dio.get('$baseUrl/api/penyedia-jasa-mua/katalog/previewkatalogjasa/${widget.id}', options: Options(headers: {
+        'Authorization': 'Bearer ${await _checkToken()}'
+      }));
+      setState(() {
+        _isLoading = false;
+        _formData['Durasi'] = res.data['data']['durasi'];
+        _formData['Harga'] = int.parse(res.data['data']['harga']);
+      });
+    } on DioException catch (e) {
+      print(e.response!.data);
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getDetailJasa();
   }
 
   @override
@@ -94,7 +119,9 @@ class _EditKatalogJasaState extends State<EditKatalogJasa> {
               ),
             ),
             SizedBox(height: 15),
-            AnimatedContainer(
+            _isLoading ? Center(
+              child: CircularProgressIndicator(),
+            ) : AnimatedContainer(
               duration: const Duration(seconds: 1),
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -149,7 +176,7 @@ class _EditKatalogJasaState extends State<EditKatalogJasa> {
                                   }
                                 },
                                 onSaved: (value) {
-                                  _formData['Durasi'] = value!;
+                                  _formData['Durasi'] = int.parse(value!);
                                 },
                                 decoration: InputDecoration(
                                   floatingLabelStyle: TextStyle(
@@ -184,7 +211,7 @@ class _EditKatalogJasaState extends State<EditKatalogJasa> {
                                   }
                                 },
                                 onSaved: (value) {
-                                  _formData['Harga'] = value!;
+                                  _formData['Harga'] = int.parse(value!);
                                 },
                                 decoration: InputDecoration(
                                   floatingLabelStyle: TextStyle(
@@ -245,12 +272,12 @@ class _EditKatalogJasaState extends State<EditKatalogJasa> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text("Durasi: 120 menit",
+                              Text("Durasi: ${_formData['Durasi']} menit",
                                   style: TextStyle(
                                       fontSize: 12,
                                       color: Color(0xffC55967),
                                       fontWeight: FontWeight.w600)),
-                              Text("Harga: Rp. 350.000",
+                              Text("Harga: Rp. ${formatter.format(_formData['Harga'])}",
                                   style: TextStyle(
                                       fontSize: 12,
                                       color: Color(0xffC55967),

@@ -8,6 +8,8 @@ import 'package:riasin_app/Url.dart';
 import 'package:riasin_app/component/SelectMultipleChip.dart';
 import 'package:riasin_app/component/item_mua.dart';
 
+import 'detail_mua.dart';
+
 class LihatSemua extends StatefulWidget {
   const LihatSemua({super.key, this.data});
 
@@ -286,6 +288,14 @@ class _LihatSemuaState extends State<LihatSemua> {
                                 (e) => SizedBox(
                                     width: double.infinity,
                                     child: ItemMUA(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => DetailMua(
+                                                  idMua: e['id'],
+                                                )));
+                                      },
                                         muaName: e['nama_jasa_mua'],
                                         muaLocation: e['lokasi_jasa_mua'],
                                         muaImage: e['foto'],

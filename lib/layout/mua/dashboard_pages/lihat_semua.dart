@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:riasin_app/component/item_mua.dart';
 import 'package:riasin_app/component/pesanan_item.dart';
 import 'package:riasin_app/component/review_item.dart';
+import 'package:riasin_app/layout/mua/detail_review.dart';
 import 'package:riasin_app/layout/mua/order_in_client.dart';
 
 class LihatSemuaPesanan extends StatelessWidget {
@@ -110,6 +111,32 @@ class lihatSemuaReview extends StatelessWidget {
                       (e) => SizedBox(
                           width: double.infinity,
                           child: ReviewItem(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Scaffold(
+                                      appBar: AppBar(
+                                          title: Text(
+                                              "Review ${e['nama']}")),
+                                      body: Center(
+                                        child: CardDetailReview(
+                                          clientName: e['nama'],
+                                          bookingDate:
+                                          e['tanggal_pemesanan'],
+                                          serviceType: e['nama_layanan'],
+                                          rating: double.parse(e['rating']).floorToDouble(),
+                                          // Misalnya, rating 4.5
+                                          comment:
+                                          e['komentar'] == null
+                                              ? 'Tidak ada komentar'
+                                              : e['komentar'],
+                                          reviewImages: e['foto_ulasan'],
+                                        ),
+                                      ),
+                                    )),
+                              );
+                            },
                             tanggalPemesanan: e['tanggal_pemesanan'],
                             serviceName: e['nama'],
                             profilePictureUrl: e['foto'],

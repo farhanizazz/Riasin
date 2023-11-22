@@ -23,7 +23,12 @@ class ReviewItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(left: 10, right:10),
-      child: Card(
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 10),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(10),
+        ),
         child: InkWell(
           onTap: onTap,
           child: Container(

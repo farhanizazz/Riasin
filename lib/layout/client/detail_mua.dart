@@ -3,13 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:riasin_app/Url.dart';
 import 'package:riasin_app/component/custom_outlined_button.dart';
-import 'package:riasin_app/layout/mua/dashboard_pages/lihat_semua.dart';
+import 'package:riasin_app/layout/client/detail_pesanan.dart';
+
+// import 'package:riasin_app/layout/mua/dashboard_pages/lihat_semua.dart';
+import 'package:riasin_app/layout/mua/detail_review.dart';
 import 'package:riasin_app/layout/mua/galery_pemesanan.dart';
 import 'package:riasin_app/main.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:riasin_app/component/inkwell_animation.dart';
 
 import '../../component/review_item.dart';
+import 'lihat_semua_pesanan.dart';
 
 class DetailMua extends StatefulWidget {
   const DetailMua({super.key, required this.idMua});
@@ -31,7 +35,6 @@ class _DetailMuaState extends State<DetailMua> {
   List<int> unselectableDate = [1, 3, 5];
   String harga = "-";
   DateTime? selectedDate;
-
 
   Future<String?> _checkToken() async {
     return await _storage.read(key: 'token');
@@ -58,12 +61,12 @@ class _DetailMuaState extends State<DetailMua> {
 
   void getAutofill() async {
     try {
-      var response = await dio.get(
-          '$baseUrl/api/penyedia-jasa-mua/dashboard/profile',
-          options: Options(headers: {
-            'Authorization': 'Bearer ${await _checkToken()}'
-            // 'Authorization': 'Bearer 6|24zDjFbCwtQcshhdHBxiKoTXHdWlnOFX4d8qP6qn530b6331'
-          }));
+      var response =
+          await dio.get('$baseUrl/api/penyedia-jasa-mua/dashboard/profile',
+              options: Options(headers: {
+                'Authorization': 'Bearer ${await _checkToken()}'
+                // 'Authorization': 'Bearer 6|24zDjFbCwtQcshhdHBxiKoTXHdWlnOFX4d8qP6qn530b6331'
+              }));
       setState(() {
         dataAutofill = response.data['data'];
         if (response.statusCode == 200) {
@@ -85,7 +88,7 @@ class _DetailMuaState extends State<DetailMua> {
 
   @override
   Widget build(BuildContext context) {
-    print(dataMua['galeri']);
+    print(dataMua);
     return Scaffold(
       body: _isLoading
           ? Center(
@@ -97,13 +100,14 @@ class _DetailMuaState extends State<DetailMua> {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Image.network(dataMua['galeri'][0]['foto'][0]),
+                      // Image.network(dataMua['galeri'][0]['foto'][0]),
                       Stack(
                         children: [
                           Container(
                             color: Colors.white,
                             child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20),
                               child: Column(
                                 children: [
                                   // Row(
@@ -152,7 +156,8 @@ class _DetailMuaState extends State<DetailMua> {
                                   ),
                                   const SizedBox(height: 10),
                                   Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
                                       children: [
                                         Icon(
                                           Icons.attach_money_rounded,
@@ -183,8 +188,8 @@ class _DetailMuaState extends State<DetailMua> {
                                                 color: Color(0xff848484),
                                               ),
                                             ),
-                                            ...dataMua['layanan']
-                                                .map<Widget>((e) => ChipKategoriMua(
+                                            ...dataMua['layanan'].map<Widget>(
+                                                (e) => ChipKategoriMua(
                                                       namaJasa: e['nama'],
                                                     )),
                                             // ChipKategoriMua(),
@@ -276,7 +281,8 @@ class _DetailMuaState extends State<DetailMua> {
                         ),
                       ),
                       Container(
-                        padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 10.0),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 16.0, vertical: 10.0),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
@@ -285,26 +291,45 @@ class _DetailMuaState extends State<DetailMua> {
                               style: TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold),
                             ),
-
                           ],
                         ),
                       ),
-                      Container(
-                        constraints: BoxConstraints(maxHeight: 270),
-                        child: GridView.builder(
-                          itemCount: dataMua['galeri'].length,
-                          scrollDirection: Axis.horizontal,
-                          shrinkWrap: true,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: EdgeInsets.symmetric(horizontal: 50.0),
-                              child: SizedBox(child: CardGallery(title: dataMua['galeri'][index]['deskripsi'], imageUrls: dataMua['galeri'][index]['foto'] is List ? dataMua['galeri'][index]['foto'].take(4).toList() : [dataMua['galeri'][index]['foto']],)),
-                            );
-                          },
-                          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 1),
-                        ),
-                      ),
+                      dataMua['galeri'].isEmpty
+                          ? SizedBox(
+                              width: double.infinity,
+                              height: 150,
+                              child: Center(
+                                child: Text("Belum ada galeri"),
+                              ),
+                            )
+                          : Container(
+                              constraints: BoxConstraints(maxHeight: 270),
+                              child: GridView.builder(
+                                itemCount: dataMua['galeri'].length,
+                                scrollDirection: Axis.horizontal,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  return Padding(
+                                    padding:
+                                        EdgeInsets.symmetric(horizontal: 50.0),
+                                    child: SizedBox(
+                                        child: CardGallery(
+                                      title: dataMua['galeri'][index]
+                                          ['deskripsi'],
+                                      imageUrls: dataMua['galeri'][index]
+                                              ['foto'] is List
+                                          ? dataMua['galeri'][index]['foto']
+                                              .take(4)
+                                              .toList()
+                                          : [dataMua['galeri'][index]['foto']],
+                                    )),
+                                  );
+                                },
+                                gridDelegate:
+                                    SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 1),
+                              ),
+                            ),
 
                       Column(
                         children: <Widget>[
@@ -316,21 +341,24 @@ class _DetailMuaState extends State<DetailMua> {
                                 Text(
                                   'Review Terbaru',
                                   style: TextStyle(
-                                      fontSize: 16, fontWeight: FontWeight.bold),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
                                 ),
                                 TextButton(
                                   onPressed: () {
                                     Navigator.push(
                                         context,
                                         MaterialPageRoute(
-                                            builder: (context) => lihatSemuaReview(
+                                            builder: (context) =>
+                                                lihatSemuaReview(
                                                   data: dataMua['review'],
                                                 )));
                                   },
                                   child: Text(
                                     'Lihat Semua',
                                     style: TextStyle(
-                                        fontSize: 10, fontWeight: FontWeight.bold),
+                                        fontSize: 10,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                 ),
                               ],
@@ -349,8 +377,42 @@ class _DetailMuaState extends State<DetailMua> {
                                   children: dataMua['review']
                                       .take(3)
                                       .map<Widget>((e) => ReviewItem(
+                                          onTap: () {
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      Scaffold(
+                                                        appBar: AppBar(
+                                                            title: Text(
+                                                                "Review ${e['nama']}")),
+                                                        body: Center(
+                                                          child:
+                                                              CardDetailReview(
+                                                            clientName:
+                                                                e['nama'],
+                                                            bookingDate: e[
+                                                                'tanggal_pemesanan'],
+                                                            serviceType: e[
+                                                                'nama_kategori'],
+                                                            rating: double.parse(
+                                                                    e['rating'])
+                                                                .floorToDouble(),
+                                                            // Misalnya, rating 4.5
+                                                            comment: e['komentar'] ==
+                                                                    null
+                                                                ? 'Tidak ada komentar'
+                                                                : e['komentar'],
+                                                            reviewImages: e[
+                                                                'foto_review'],
+                                                          ),
+                                                        ),
+                                                      )),
+                                            );
+                                          },
                                           profilePictureUrl: e['foto'],
-                                          tanggalPemesanan: e['tanggal_pemesanan'],
+                                          tanggalPemesanan:
+                                              e['tanggal_pemesanan'],
                                           serviceName: e['nama_kategori'],
                                           userRating: int.parse(e['rating']),
                                           userReview: e['komentar']))
@@ -404,7 +466,13 @@ class _DetailMuaState extends State<DetailMua> {
                             children: [
                               Expanded(
                                 child: InkWellWithAnimation(
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                DetailPesanan()));
+                                  },
                                   color: Color(0xffC55977),
                                   textColor: Colors.white,
                                   text: 'Pesan MUA',
@@ -459,35 +527,43 @@ class _DetailMuaState extends State<DetailMua> {
                                             Wrap(
                                               spacing: 8.0,
                                               runSpacing: 4.0,
-                                              children: dataMua['layanan'].map<Widget>((e) => ChoiceChip(
-                                                showCheckmark: false,
-                                                selectedColor:
-                                                Color(0xffC55977),
-                                                side: BorderSide(
-                                                    color: Color(0xffC55977),
-                                                    width: 1.2),
-                                                label: Text(
-                                                  e['nama'],
-                                                  style: TextStyle(
-                                                    color: _selectedJasa ==
-                                                        e['nama']
-                                                        ? Colors.white
-                                                        : Color(0xffC55977),
-                                                    fontWeight:
-                                                    FontWeight.bold,
-                                                  ),
-                                                ),
-                                                selected: _selectedJasa ==
-                                                    e['nama'],
-                                                onSelected: (bool selected) {
-                                                  setState(() {
-                                                    _selectedJasa = selected
-                                                        ? e['nama']
-                                                        : "";
-                                                    harga = e['harga'];
-                                                  });
-                                                },
-                                              )).toList(),
+                                              children: dataMua['layanan']
+                                                  .map<Widget>((e) =>
+                                                      ChoiceChip(
+                                                        showCheckmark: false,
+                                                        selectedColor:
+                                                            Color(0xffC55977),
+                                                        side: BorderSide(
+                                                            color: Color(
+                                                                0xffC55977),
+                                                            width: 1.2),
+                                                        label: Text(
+                                                          e['nama'],
+                                                          style: TextStyle(
+                                                            color: _selectedJasa ==
+                                                                    e['nama']
+                                                                ? Colors.white
+                                                                : Color(
+                                                                    0xffC55977),
+                                                            fontWeight:
+                                                                FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                        selected:
+                                                            _selectedJasa ==
+                                                                e['nama'],
+                                                        onSelected:
+                                                            (bool selected) {
+                                                          setState(() {
+                                                            _selectedJasa =
+                                                                selected
+                                                                    ? e['nama']
+                                                                    : "";
+                                                            harga = e['harga'];
+                                                          });
+                                                        },
+                                                      ))
+                                                  .toList(),
                                             ),
                                           ]),
                                     ],
@@ -592,11 +668,11 @@ class _DetailMuaState extends State<DetailMua> {
                                           Icons.calendar_month_rounded),
                                       onPressed: () {
                                         showDatePicker(
-                                            context: context,
-                                            initialDate: DateTime.now(),
-                                            firstDate: DateTime.now(),
-                                            lastDate: DateTime.now().add(
-                                                const Duration(days: 365)),
+                                          context: context,
+                                          initialDate: DateTime.now(),
+                                          firstDate: DateTime.now(),
+                                          lastDate: DateTime.now()
+                                              .add(const Duration(days: 365)),
                                         ).then((value) {
                                           setState(() {
                                             selectedDate = value;
