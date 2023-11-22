@@ -139,6 +139,7 @@ class _EditKatalogJasaState extends State<EditKatalogJasa> {
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 10.0),
                               child: TextFormField(
+                                keyboardType: TextInputType.number,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'Tolong masukkan durasi jasa anda';
@@ -173,6 +174,7 @@ class _EditKatalogJasaState extends State<EditKatalogJasa> {
                                       horizontal: 10.0, vertical: 10)
                                   .copyWith(bottom: 40),
                               child: TextFormField(
+                                keyboardType: TextInputType.number,
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
                                     return 'Tolong masukkan harga jasa anda';

@@ -405,9 +405,9 @@ class _BeriReviewPesananPageState extends State<BeriReviewPesananPage> {
                           'pemesanan_id': widget.id,
                           'rating': rating,
                           'ulasan': komentar,
-                          'foto': files.map((e) => base64Encode(e.readAsBytesSync())).toList(),
+                          'gambar[]': files.map((e) => base64Encode(e.readAsBytesSync())).toList(),
                         }));
-                    if (res.data['status'] == 'sukses') {
+                    if (res.data['status'] == 'success') {
                       showSnackbar("Berhasil memberi review", Colors.green[800]);
                       setState(() {
                         _isLoading = false;
@@ -418,7 +418,8 @@ class _BeriReviewPesananPageState extends State<BeriReviewPesananPage> {
                       setState(() {
                         _isLoading = false;
                       });
-                      print(res.data['message'].toString());
+                      print(res.data.toString());
+                      print(res.statusCode.toString());
                     }
                   } on DioException catch (e) {
                     setState(() {

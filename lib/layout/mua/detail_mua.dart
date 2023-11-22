@@ -161,7 +161,7 @@ class _DetailMuaState extends State<DetailMua> {
                 itemBuilder: (context, index) {
                   return const Padding(
                     padding: EdgeInsets.all(50.0),
-                    child: SizedBox(child: CardGallery()),
+                    child: SizedBox(child: CardGallery(title: "Halo", imageUrls: [],)),
                   );
                 },
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(

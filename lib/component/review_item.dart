@@ -8,7 +8,7 @@ class ReviewItem extends StatelessWidget {
     required this.serviceName,
     required this.userRating,
     required this.userReview,
-    this.onTap, this.imageReview,
+    this.onTap, this.imageReview, required this.tanggalPemesanan,
   });
 
   final String profilePictureUrl;
@@ -16,6 +16,7 @@ class ReviewItem extends StatelessWidget {
   final int userRating;
   final String userReview;
   final List? imageReview;
+  final String tanggalPemesanan;
   final Function()? onTap;
 
   @override
@@ -48,8 +49,9 @@ class ReviewItem extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        const Text(
-                          'Tanggal Booking: 17 Agustus 1945',
+
+                        Text(
+                          'Tanggal Booking: ${tanggalPemesanan}',
                           style: TextStyle(fontSize: 10, color: Colors.black),
                         ),
                         Row(

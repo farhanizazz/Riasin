@@ -268,9 +268,10 @@ class _HomepageState extends State<Homepage> {
                                                   )),
                                         );
                                       },
+                                      tanggalPemesanan: e['tanggal_pemesanan'],
                                       imageReview: e['foto_ulasan'],
                                       profilePictureUrl: e['foto'],
-                                      serviceName: '${e['nama']}',
+                                      serviceName: '${e['nama_layanan']}',
                                       userRating: e['rating'] == "" ? 0 : int.parse(e['rating']),
                                       userReview: e['komentar'] == null
                                           ? 'Tidak ada komentar'

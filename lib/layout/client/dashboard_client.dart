@@ -64,6 +64,23 @@ class _DashboardClientState extends State<DashboardClient> {
     }
   }
 
+  void getMua() async {
+    try {
+      Response<String> res = await dio.get(
+          '$baseUrl/api/pencari-jasa-mua/layanan-mua',
+          options:
+          Options(headers: {'Authorization': 'Bearer ${widget.token}'}));
+      setState(() {
+        if (res.statusCode == 200) {
+          dashboardData['mua'] = jsonDecode(res.data!)['data'];
+          isHomeLoading = false;
+        }
+      });
+    } on DioException catch (e) {
+      showSnackbar(e.response!.data['message']);
+    }
+  }
+
   void getProfile() async {
     try {
       Response<String> res = await dio.get(
@@ -88,6 +105,7 @@ class _DashboardClientState extends State<DashboardClient> {
     try {
       getDashboard();
       getProfile();
+      getMua();
     } on DioException catch (e) {
       print(e.response);
     }

@@ -110,6 +110,7 @@ class lihatSemuaReview extends StatelessWidget {
                       (e) => SizedBox(
                           width: double.infinity,
                           child: ReviewItem(
+                            tanggalPemesanan: e['tanggal_pemesanan'],
                             serviceName: e['nama'],
                             profilePictureUrl: e['foto'],
                             userRating: int.parse(e['rating']),
