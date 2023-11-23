@@ -13,6 +13,7 @@ import 'package:riasin_app/layout/login_pages/login_page.dart';
 import 'package:riasin_app/layout/mua/dashboard_pages/homepage.dart';
 import 'package:riasin_app/layout/mua/dashboard_pages/katalog/katalog_page.dart';
 import 'package:riasin_app/layout/mua/dashboard_pages/lihat_semua.dart';
+import 'package:riasin_app/layout/register_pages/mua/register_page_data_diri.dart';
 
 class DashboardMua extends StatefulWidget {
   @override
@@ -84,68 +85,71 @@ class _DashboardMuaState extends State<DashboardMua> {
 
 
   void getData() async {
-    List<Response<String>> data = await Future.wait(
-        [getProfile(), getLayananMua(), getUlasan(), getPesananTerbaru(), getPesanan()]);
+    try {
+      List<Response<String>> data = await Future.wait(
+          [getProfile(), getLayananMua(), getUlasan(), getPesananTerbaru(), getPesanan()]);
 
-    setState(() {
-      dashboardData = {
-        'profile': jsonDecode(data[0].data!)['data'],
-        'layananMua': jsonDecode(data[1].data!)['data'],
-        'ulasan': jsonDecode(data[2].data!)['data'],
-        'pesananTerbaru': jsonDecode(data[3].data!)['data'],
-        'pesanan': jsonDecode(data[4].data!)['data']
-      };
-      _loading = false;
-      pages = [
-        Homepage(
-          dashboardData: dashboardData,
-          refreshParent: () {
-            setState(() {
-              _loading = true;
-            });
-            getData();
-          },
-          notifyParent: () {
-            setState(() {
-              _selectedIndex = 1;
-            });
-          },
-        ),
-        LihatSemuaPesanan(
-          data: dashboardData['pesanan'],
-        ),
-        KatalogPage(),
-        ProfilePage(
-          imagePath:
-              dashboardData['profile']['foto'] ?? 'assets/images/mua.jpg',
-          muaName: dashboardData['profile']['nama'] ?? 'Nama MUA',
-          muaPhone: dashboardData['profile']['nomor_telepon'] ?? 'Tidak ada Nomor Telepon',
-          muaBorn: dashboardData['profile']['tanggal_lahir'] ?? 'Tidak ada Tanggal Lahir',
-          muaGender: dashboardData['profile']['jenis_kelamin'] == 'L'
-              ? 'Laki-laki'
-              : 'Perempuan',
-          onTap: () {
-            _storage.delete(key: 'token').then((value) =>
-                Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const LoginPage())));
-          },
-        ),
-        // Center(
-        //   child: ElevatedButton(
-        //     child: Text('Logout'),
-        //     onPressed: () {
-        //       _storage.delete(key: 'token').then((value) =>
-        //           Navigator.pushReplacement(
-        //               context,
-        //               MaterialPageRoute(
-        //                   builder: (context) => const LoginPage())));
-        //     },
-        //   ),
-        // )
-      ];
-    });
+      setState(() {
+        dashboardData = {
+          'profile': jsonDecode(data[0].data!)['data'],
+          'layananMua': jsonDecode(data[1].data!)['data'],
+          'ulasan': jsonDecode(data[2].data!)['data'],
+          'pesananTerbaru': jsonDecode(data[3].data!)['data'],
+          'pesanan': jsonDecode(data[4].data!)['data']
+        };
+        _loading = false;
+        pages = [
+          Homepage(
+            dashboardData: dashboardData,
+            refreshParent: () {
+              setState(() {
+                _loading = true;
+              });
+              getData();
+            },
+            notifyParent: () {
+              setState(() {
+                _selectedIndex = 1;
+              });
+            },
+          ),
+          LihatSemuaPesanan(
+            data: dashboardData['pesanan'],
+          ),
+          KatalogPage(),
+          ProfilePage(
+            imagePath:
+            dashboardData['profile']['foto'] ?? 'assets/images/mua.jpg',
+            muaName: dashboardData['profile']['nama'] ?? 'Nama MUA',
+            muaPhone: dashboardData['profile']['nomor_telepon'] ?? 'Tidak ada Nomor Telepon',
+            muaBorn: dashboardData['profile']['tanggal_lahir'] ?? 'Tidak ada Tanggal Lahir',
+            muaGender: dashboardData['profile']['jenis_kelamin'] == 'L'
+                ? 'Laki-laki'
+                : 'Perempuan',
+            onTap: () {
+              _storage.delete(key: 'token').then((value) =>
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const LoginPage())));
+            },
+          ),
+        ];
+      });
+    } on DioException catch (e) {
+      if(e.response!.statusCode == 500) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Silahkan lengkapi data diri anda!'),
+            duration: Duration(seconds: 2),
+          ),
+        );
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const RegisterPageDataDiri()));
+      }
+    }
   }
 
   List<Widget> pages = [];

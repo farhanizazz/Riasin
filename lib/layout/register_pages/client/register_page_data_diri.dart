@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:riasin_app/component/labeled_text_field.dart';
 import 'package:intl/intl.dart';
 import 'package:riasin_app/component/widget_tombol_registrasi_bawah.dart';
-import 'package:riasin_app/layout/register_pages/register_page3.dart';
+import 'package:riasin_app/layout/register_pages/mua/register_page_data_jasa.dart';
 import 'package:riasin_app/providers/form_data_provider.dart';
 
 class RegisterPageDataDiri extends StatefulWidget {
@@ -16,7 +16,7 @@ class RegisterPageDataDiri extends StatefulWidget {
 }
 
 class _RegisterPageDataDiriState extends State<RegisterPageDataDiri> {
-  final _formKey = GlobalKey<FormState>();
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   TextEditingController _dateController = TextEditingController();
   TextEditingController _nameController = TextEditingController();
   TextEditingController _phoneController = TextEditingController();
@@ -73,13 +73,18 @@ class _RegisterPageDataDiriState extends State<RegisterPageDataDiri> {
                   LabeledTextField(
                     field: "Nomor Telepon",
                     hintText: 'Masukkan nomor telepon anda',
+                    keyboardType: TextInputType.number,
                     controller: _phoneController,
                     onChanged: formData.changeNomorTelepon,
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Nomor telepon tidak boleh kosong';
-                      } else if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
+                      }
+                      if (!RegExp(r'^[0-9]+$').hasMatch(value)) {
                         return 'Input hanya boleh berupa angka';
+                      }
+                      if (value[0] != '0') {
+                        return 'Masukkan nomor telepon yg valid';
                       }
                       return null;
                     },

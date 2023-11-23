@@ -4,21 +4,20 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:riasin_app/Url.dart';
 import 'package:riasin_app/component/labeled_text_field.dart';
-import 'package:riasin_app/layout/client/dashboard_client.dart';
 import 'package:riasin_app/layout/login_pages/login_page.dart';
-import 'package:riasin_app/layout/register_pages/register_page2.dart';
+import 'package:riasin_app/layout/register_pages/client/register_page.dart';
+import 'package:riasin_app/layout/register_pages/mua/register_page_data_diri.dart';
 import 'package:http/http.dart' as http;
-import 'package:riasin_app/layout/register_pages/register_page_mua.dart';
 
-class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key});
+class RegisterPageMua extends StatefulWidget {
+  const RegisterPageMua({super.key});
 
   @override
-  State<RegisterPage> createState() => _RegisterPageState();
+  State<RegisterPageMua> createState() => _RegisterPageMuaState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
-  final _formKey = GlobalKey<FormState>();
+class _RegisterPageMuaState extends State<RegisterPageMua> {
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final _storage = const FlutterSecureStorage();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _repeatPasswordController =
@@ -51,7 +50,7 @@ class _RegisterPageState extends State<RegisterPage> {
         "email": email,
         "password": password,
         "confirm_password": confirmPassword,
-        "role_id": 3,
+        "role_id": 2,
       }),
     );
   }
@@ -64,12 +63,17 @@ class _RegisterPageState extends State<RegisterPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const SizedBox(height: 80),
               SvgPicture.asset(
                 'assets/svg/logoRiasin.svg',
                 semanticsLabel: 'Logo riasin',
               ),
-              const SizedBox(height: 80),
+              const SizedBox(height: 40),
+              const Text(
+                'Daftarkan akun MUA anda',
+                style: TextStyle(
+                    color: Color.fromARGB(70, 27, 9, 14),
+                    fontWeight: FontWeight.w600),
+              ),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20.0),
                 child: Form(
@@ -94,7 +98,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           _isObscure
                               ? Icons.visibility
                               : Icons.visibility_off,
-                            color: Color(0xffC55977),
+                          color: Color(0xffC55977),
                         ),
                         onPressed: () {
                           setState(() {
@@ -113,6 +117,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     LabeledTextField(
                         field: 'Repeat Password',
                         hintText: 'Ulangi password anda',
+                        obscureText: _isObscure,
                         suffixIcon: IconButton(
                           icon: Icon(
                             _isObscure
@@ -126,7 +131,6 @@ class _RegisterPageState extends State<RegisterPage> {
                             });
                           },
                         ),
-                        obscureText: _isObscure,
                         controller: _repeatPasswordController,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -165,7 +169,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                   Colors.transparent),
                             ),
                             child: const Text(
-                              'Daftar sebagai MUA',
+                              'Daftar sebagai Client',
                               style: TextStyle(
                                   color: Color.fromARGB(70, 27, 9, 14),
                                   fontWeight: FontWeight.w600),
@@ -174,8 +178,7 @@ class _RegisterPageState extends State<RegisterPage> {
                               Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) =>
-                                          const RegisterPageMua()));
+                                      builder: (context) => const RegisterPage()));
                             })),
                     ElevatedButton(
                         onPressed: () {
@@ -190,24 +193,25 @@ class _RegisterPageState extends State<RegisterPage> {
                                       _formData['password']!,
                                       _formData['confirm_password']!)
                                   .then((value) async => {
+                                    print(value.body),
                                         setState(() {
                                           _isLoading = !_isLoading;
                                         }),
                                         if (jsonDecode(value.body)['status'])
                                           {
                                             print('berhasil'),
-                                            await _storage.write(
-                                                key: 'token',
-                                                value: jsonDecode(
-                                                    value.body)['token']),
-                                            Navigator.pushReplacement(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        DashboardClient(
-                                                            token: jsonDecode(
-                                                                    value.body)[
-                                                                'token'])))
+                                            await _storage
+                                                .write(
+                                                    key: 'token',
+                                                    value: jsonDecode(
+                                                        value.body)['token'])
+                                                .then((value) => {
+                                                      Navigator.pushReplacement(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                              builder: (context) =>
+                                                                  const RegisterPageDataDiri()))
+                                                    }),
                                           }
                                         else
                                           {
@@ -215,14 +219,11 @@ class _RegisterPageState extends State<RegisterPage> {
                                                 value.body)['message'],
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(SnackBar(
-                                              content: Text(errors['email'] !=
-                                                      null
+                                              content: Text(errors['email'] != null
                                                   ? errors['email'][0]
                                                   : errors['password'] != null
                                                       ? errors['password'][0]
-                                                      : errors[
-                                                              'confirm_password']
-                                                          [0]),
+                                                      : errors['confirm_password'][0]),
                                             ))
                                           }
                                       });

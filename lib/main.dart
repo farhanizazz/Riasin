@@ -7,7 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:riasin_app/Url.dart';
 import 'package:riasin_app/layout/login_pages/splash_screen.dart';
-import 'package:riasin_app/layout/register_pages/register_page.dart';
+import 'package:riasin_app/layout/register_pages/client/register_page.dart';
 import 'package:riasin_app/providers/form_data_provider.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:riasin_app/layout/mua/dashboard_mua.dart';

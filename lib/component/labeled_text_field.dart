@@ -12,6 +12,7 @@ class LabeledTextField extends StatelessWidget {
   final Widget? suffixIcon;
   final void Function()? onTap;
   final void Function(String)? onChanged;
+  final TextInputType? keyboardType;
 
   const LabeledTextField(
       {super.key,
@@ -23,13 +24,14 @@ class LabeledTextField extends StatelessWidget {
       this.onSaved,
       this.suffixIcon,
       this.onTap,
-      this.onChanged});
+      this.onChanged, this.keyboardType});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         TextFormField(
+          keyboardType: keyboardType,
             onChanged: onChanged,
             onTap: onTap,
             maxLength: 99,

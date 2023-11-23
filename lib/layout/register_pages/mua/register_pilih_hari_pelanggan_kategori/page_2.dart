@@ -16,9 +16,9 @@ class _Page2State extends State<Page2> {
 
   void initState() {
     final FormData _formData = Provider.of<FormData>(context, listen: false);
+    _jumlahCustomer.text = _formData.jumlahOrderan;
 
     super.initState();
-    _jumlahCustomer = TextEditingController(text: _formData.namaLengkap);
   }
 
   @override
@@ -53,6 +53,7 @@ class _Page2State extends State<Page2> {
                 borderRadius: BorderRadius.circular(10),
               ),
               child: TextFormField(
+                controller: _jumlahCustomer,
                 onChanged: (value) {
                   setState(() {
                     _formData.changeJumlahOrderan(value);

@@ -11,7 +11,7 @@ class FormData extends ChangeNotifier {
   String kecamatan;
 
   File? profilePicture;
-  List<File>? pdfPortfolio;
+  List<File> pdfPortfolio = [];
 
   List<String> hari = [];
   String jumlahOrderan;
@@ -26,7 +26,6 @@ class FormData extends ChangeNotifier {
     this.kecamatan = '',
     this.namaMUA = '',
     this.profilePicture,
-    this.pdfPortfolio,
     this.jumlahOrderan = '',
   });
 
@@ -100,6 +99,21 @@ class FormData extends ChangeNotifier {
       return;
     }
     this.kategori.add(kategori);
+    notifyListeners();
+  }
+
+  reset() {
+    this.namaLengkap = '';
+    this.nomorTelepon = '';
+    this.tanggalLahir = '';
+    this.jenisKelamin = '';
+    this.kecamatan = '';
+    this.namaMUA = '';
+    this.profilePicture = null;
+    this.pdfPortfolio = [];
+    this.hari = [];
+    this.jumlahOrderan = '';
+    this.kategori = [];
     notifyListeners();
   }
 }

@@ -8,7 +8,7 @@ import 'package:riasin_app/Url.dart';
 import 'package:riasin_app/component/labeled_text_field.dart';
 import 'package:riasin_app/layout/client/dashboard_client.dart';
 import 'package:riasin_app/layout/mua/dashboard_mua.dart';
-import 'package:riasin_app/layout/register_pages/register_page.dart';
+import 'package:riasin_app/layout/register_pages/client/register_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -105,22 +105,6 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   Column(
                     children: [
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: InkWell(
-                            onTap: () {
-                              // Navigator.push(context, MaterialPageRoute(builder:(context) => splashscreen()));
-                            },
-                            overlayColor:
-                                MaterialStateProperty.all(Colors.transparent),
-                            child: const Text(
-                              "Lupa Password",
-                              style: TextStyle(
-                                  color: Color(0x1B090E4D),
-                                  fontWeight: FontWeight.w600),
-                            )),
-                      ),
-                      const SizedBox(height: 20),
                       SizedBox(
                         width: double.infinity,
                         height: 60,
