@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:riasin_app/component/item_mua.dart';
 import 'package:riasin_app/component/pesanan_item.dart';
 import 'package:riasin_app/component/review_item.dart';
@@ -118,7 +119,7 @@ class lihatSemuaReview extends StatelessWidget {
                               child: CardDetailReview(
                                 clientName: e['nama'],
                                 bookingDate:
-                                e['tanggal_pemesanan'],
+                                DateFormat('dd MMMM yy').format(DateFormat('yyyy-MM-dd HH:mm:ss').parse(e['tanggal_pemesanan'])).toString(),
                                 serviceType: e['nama_kategori'],
                                 rating: double.parse(e['rating']).floorToDouble(),
                                 // Misalnya, rating 4.5
@@ -132,7 +133,7 @@ class lihatSemuaReview extends StatelessWidget {
                           )),
                     );
                   },
-                  tanggalPemesanan: e['tanggal_pemesanan'],
+                  tanggalPemesanan: DateFormat('dd MMMM yy').format(DateFormat('yyyy-MM-dd HH:mm:ss').parse(e['tanggal_pemesanan'])).toString(),
                   serviceName: e['nama'],
                   profilePictureUrl: e['foto'],
                   userRating: int.parse(e['rating']),

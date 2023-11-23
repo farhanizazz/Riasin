@@ -166,29 +166,41 @@ class _LihatSemuaState extends State<LihatSemua> {
                           "Harga",
                           style: TextStyle(fontSize: 16),
                         ),
-                        RangeSlider(
-                            values: _currentRangeValues,
-                            max: 1000000,
-                            divisions: 100,
-                            labels: RangeLabels(
-                              _currentRangeValues.start
-                                  .round()
-                                  .toString()
-                                  .replaceAllMapped(
-                                      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-                                      (match) => '${match[1]},'),
-                              _currentRangeValues.end
-                                  .round()
-                                  .toString()
-                                  .replaceAllMapped(
-                                      RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
-                                      (match) => '${match[1]},'),
-                            ),
-                            onChanged: (value) {
-                              setState(() {
-                                _currentRangeValues = value;
-                              });
-                            })
+                        SliderTheme(
+                          data: SliderTheme.of(context).copyWith(
+                            trackHeight: 2.0,
+                            valueIndicatorColor: Colors.white,
+                            thumbShape:
+                                RoundSliderThumbShape(enabledThumbRadius: 8.0),
+                            overlayShape:
+                                RoundSliderOverlayShape(overlayRadius: 16.0),
+                          ),
+                          child: RangeSlider(
+                              values: _currentRangeValues,
+                              max: 1000000,
+                              divisions: 100,
+                              activeColor: const Color(0xFFC55977),
+
+                              labels: RangeLabels(
+                                _currentRangeValues.start
+                                    .round()
+                                    .toString()
+                                    .replaceAllMapped(
+                                        RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+                                        (match) => '${match[1]},'),
+                                _currentRangeValues.end
+                                    .round()
+                                    .toString()
+                                    .replaceAllMapped(
+                                        RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'),
+                                        (match) => '${match[1]},'),
+                              ),
+                              onChanged: (value) {
+                                setState(() {
+                                  _currentRangeValues = value;
+                                });
+                              }),
+                        )
                       ],
                     ),
                   )),

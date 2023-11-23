@@ -115,6 +115,17 @@ class _DetailMuaState extends State<DetailMua> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.startTop,
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(50),
+        ),
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        child: Icon(Icons.arrow_back_ios_new_rounded),
+      ),
       body: _isLoading
           ? Center(
               child: CircularProgressIndicator(),
@@ -319,7 +330,7 @@ class _DetailMuaState extends State<DetailMua> {
                           ],
                         ),
                       ),
-                      dataMua['galeri'].isEmpty
+                      dataMua['review_photos_by_category'].isEmpty
                           ? SizedBox(
                               width: double.infinity,
                               height: 150,
@@ -330,7 +341,7 @@ class _DetailMuaState extends State<DetailMua> {
                           : Container(
                               constraints: BoxConstraints(maxHeight: 270),
                               child: GridView.builder(
-                                itemCount: dataMua['galeri'].length,
+                                itemCount: dataMua['review_photos_by_category'].length,
                                 scrollDirection: Axis.horizontal,
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) {
@@ -344,19 +355,19 @@ class _DetailMuaState extends State<DetailMua> {
                                             MaterialPageRoute(
                                                 builder: (context) =>
                                                     DetailGaleri(
-                                                      photos: dataMua['galeri'][index]['foto'],
+                                                      photos: dataMua['review_photos_by_category'][index][index]['foto'],
                                                     )));
                                       },
                                       child: SizedBox(
                                           child: CardGallery(
-                                        title: dataMua['galeri'][index]
-                                            ['deskripsi'],
-                                        imageUrls: dataMua['galeri'][index]
+                                        title: dataMua['review_photos_by_category'][index][index]
+                                            ['jenis_jasa'],
+                                        imageUrls: dataMua['review_photos_by_category'][index][index]
                                                 ['foto'] is List
-                                            ? dataMua['galeri'][index]['foto']
+                                            ? dataMua['review_photos_by_category'][index][index]['foto']
                                                 .take(4)
                                                 .toList()
-                                            : [dataMua['galeri'][index]['foto']],
+                                            : [dataMua['review_photos_by_category'][index][index]['foto']],
                                       )),
                                     ),
                                   );
@@ -426,8 +437,7 @@ class _DetailMuaState extends State<DetailMua> {
                                                               CardDetailReview(
                                                             clientName:
                                                                 e['nama'],
-                                                            bookingDate: e[
-                                                                'tanggal_pemesanan'],
+                                                            bookingDate: DateFormat('dd MMMM yy').format(DateFormat('yyyy-MM-dd HH:mm:ss').parse(e['tanggal_pemesanan'])).toString(),
                                                             serviceType: e[
                                                                 'nama_kategori'],
                                                             rating: double.parse(
@@ -447,7 +457,7 @@ class _DetailMuaState extends State<DetailMua> {
                                           },
                                           profilePictureUrl: e['foto'],
                                           tanggalPemesanan:
-                                              e['tanggal_pemesanan'],
+                                            DateFormat('dd MMMM yy').format(DateFormat('yyyy-MM-dd HH:mm:ss').parse(e['tanggal_pemesanan'])).toString(),
                                           serviceName: e['nama_kategori'],
                                           userRating: int.parse(e['rating']),
                                           userReview: e['komentar']))
@@ -457,21 +467,22 @@ class _DetailMuaState extends State<DetailMua> {
                       ),
                     ],
                   ),
-                  Container(
-                    height: 50,
-                    width: 50,
-                    margin: EdgeInsets.only(top: 30, left: 20),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
-                      color: Colors.white,
-                    ),
-                    child: IconButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                      icon: Icon(Icons.arrow_back_ios_new_rounded),
-                    ),
-                  ),
+                  // Container(
+                  //
+                  //   height: 50,
+                  //   width: 50,
+                  //   margin: EdgeInsets.only(top: 30, left: 20),
+                  //   decoration: BoxDecoration(
+                  //     borderRadius: BorderRadius.circular(50),
+                  //     color: Colors.white,
+                  //   ),
+                  //   child: IconButton(
+                  //     onPressed: () {
+                  //       Navigator.pop(context);
+                  //     },
+                  //     icon: Icon(Icons.arrow_back_ios_new_rounded),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
