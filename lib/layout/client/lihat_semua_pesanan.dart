@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:riasin_app/component/item_mua.dart';
 import 'package:riasin_app/component/pesanan_item.dart';
 import 'package:riasin_app/component/review_item.dart';
-import 'package:riasin_app/layout/mua/detail_review.dart';
+import 'package:riasin_app/layout/detail_review.dart';
 import 'package:riasin_app/layout/mua/order_in_client.dart';
 
 class LihatSemuaPesanan extends StatelessWidget {

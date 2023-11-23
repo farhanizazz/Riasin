@@ -99,6 +99,12 @@ class _DashboardMuaState extends State<DashboardMua> {
       pages = [
         Homepage(
           dashboardData: dashboardData,
+          refreshParent: () {
+            setState(() {
+              _loading = true;
+            });
+            getData();
+          },
           notifyParent: () {
             setState(() {
               _selectedIndex = 1;

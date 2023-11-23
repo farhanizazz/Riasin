@@ -7,7 +7,7 @@ import 'package:riasin_app/component/custom_outlined_button.dart';
 import 'package:riasin_app/layout/client/detail_pesanan.dart';
 
 // import 'package:riasin_app/layout/mua/dashboard_pages/lihat_semua.dart';
-import 'package:riasin_app/layout/mua/detail_review.dart';
+import 'package:riasin_app/layout/detail_review.dart';
 import 'package:riasin_app/layout/mua/galery_pemesanan.dart';
 import 'package:riasin_app/main.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -552,6 +552,8 @@ class _DetailMuaState extends State<DetailMua> {
                                           } else {
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(SnackBar(
+                                              backgroundColor: Colors.red[800],
+                                              behavior: SnackBarBehavior.floating,
                                               content:
                                                   Text(res.data['message']),
                                               duration: Duration(seconds: 2),

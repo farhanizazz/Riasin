@@ -327,11 +327,7 @@ class _OrderInClientState extends State<OrderInClient> {
                                       options: Options(headers: {
                                       'Authorization':
                                       'Bearer ${await _checkToken()}'
-                                      })).then((value) => Navigator.pushReplacement(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              DashboardMua())))
+                                      })).then((value) => Navigator.pop(context))
                                       .catchError((e) =>
                                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                         content: Text(e.response.toString()),

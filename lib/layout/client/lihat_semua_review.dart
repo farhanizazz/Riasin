@@ -6,6 +6,7 @@ import 'package:riasin_app/Url.dart';
 import 'package:riasin_app/component/pesanan_item_review.dart';
 import 'package:riasin_app/layout/client/detail_mua.dart';
 import 'package:riasin_app/layout/client/review_pesanan.dart';
+import 'package:riasin_app/layout/detail_review.dart';
 
 class ReviewPage extends StatefulWidget {
   const ReviewPage({super.key});
@@ -60,10 +61,28 @@ class _ReviewPageState extends State<ReviewPage> {
             children: data.map((e) => Column(
               children: [
                 PesananItemReview(
-                  serviceIcon: 'https://www.presidenri.go.id/assets/uploads/2020/02/presidenri.go.id-05022020111245-5e3a40bd7cdcb1.35250820-384x512.jpg',
+                  onLihatReviewTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => Scaffold(
+                              appBar: AppBar(
+                                title: Text('Detail Review', style: TextStyle(fontWeight: FontWeight.bold)),
+                              ),
+                              body: CardDetailReview(
+                                clientName: e['nama'],
+                                bookingDate: formatter.format(DateTime.parse(e['tanggal_pemesanan'])),
+                                serviceType: e['jenis_jasa'],
+                                rating: e['review']['rating'] != null ? double.parse(e['review']['rating'].toString()) : 0,
+                                comment: e['review']['komentar'] != null ? e['review']['komentar'] : '',
+                                reviewImages: e['foto_review'] != null ? e['foto_review'] : [],
+                              ),
+                            )));
+                  },
+                  serviceIcon: e['foto'],
                   muaName: e['nama'],
                   serviceName: e['jenis_jasa'],
-                  bookingDate: formatter.format(DateTime.parse(data[0]['tanggal_pemesanan'])),
+                  bookingDate: formatter.format(DateTime.parse(e['tanggal_pemesanan'])),
                   isReview: e['review'] != null ? true : false,
                   onGiveReviewTap: () {
                     Navigator.push(

@@ -8,6 +8,7 @@ class PesananItemReview extends StatelessWidget {
   final String serviceName;
   final String bookingDate;
   final bool isReview; // kondisi pesanan sudah di beri review atau belum
+  final Function()? onLihatReviewTap;
   final Function() onGiveReviewTap;
 
   const PesananItemReview({
@@ -17,7 +18,7 @@ class PesananItemReview extends StatelessWidget {
     required this.serviceName,
     required this.bookingDate,
     required this.isReview,
-    required this.onGiveReviewTap,
+    required this.onGiveReviewTap, this.onLihatReviewTap,
   });
 
   @override
@@ -160,7 +161,7 @@ class PesananItemReview extends StatelessWidget {
                     SizedBox(width: 10),
                     isReview
                         ? InkWell(
-                            onTap: () {},
+                            onTap: onLihatReviewTap,
                             child: RichText(
                               text: TextSpan(
                                 children: [

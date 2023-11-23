@@ -123,7 +123,15 @@ class CardDetailReview extends StatelessWidget {
                                     color: Color.fromARGB(255, 197, 89, 120),
                                   ),
                                 ),
-                                Wrap(
+                                reviewImages.isEmpty ? Container(
+                                  height: 70,
+                                  child: Center(
+                                    child: Text(
+                                      'Tidak ada foto review',
+                                      style: TextStyle(fontSize: 13, color: Colors.black),
+                                    ),
+                                  ),
+                                ) : Wrap(
                                   spacing: 10,
                                   runSpacing: 10,
                                   children: reviewImages.map((imageURL) {
