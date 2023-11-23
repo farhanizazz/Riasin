@@ -307,6 +307,14 @@ class _LihatSemuaState extends State<LihatSemua> {
                                 (e) => SizedBox(
                                     width: double.infinity,
                                     child: ItemMUA(
+                                        onTap: () {
+                                          Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) => DetailMua(
+                                                    idMua: e['id'],
+                                                  )));
+                                        },
                                         muaName: e['nama'],
                                         muaLocation: e['lokasi'],
                                         muaImage: e['foto'],

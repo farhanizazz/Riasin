@@ -5,6 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:riasin_app/Url.dart';
 import 'package:riasin_app/component/custom_outlined_button.dart';
 import 'package:riasin_app/layout/client/detail_pesanan.dart';
+import 'package:riasin_app/layout/client/galeri_client_detail.dart';
 
 // import 'package:riasin_app/layout/mua/dashboard_pages/lihat_semua.dart';
 import 'package:riasin_app/layout/detail_review.dart';
@@ -336,17 +337,28 @@ class _DetailMuaState extends State<DetailMua> {
                                   return Padding(
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 50.0),
-                                    child: SizedBox(
-                                        child: CardGallery(
-                                      title: dataMua['galeri'][index]
-                                          ['deskripsi'],
-                                      imageUrls: dataMua['galeri'][index]
-                                              ['foto'] is List
-                                          ? dataMua['galeri'][index]['foto']
-                                              .take(4)
-                                              .toList()
-                                          : [dataMua['galeri'][index]['foto']],
-                                    )),
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    DetailGaleri(
+                                                      photos: dataMua['galeri'][index]['foto'],
+                                                    )));
+                                      },
+                                      child: SizedBox(
+                                          child: CardGallery(
+                                        title: dataMua['galeri'][index]
+                                            ['deskripsi'],
+                                        imageUrls: dataMua['galeri'][index]
+                                                ['foto'] is List
+                                            ? dataMua['galeri'][index]['foto']
+                                                .take(4)
+                                                .toList()
+                                            : [dataMua['galeri'][index]['foto']],
+                                      )),
+                                    ),
                                   );
                                 },
                                 gridDelegate:
