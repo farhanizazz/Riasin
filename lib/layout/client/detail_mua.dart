@@ -42,6 +42,7 @@ class _DetailMuaState extends State<DetailMua> {
   int? layananId;
 
   final _storage = const FlutterSecureStorage();
+
   Future<String?> _checkToken() async {
     return await _storage.read(key: 'token');
   }
@@ -100,7 +101,6 @@ class _DetailMuaState extends State<DetailMua> {
       });
     } on DioException catch (e) {
       print('Error Autofill: ${e.response}');
-
     }
   }
 
@@ -195,11 +195,6 @@ class _DetailMuaState extends State<DetailMua> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: [
-                                        Icon(
-                                          Icons.attach_money_rounded,
-                                          color: Colors.black.withOpacity(0.3),
-                                          size: 20,
-                                        ),
                                         const SizedBox(width: 3),
                                         Text(
                                           dataMua['harga'],
@@ -214,20 +209,25 @@ class _DetailMuaState extends State<DetailMua> {
                                     children: [
                                       Expanded(
                                         child: Wrap(
-                                          spacing: 10,
+                                          spacing: 5,
                                           crossAxisAlignment:
                                               WrapCrossAlignment.center,
                                           children: [
                                             Text(
                                               'Tersedia: ',
                                               style: TextStyle(
+                                                fontSize: 12,
                                                 color: Color(0xff848484),
                                               ),
                                             ),
+                                            SizedBox(width: double.infinity),
                                             ...dataMua['layanan'].map<Widget>(
                                                 (e) => ChipKategoriMua(
                                                       namaJasa: e['nama'],
                                                     )),
+                                            // ...dataMua['layanan'].map<Widget>(
+                                            //     (e) => Text(e['nama'] + " | ", style: TextStyle(color: Color(0xff848484)),)
+                                            // )
                                             // ChipKategoriMua(),
                                           ],
                                         ),
@@ -341,7 +341,8 @@ class _DetailMuaState extends State<DetailMua> {
                           : Container(
                               constraints: BoxConstraints(maxHeight: 270),
                               child: GridView.builder(
-                                itemCount: dataMua['review_photos_by_category'].length,
+                                itemCount:
+                                    dataMua['review_photos_by_category'].length,
                                 scrollDirection: Axis.horizontal,
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) {
@@ -353,21 +354,30 @@ class _DetailMuaState extends State<DetailMua> {
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) =>
-                                                    DetailGaleri(
-                                                      photos: dataMua['review_photos_by_category'][index][index]['foto'],
-                                                    )));
+                                                builder:
+                                                    (context) => DetailGaleri(
+                                                          photos: dataMua[
+                                                                      'review_photos_by_category']
+                                                                  [index][index]
+                                                              ['foto'],
+                                                        )));
                                       },
                                       child: SizedBox(
                                           child: CardGallery(
-                                        title: dataMua['review_photos_by_category'][index][index]
-                                            ['jenis_jasa'],
-                                        imageUrls: dataMua['review_photos_by_category'][index][index]
-                                                ['foto'] is List
-                                            ? dataMua['review_photos_by_category'][index][index]['foto']
+                                        title:
+                                            dataMua['review_photos_by_category']
+                                                [index][index]['jenis_jasa'],
+                                        imageUrls: dataMua[
+                                                    'review_photos_by_category']
+                                                [index][index]['foto'] is List
+                                            ? dataMua['review_photos_by_category']
+                                                    [index][index]['foto']
                                                 .take(4)
                                                 .toList()
-                                            : [dataMua['review_photos_by_category'][index][index]['foto']],
+                                            : [
+                                                dataMua['review_photos_by_category']
+                                                    [index][index]['foto']
+                                              ],
                                       )),
                                     ),
                                   );
@@ -437,7 +447,13 @@ class _DetailMuaState extends State<DetailMua> {
                                                               CardDetailReview(
                                                             clientName:
                                                                 e['nama'],
-                                                            bookingDate: DateFormat('dd MMMM yy').format(DateFormat('yyyy-MM-dd HH:mm:ss').parse(e['tanggal_pemesanan'])).toString(),
+                                                            bookingDate: DateFormat(
+                                                                    'dd MMMM yy')
+                                                                .format(DateFormat(
+                                                                        'yyyy-MM-dd HH:mm:ss')
+                                                                    .parse(e[
+                                                                        'tanggal_pemesanan']))
+                                                                .toString(),
                                                             serviceType: e[
                                                                 'nama_kategori'],
                                                             rating: double.parse(
@@ -456,8 +472,13 @@ class _DetailMuaState extends State<DetailMua> {
                                             );
                                           },
                                           profilePictureUrl: e['foto'],
-                                          tanggalPemesanan:
-                                            DateFormat('dd MMMM yy').format(DateFormat('yyyy-MM-dd HH:mm:ss').parse(e['tanggal_pemesanan'])).toString(),
+                                          tanggalPemesanan: DateFormat(
+                                                  'dd MMMM yy')
+                                              .format(DateFormat(
+                                                      'yyyy-MM-dd HH:mm:ss')
+                                                  .parse(
+                                                      e['tanggal_pemesanan']))
+                                              .toString(),
                                           serviceName: e['nama_kategori'],
                                           userRating: int.parse(e['rating']),
                                           userReview: e['komentar']))
@@ -517,32 +538,32 @@ class _DetailMuaState extends State<DetailMua> {
                                   Expanded(
                                     child: InkWellWithAnimation(
                                       onTap: () async {
-                                        if(_selectedJasa == ""){
+                                        if (_selectedJasa == "") {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(SnackBar(
                                             backgroundColor: Colors.red,
-                                            content:
-                                            Text("Pilih jasa terlebih dahulu"),
+                                            content: Text(
+                                                "Pilih jasa terlebih dahulu"),
                                             duration: Duration(seconds: 2),
                                           ));
                                           return;
                                         }
-                                        if(selectedDate == null){
+                                        if (selectedDate == null) {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(SnackBar(
                                             backgroundColor: Colors.red,
-                                            content:
-                                            Text("Pilih tanggal terlebih dahulu"),
+                                            content: Text(
+                                                "Pilih tanggal terlebih dahulu"),
                                             duration: Duration(seconds: 2),
                                           ));
                                           return;
                                         }
-                                        if(layananId == null){
+                                        if (layananId == null) {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(SnackBar(
                                             backgroundColor: Colors.red,
-                                            content:
-                                            Text("Pilih jasa terlebih dahulu"),
+                                            content: Text(
+                                                "Pilih jasa terlebih dahulu"),
                                             duration: Duration(seconds: 2),
                                           ));
                                           return;
@@ -565,18 +586,23 @@ class _DetailMuaState extends State<DetailMua> {
                                                 MaterialPageRoute(
                                                     builder: (context) =>
                                                         DetailPesanan(
-                                                          jumlah: _jumlahPemesan,
-                                                          layanan_id: layananId!,
-                                                          tanggal: "${selectedDate!.year}-${selectedDate!.month}-${selectedDate!.day}",
+                                                          jumlah:
+                                                              _jumlahPemesan,
+                                                          layanan_id:
+                                                              layananId!,
+                                                          tanggal:
+                                                              "${selectedDate!.year}-${selectedDate!.month}-${selectedDate!.day}",
                                                           idMua: widget.idMua,
                                                           total: harga,
-                                                          namaJasa: _selectedJasa,
+                                                          namaJasa:
+                                                              _selectedJasa,
                                                         )));
                                           } else {
                                             ScaffoldMessenger.of(context)
                                                 .showSnackBar(SnackBar(
                                               backgroundColor: Colors.red[800],
-                                              behavior: SnackBarBehavior.floating,
+                                              behavior:
+                                                  SnackBarBehavior.floating,
                                               content:
                                                   Text(res.data['message']),
                                               duration: Duration(seconds: 2),
@@ -647,30 +673,54 @@ class _DetailMuaState extends State<DetailMua> {
                                                   spacing: 8.0,
                                                   runSpacing: 4.0,
                                                   children: dataLayanan
-                                                      .map<Widget>((e) =>
-                                                          ChoiceChip(
-                                                            showCheckmark: false,
-                                                            selectedColor: Color(0xffC55977),
-                                                            side: BorderSide(
-                                                                color: Color(0xffC55977),
-                                                                width: 1.2),
-                                                            label: Text(
-                                                              e['nama'],
-                                                              style: TextStyle(
-                                                                color: _selectedJasa == e['nama'] ? Colors.white : Color(0xffC55977),
-                                                                fontWeight: FontWeight.bold,
-                                                              ),
-                                                            ),
-                                                            selected:
-                                                                _selectedJasa == e['nama'],
-                                                            onSelected: (bool selected) {
-                                                              setState(() {
-                                                                _selectedJasa = selected ? e['nama'] : "";
-                                                                harga = !selected ? 0 : int.parse(e['harga']) * _jumlahPemesan;
-                                                                layananId = !selected ? 0 : e['id'];
-                                                              });
-                                                            },
-                                                          ))
+                                                      .map<Widget>(
+                                                          (e) => ChoiceChip(
+                                                                showCheckmark:
+                                                                    false,
+                                                                selectedColor:
+                                                                    Color(
+                                                                        0xffC55977),
+                                                                side: BorderSide(
+                                                                    color: Color(
+                                                                        0xffC55977),
+                                                                    width: 1.2),
+                                                                label: Text(
+                                                                  e['nama'],
+                                                                  style:
+                                                                      TextStyle(
+                                                                    color: _selectedJasa ==
+                                                                            e[
+                                                                                'nama']
+                                                                        ? Colors
+                                                                            .white
+                                                                        : Color(
+                                                                            0xffC55977),
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                  ),
+                                                                ),
+                                                                selected:
+                                                                    _selectedJasa ==
+                                                                        e['nama'],
+                                                                onSelected: (bool
+                                                                    selected) {
+                                                                  setState(() {
+                                                                    _selectedJasa =
+                                                                        selected
+                                                                            ? e['nama']
+                                                                            : "";
+                                                                    harga = !selected
+                                                                        ? 0
+                                                                        : int.parse(e['harga']) *
+                                                                            _jumlahPemesan;
+                                                                    layananId =
+                                                                        !selected
+                                                                            ? 0
+                                                                            : e['id'];
+                                                                  });
+                                                                },
+                                                              ))
                                                       .toList(),
                                                 ),
                                               ]),
@@ -727,7 +777,13 @@ class _DetailMuaState extends State<DetailMua> {
                                                   // print();
                                                   setState(() {
                                                     _jumlahPemesan--;
-                                                    harga = int.parse(dataLayanan[dataLayanan.indexWhere((e) => e['id'] == layananId)]['harga']) * _jumlahPemesan;
+                                                    harga = int.parse(dataLayanan[
+                                                                dataLayanan
+                                                                    .indexWhere((e) =>
+                                                                        e['id'] ==
+                                                                        layananId)]
+                                                            ['harga']) *
+                                                        _jumlahPemesan;
                                                   });
                                                 }
                                               },
@@ -754,7 +810,13 @@ class _DetailMuaState extends State<DetailMua> {
                                               onPressed: () {
                                                 setState(() {
                                                   _jumlahPemesan++;
-                                                  harga = int.parse(dataLayanan[dataLayanan.indexWhere((e) => e['id'] == layananId)]['harga']) * _jumlahPemesan;
+                                                  harga = int.parse(dataLayanan[
+                                                              dataLayanan
+                                                                  .indexWhere((e) =>
+                                                                      e['id'] ==
+                                                                      layananId)]
+                                                          ['harga']) *
+                                                      _jumlahPemesan;
                                                 });
                                               },
                                             ),
@@ -831,16 +893,13 @@ class ChipKategoriMua extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
-      child: ActionChip(
+      child: Chip(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(50),
         ),
-        backgroundColor: const Color(0xffE1CCD2),
+        padding: EdgeInsets.symmetric(horizontal: 0, vertical: 0),
+        backgroundColor: Colors.grey[200],
         side: const BorderSide(color: Colors.transparent),
-        onPressed: () {
-          print('pressed!');
-        },
         label: Text(namaJasa,
             style: TextStyle(
                 fontSize: 12,
