@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+import 'package:riasin_app/Url.dart';
 import 'package:riasin_app/layout/login_pages/splash_screen.dart';
 import 'package:riasin_app/layout/register_pages/register_page.dart';
 import 'package:riasin_app/providers/form_data_provider.dart';
@@ -133,7 +134,6 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   final _storage = const FlutterSecureStorage();
-  final String baseUrl = "http://taek.com";
 
   final Dio = dio.Dio();
 

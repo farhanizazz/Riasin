@@ -202,30 +202,67 @@ class _KatalogJasaState extends State<KatalogJasa> {
                           hintStyle: TextStyle(
                               fontSize: 12, color: Colors.black.withOpacity(0.3)),
                           hintText: "Masukkan durasi jasa anda",
-                          labelText: "Durasi Jasa",
+                          labelText: "Durasi Jasa (dalam menit)",
                         ),
                       ),
                       SizedBox(height: 20),
-                      TextFormField(
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Deskripsi jasa harus diisi";
-                          }
-                        },
-                        onChanged: (value) {
-                          setState(() {
-                            data['deskripsi'] = value;
-                          });
-                        },
-                        decoration: InputDecoration(
-                          labelStyle: TextStyle(
+                      SizedBox(
+                        height: 150,
+                        child: TextFormField(
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Deskripsi jasa harus diisi";
+                            }
+                          },
+                          textAlignVertical: TextAlignVertical.top,
+                          expands: true,
+                          keyboardType: TextInputType.multiline,
+                          maxLines: null,
+                          decoration: InputDecoration(
+                            hintText: 'Request Tambahan',
+                            hintStyle: TextStyle(
                               fontSize: 13,
-                              color: Colors.black.withOpacity(0.3),
-                              fontWeight: FontWeight.bold),
-                          hintStyle: TextStyle(
-                              fontSize: 12, color: Colors.black.withOpacity(0.3)),
-                          hintText: "Masukkan deskripsi jasa anda",
-                          labelText: "Deskripsi Jasa",
+                              fontWeight: FontWeight.w600,
+                              color: Colors.grey,
+                            ),
+                            contentPadding: EdgeInsets.all(10),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(
+                                color: Color(0xffDFC0C9),
+                                width: 2,
+                              ),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(
+                                color: Color(0xffDFC0C9),
+                                width: 3,
+                              ),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(
+                                color: Colors.red[800]!,
+                                width: 3,
+                              ),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              borderSide: BorderSide(
+                                color: Colors.red[800]!,
+                                width: 3,
+                              ),
+                            ),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          onChanged: (value) {
+                            setState(() {
+                              data['deskripsi'] = value;
+                            });
+                          },
                         ),
                       ),
                       SizedBox(height: 20),

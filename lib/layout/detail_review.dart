@@ -1,12 +1,18 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-class CardDetailReview extends StatelessWidget {
+import '../Url.dart';
+
+class CardDetailReview extends StatefulWidget {
   final String clientName;
   final String bookingDate;
   final String serviceType;
   final double rating;
   final String comment;
   final List<dynamic> reviewImages;
+  final int? id;
+
 
   CardDetailReview({
     required this.clientName,
@@ -14,15 +20,63 @@ class CardDetailReview extends StatelessWidget {
     required this.serviceType,
     required this.rating,
     required this.comment,
-    required this.reviewImages,
+    required this.reviewImages, this.id,
   });
+
+  @override
+  State<CardDetailReview> createState() => _CardDetailReviewState();
+}
+
+class _CardDetailReviewState extends State<CardDetailReview> {
+  final _storage = const FlutterSecureStorage();
+
+  final dio = Dio();
+
+  List<String>? fotoReviews;
+
+  bool _loading = true;
+
+  void showSnackbar(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        backgroundColor: Colors.red,
+      ),
+    );
+  }
+
+  void getData() async {
+    print(await _storage.read(key: 'token'));
+    try {
+      Response res = await dio.get(
+          '$baseUrl/api/pencari-jasa-mua/get-review/${widget.id}',
+          options: Options(headers: {
+            'Authorization': 'Bearer ${await _storage.read(key: 'token')}'
+          }));
+      print(res.data);
+      setState(() {
+        // fotoReviews = res.data['data']['foto'];
+        _loading = false;
+      });
+    } on DioException catch (e) {
+      showSnackbar(e.response!.data.toString());
+      print(e.response!.data.toString());
+    }
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    getData();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       // appBar: AppBar(
       //   title: Text('Detail Review', style: TextStyle(fontWeight: FontWeight.bold)),
-      // ),                                    
+      // ),
       body: SingleChildScrollView(
         child:
          Center(
@@ -53,7 +107,7 @@ class CardDetailReview extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  clientName,
+                                  widget.clientName,
                                   style: TextStyle(fontSize: 13, color: Colors.black),
                                 ),
                                 SizedBox(height: 10),
@@ -66,7 +120,7 @@ class CardDetailReview extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  bookingDate,
+                                  widget.bookingDate,
                                   style: TextStyle(fontSize: 13, color: Colors.black),
                                 ),
                                 SizedBox(height: 10),
@@ -79,7 +133,7 @@ class CardDetailReview extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  serviceType,
+                                  widget.serviceType,
                                   style: TextStyle(fontSize: 13, color: Colors.black),
                                 ),
                                 SizedBox(height: 10),
@@ -95,7 +149,7 @@ class CardDetailReview extends StatelessWidget {
                                   children: List.generate(
                                     5,
                                     (i) => Icon(
-                                      i < rating ? Icons.star : Icons.star_border,
+                                      i < widget.rating ? Icons.star : Icons.star_border,
                                       color: Colors.amber,
                                       size: 12.0,
                                     ),
@@ -111,7 +165,7 @@ class CardDetailReview extends StatelessWidget {
                                   ),
                                 ),
                                 Text(
-                                  comment,
+                                  widget.comment,
                                   style: TextStyle(fontSize: 13, color: Colors.black),
                                 ),
                                 SizedBox(height: 10),
@@ -123,7 +177,12 @@ class CardDetailReview extends StatelessWidget {
                                     color: Color.fromARGB(255, 197, 89, 120),
                                   ),
                                 ),
-                                reviewImages.isEmpty ? Container(
+                                _loading == true ? Container(
+                                  height: 70,
+                                  child: Center(
+                                    child: CircularProgressIndicator(),
+                                  ),
+                                ) : fotoReviews!.isEmpty ? Container(
                                   height: 70,
                                   child: Center(
                                     child: Text(
@@ -134,7 +193,7 @@ class CardDetailReview extends StatelessWidget {
                                 ) : Wrap(
                                   spacing: 10,
                                   runSpacing: 10,
-                                  children: reviewImages.map((imageURL) {
+                                  children: widget.reviewImages.map((imageURL) {
                                     return ClipRRect(
                                       borderRadius: BorderRadius.circular(5),
                                       child: SizedBox(

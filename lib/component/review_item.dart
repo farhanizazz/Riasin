@@ -33,7 +33,7 @@ class ReviewItem extends StatelessWidget {
           onTap: onTap,
           child: Container(
             padding: const EdgeInsets.all(20.0),
-            child: Column( // Ganti dari Row() menjadi Column()
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Row(
@@ -110,6 +110,8 @@ class ReviewItem extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(10),
                                 child: Image.network(
                                   imageReview![index],
+                                  height: 100.0,
+                                  width: 100.0,
                                   fit: BoxFit.cover,
                                 ),
                               ),

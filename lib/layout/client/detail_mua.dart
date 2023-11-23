@@ -323,7 +323,7 @@ class _DetailMuaState extends State<DetailMua> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Text(
-                              'Galeri Client',
+                              'Galeri Review',
                               style: TextStyle(
                                   fontSize: 16, fontWeight: FontWeight.bold),
                             ),
@@ -358,7 +358,7 @@ class _DetailMuaState extends State<DetailMua> {
                                                     (context) => DetailGaleri(
                                                           photos: dataMua[
                                                                       'review_photos_by_category']
-                                                                  [index][index]
+                                                                  [index]
                                                               ['foto'],
                                                         )));
                                       },
@@ -366,17 +366,17 @@ class _DetailMuaState extends State<DetailMua> {
                                           child: CardGallery(
                                         title:
                                             dataMua['review_photos_by_category']
-                                                [index][index]['jenis_jasa'],
+                                                [index]['jenis_jasa'],
                                         imageUrls: dataMua[
                                                     'review_photos_by_category']
-                                                [index][index]['foto'] is List
+                                                [index]['foto'] is List
                                             ? dataMua['review_photos_by_category']
-                                                    [index][index]['foto']
+                                                    [index]['foto']
                                                 .take(4)
                                                 .toList()
                                             : [
                                                 dataMua['review_photos_by_category']
-                                                    [index][index]['foto']
+                                                    [index]['foto']
                                               ],
                                       )),
                                     ),
@@ -445,10 +445,11 @@ class _DetailMuaState extends State<DetailMua> {
                                                         body: Center(
                                                           child:
                                                               CardDetailReview(
+                                                                id: e['id'],
                                                             clientName:
                                                                 e['nama'],
                                                             bookingDate: DateFormat(
-                                                                    'dd MMMM yy')
+                                                                    'dd MMMM yyyy')
                                                                 .format(DateFormat(
                                                                         'yyyy-MM-dd HH:mm:ss')
                                                                     .parse(e[
@@ -472,8 +473,9 @@ class _DetailMuaState extends State<DetailMua> {
                                             );
                                           },
                                           profilePictureUrl: e['foto'],
+                                          imageReview: e['foto_review'],
                                           tanggalPemesanan: DateFormat(
-                                                  'dd MMMM yy')
+                                                  'dd MMMM yyyy')
                                               .format(DateFormat(
                                                       'yyyy-MM-dd HH:mm:ss')
                                                   .parse(

@@ -170,7 +170,7 @@ class _DashboardClientState extends State<DashboardClient> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.rate_review_rounded),
-            label: 'Pesanan',
+            label: 'Review',
           ),
           // BottomNavigationBarItem(
           //   icon: Icon(Icons.grid_on),

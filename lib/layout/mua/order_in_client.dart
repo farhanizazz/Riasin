@@ -283,7 +283,7 @@ class _OrderInClientState extends State<OrderInClient> {
                                                     255, 197, 89, 120)),
                                           ),
                                           Text(
-                                            data['gender_pemesan'],
+                                            data['gender_pemesan'] == 'L' || data['gender_pemesan'] == 'Laki-Laki' ? 'Laki-laki' : 'Perempuan',
                                             style: TextStyle(
                                                 fontSize: 13,
                                                 color: Colors.black),
@@ -298,7 +298,7 @@ class _OrderInClientState extends State<OrderInClient> {
                                                     255, 197, 89, 120)),
                                           ),
                                           Text(
-                                            data['keterangan'],
+                                            data['keterangan'] ?? 'Tidak ada request tambahan',
                                             style: TextStyle(
                                                 fontSize: 13,
                                                 color: Colors.black),
