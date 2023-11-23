@@ -32,7 +32,7 @@ class _CardDetailReviewState extends State<CardDetailReview> {
 
   final dio = Dio();
 
-  List<String>? fotoReviews;
+  List? fotoReviews;
 
   bool _loading = true;
 
@@ -55,7 +55,7 @@ class _CardDetailReviewState extends State<CardDetailReview> {
           }));
       print(res.data);
       setState(() {
-        // fotoReviews = res.data['data']['foto'];
+        fotoReviews = res.data['data'][0]['foto'];
         _loading = false;
       });
     } on DioException catch (e) {
@@ -193,7 +193,7 @@ class _CardDetailReviewState extends State<CardDetailReview> {
                                 ) : Wrap(
                                   spacing: 10,
                                   runSpacing: 10,
-                                  children: widget.reviewImages.map((imageURL) {
+                                  children: fotoReviews!.map((imageURL) {
                                     return ClipRRect(
                                       borderRadius: BorderRadius.circular(5),
                                       child: SizedBox(

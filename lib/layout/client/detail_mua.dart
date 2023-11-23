@@ -221,7 +221,7 @@ class _DetailMuaState extends State<DetailMua> {
                                               ),
                                             ),
                                             SizedBox(width: double.infinity),
-                                            ...dataMua['layanan'].map<Widget>(
+                                            ...dataMua['kategori'].map<Widget>(
                                                 (e) => ChipKategoriMua(
                                                       namaJasa: e['nama'],
                                                     )),
