@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:intl/intl.dart';
 import 'package:riasin_app/Url.dart';
 import 'package:riasin_app/component/custom_outlined_button.dart';
 import 'package:riasin_app/layout/client/detail_pesanan.dart';
@@ -24,18 +25,22 @@ class DetailMua extends StatefulWidget {
 }
 
 class _DetailMuaState extends State<DetailMua> {
-  int _jumlahPemesan = 0;
   List<String> jasa = ["MakeUp", "Nail Art", "Hijab Do"];
-  String _selectedJasa = "";
   final dio = Dio();
   Map dataMua = {};
   Map dataAutofill = {};
-  final _storage = const FlutterSecureStorage();
+  List dataLayanan = [];
   bool _isLoading = true;
-  List<int> unselectableDate = [1, 3, 5];
-  String harga = "-";
+  bool _isLoadingModal = true;
   DateTime? selectedDate;
+  var formatter = NumberFormat('#,###');
 
+  String _selectedJasa = "";
+  int _jumlahPemesan = 1;
+  int harga = 0;
+  int? layananId;
+
+  final _storage = const FlutterSecureStorage();
   Future<String?> _checkToken() async {
     return await _storage.read(key: 'token');
   }
@@ -55,14 +60,33 @@ class _DetailMuaState extends State<DetailMua> {
         }
       });
     } on DioException catch (e) {
-      print(e.response);
+      print('Error datamua: ${e.response}');
+    }
+  }
+
+  void getLayanan() async {
+    try {
+      var response = await dio.get(
+          '$baseUrl/api/pencari-jasa-mua/layananMua/${widget.idMua}',
+          options: Options(headers: {
+            'Authorization': 'Bearer ${await _checkToken()}'
+            // 'Authorization': 'Bearer 6|24zDjFbCwtQcshhdHBxiKoTXHdWlnOFX4d8qP6qn530b6331'
+          }));
+      setState(() {
+        dataLayanan = response.data['data'];
+        if (response.statusCode == 200) {
+          _isLoadingModal = false;
+        }
+      });
+    } on DioException catch (e) {
+      print('Error layanan: ${e.response}');
     }
   }
 
   void getAutofill() async {
     try {
       var response =
-          await dio.get('$baseUrl/api/penyedia-jasa-mua/dashboard/profile',
+          await dio.get('$baseUrl/api/pencari-jasa-mua/autofill-pemesanan',
               options: Options(headers: {
                 'Authorization': 'Bearer ${await _checkToken()}'
                 // 'Authorization': 'Bearer 6|24zDjFbCwtQcshhdHBxiKoTXHdWlnOFX4d8qP6qn530b6331'
@@ -74,7 +98,8 @@ class _DetailMuaState extends State<DetailMua> {
         }
       });
     } on DioException catch (e) {
-      print(e.response);
+      print('Error Autofill: ${e.response}');
+
     }
   }
 
@@ -82,13 +107,12 @@ class _DetailMuaState extends State<DetailMua> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    getLayanan();
     getDataMua();
-    getAutofill();
   }
 
   @override
   Widget build(BuildContext context) {
-    print(dataMua);
     return Scaffold(
       body: _isLoading
           ? Center(
@@ -330,7 +354,6 @@ class _DetailMuaState extends State<DetailMua> {
                                         crossAxisCount: 1),
                               ),
                             ),
-
                       Column(
                         children: <Widget>[
                           Container(
@@ -461,267 +484,305 @@ class _DetailMuaState extends State<DetailMua> {
                   builder: (context) {
                     return StatefulBuilder(
                         builder: (BuildContext context, StateSetter setState) {
-                      return Scaffold(
-                          bottomNavigationBar: Row(
-                            children: [
-                              Expanded(
-                                child: InkWellWithAnimation(
-                                  onTap: () async {
-                                    print("${selectedDate!.year}-${selectedDate!.month}-${selectedDate!.day}");
-                                    try {
-                                      Response res = await dio.post('$baseUrl/api/pencari-jasa-mua/cek-pemesanan',
-                                          data: {
-                                            "id": widget.idMua,
-                                            'tanggal_pemesanan':
-                                            "${selectedDate!.year}-${selectedDate!.month}-${selectedDate!.day}",
-                                          },
-                                          options: Options(headers: {
-                                            'Authorization':
-                                            'Bearer ${await _storage.read(key: 'token')}'
-                                          }));
-                                      if (res.data['status'] == "success") {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    DetailPesanan()));
-                                      } else {
-                                        ScaffoldMessenger.of(context)
-                                            .showSnackBar(SnackBar(
-                                          content: Text(
-                                              res.data['message']),
-                                          duration: Duration(seconds: 2),
-                                        ));
-                                      }
-                                    } on DioException catch (e) {
-                                      print(e.response);
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(
-                                        content: Text(e.response.toString()),
-                                        duration: Duration(seconds: 2),
-                                      ));
-                                    }
-                                  },
-                                  color: Color(0xffC55977),
-                                  textColor: Colors.white,
-                                  text: 'Pesan MUA',
-                                ),
+                      return _isLoadingModal
+                          ? Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : Scaffold(
+                              bottomNavigationBar: Row(
+                                children: [
+                                  Expanded(
+                                    child: InkWellWithAnimation(
+                                      onTap: () async {
+                                        if(_selectedJasa == ""){
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            backgroundColor: Colors.red,
+                                            content:
+                                            Text("Pilih jasa terlebih dahulu"),
+                                            duration: Duration(seconds: 2),
+                                          ));
+                                          return;
+                                        }
+                                        if(selectedDate == null){
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            backgroundColor: Colors.red,
+                                            content:
+                                            Text("Pilih tanggal terlebih dahulu"),
+                                            duration: Duration(seconds: 2),
+                                          ));
+                                          return;
+                                        }
+                                        if(layananId == null){
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            backgroundColor: Colors.red,
+                                            content:
+                                            Text("Pilih jasa terlebih dahulu"),
+                                            duration: Duration(seconds: 2),
+                                          ));
+                                          return;
+                                        }
+                                        try {
+                                          Response res = await dio.post(
+                                              '$baseUrl/api/pencari-jasa-mua/cek-pemesanan',
+                                              data: {
+                                                "id": widget.idMua,
+                                                'tanggal_pemesanan':
+                                                    "${selectedDate!.year}-${selectedDate!.month}-${selectedDate!.day}",
+                                              },
+                                              options: Options(headers: {
+                                                'Authorization':
+                                                    'Bearer ${await _storage.read(key: 'token')}'
+                                              }));
+                                          if (res.data['status'] == "success") {
+                                            Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        DetailPesanan(
+                                                          jumlah: _jumlahPemesan,
+                                                          layanan_id: layananId!,
+                                                          tanggal: "${selectedDate!.year}-${selectedDate!.month}-${selectedDate!.day}",
+                                                          idMua: widget.idMua,
+                                                          total: harga,
+                                                          namaJasa: _selectedJasa,
+                                                        )));
+                                          } else {
+                                            ScaffoldMessenger.of(context)
+                                                .showSnackBar(SnackBar(
+                                              content:
+                                                  Text(res.data['message']),
+                                              duration: Duration(seconds: 2),
+                                            ));
+                                          }
+                                        } on DioException catch (e) {
+                                          print(e.response);
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(SnackBar(
+                                            content:
+                                                Text(e.response.toString()),
+                                            duration: Duration(seconds: 2),
+                                          ));
+                                        }
+                                      },
+                                      color: Color(0xffC55977),
+                                      textColor: Colors.white,
+                                      text: 'Pesan MUA',
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                          body: Padding(
-                            padding: const EdgeInsets.all(24.0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: <Widget>[
-                                const SizedBox(height: 12.0),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
+                              body: Padding(
+                                padding: const EdgeInsets.all(24.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    const SizedBox(height: 12.0),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "Harga",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        Text(
+                                          'Rp. ${formatter.format(harga)}',
+                                          style: TextStyle(
+                                            color: Color(0xffC55977),
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                    const SizedBox(height: 12.0),
+                                    const Divider(
+                                      color: Color(0xffE1CCD2),
+                                    ),
+                                    const SizedBox(height: 12.0),
                                     Text(
-                                      "Harga",
+                                      "Pesan Jasa",
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-                                    Text(
-                                      harga,
-                                      style: TextStyle(
-                                        color: Color(0xffC55977),
+                                    SingleChildScrollView(
+                                      scrollDirection: Axis.horizontal,
+                                      child: Row(
+                                        children: [
+                                          Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Wrap(
+                                                  spacing: 8.0,
+                                                  runSpacing: 4.0,
+                                                  children: dataLayanan
+                                                      .map<Widget>((e) =>
+                                                          ChoiceChip(
+                                                            showCheckmark: false,
+                                                            selectedColor: Color(0xffC55977),
+                                                            side: BorderSide(
+                                                                color: Color(0xffC55977),
+                                                                width: 1.2),
+                                                            label: Text(
+                                                              e['nama'],
+                                                              style: TextStyle(
+                                                                color: _selectedJasa == e['nama'] ? Colors.white : Color(0xffC55977),
+                                                                fontWeight: FontWeight.bold,
+                                                              ),
+                                                            ),
+                                                            selected:
+                                                                _selectedJasa == e['nama'],
+                                                            onSelected: (bool selected) {
+                                                              setState(() {
+                                                                _selectedJasa = selected ? e['nama'] : "";
+                                                                harga = !selected ? 0 : int.parse(e['harga']) * _jumlahPemesan;
+                                                                layananId = !selected ? 0 : e['id'];
+                                                              });
+                                                            },
+                                                          ))
+                                                      .toList(),
+                                                ),
+                                              ]),
+                                        ],
                                       ),
-                                    )
-                                  ],
-                                ),
-                                const SizedBox(height: 12.0),
-                                const Divider(
-                                  color: Color(0xffE1CCD2),
-                                ),
-                                const SizedBox(height: 12.0),
-                                Text(
-                                  "Pesan Jasa",
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                SingleChildScrollView(
-                                  scrollDirection: Axis.horizontal,
-                                  child: Row(
-                                    children: [
-                                      Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            Wrap(
-                                              spacing: 8.0,
-                                              runSpacing: 4.0,
-                                              children: dataMua['layanan']
-                                                  .map<Widget>((e) =>
-                                                      ChoiceChip(
-                                                        showCheckmark: false,
-                                                        selectedColor:
-                                                            Color(0xffC55977),
-                                                        side: BorderSide(
-                                                            color: Color(
-                                                                0xffC55977),
-                                                            width: 1.2),
-                                                        label: Text(
-                                                          e['nama'],
-                                                          style: TextStyle(
-                                                            color: _selectedJasa ==
-                                                                    e['nama']
-                                                                ? Colors.white
-                                                                : Color(
-                                                                    0xffC55977),
-                                                            fontWeight:
-                                                                FontWeight.bold,
-                                                          ),
-                                                        ),
-                                                        selected:
-                                                            _selectedJasa ==
-                                                                e['nama'],
-                                                        onSelected:
-                                                            (bool selected) {
-                                                          setState(() {
-                                                            _selectedJasa =
-                                                                selected
-                                                                    ? e['nama']
-                                                                    : "";
-                                                            harga = e['harga'];
-                                                          });
-                                                        },
-                                                      ))
-                                                  .toList(),
-                                            ),
-                                          ]),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(height: 12.0),
-                                const Divider(
-                                  color: Color(0xffE1CCD2),
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      "Banyak Orang",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                    ),
+                                    SizedBox(height: 12.0),
+                                    const Divider(
+                                      color: Color(0xffE1CCD2),
                                     ),
                                     Row(
                                       mainAxisAlignment:
-                                          MainAxisAlignment.start,
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
-                                        ElevatedButton(
-                                          child: Text(
-                                            "-",
-                                            style: TextStyle(
-                                              color: Color(0xffC55977),
-                                            ),
-                                          ),
-                                          style: ElevatedButton.styleFrom(
-                                              backgroundColor:
-                                                  Colors.transparent,
-                                              elevation: 0,
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: 5, horizontal: 10),
-                                              minimumSize: const Size(0, 0),
-                                              // tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                              shape: RoundedRectangleBorder(
-                                                  side: BorderSide(
-                                                      color: Color(0xffC55977),
-                                                      width: 1.2),
-                                                  borderRadius:
-                                                      BorderRadius.zero)),
-                                          onPressed: () {
-                                            if (_jumlahPemesan <= 0) {
-                                              setState(() {
-                                                _jumlahPemesan = 0;
-                                              });
-                                            } else {
-                                              setState(() {
-                                                _jumlahPemesan--;
-                                              });
-                                            }
-                                          },
-                                        ),
                                         Text(
-                                          _jumlahPemesan.toString(),
+                                          "Banyak Orang",
                                           style: TextStyle(
-                                              fontSize: 12.0,
-                                              color: Color(0xffC55977),
-                                              fontWeight: FontWeight.bold),
+                                            fontWeight: FontWeight.bold,
+                                          ),
                                         ),
-                                        ElevatedButton(
-                                          child: Text("+"),
-                                          style: ElevatedButton.styleFrom(
-                                              elevation: 0,
-                                              padding: EdgeInsets.symmetric(
-                                                  vertical: 5, horizontal: 10),
-                                              minimumSize: Size(0, 0),
-                                              // tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                                              shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.zero)),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          children: [
+                                            ElevatedButton(
+                                              child: Text(
+                                                "-",
+                                                style: TextStyle(
+                                                  color: Color(0xffC55977),
+                                                ),
+                                              ),
+                                              style: ElevatedButton.styleFrom(
+                                                  backgroundColor:
+                                                      Colors.transparent,
+                                                  elevation: 0,
+                                                  padding: EdgeInsets.symmetric(
+                                                      vertical: 5,
+                                                      horizontal: 10),
+                                                  minimumSize: const Size(0, 0),
+                                                  // tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                                  shape: RoundedRectangleBorder(
+                                                      side: BorderSide(
+                                                          color:
+                                                              Color(0xffC55977),
+                                                          width: 1.2),
+                                                      borderRadius:
+                                                          BorderRadius.zero)),
+                                              onPressed: () {
+                                                if (_jumlahPemesan <= 1) {
+                                                  setState(() {
+                                                    _jumlahPemesan = 1;
+                                                  });
+                                                } else {
+                                                  // print();
+                                                  setState(() {
+                                                    _jumlahPemesan--;
+                                                    harga = int.parse(dataLayanan[dataLayanan.indexWhere((e) => e['id'] == layananId)]['harga']) * _jumlahPemesan;
+                                                  });
+                                                }
+                                              },
+                                            ),
+                                            Text(
+                                              _jumlahPemesan.toString(),
+                                              style: TextStyle(
+                                                  fontSize: 12.0,
+                                                  color: Color(0xffC55977),
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            ElevatedButton(
+                                              child: Text("+"),
+                                              style: ElevatedButton.styleFrom(
+                                                  elevation: 0,
+                                                  padding: EdgeInsets.symmetric(
+                                                      vertical: 5,
+                                                      horizontal: 10),
+                                                  minimumSize: Size(0, 0),
+                                                  // tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                                                  shape: RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.zero)),
+                                              onPressed: () {
+                                                setState(() {
+                                                  _jumlahPemesan++;
+                                                  harga = int.parse(dataLayanan[dataLayanan.indexWhere((e) => e['id'] == layananId)]['harga']) * _jumlahPemesan;
+                                                });
+                                              },
+                                            ),
+                                          ],
+                                        )
+                                      ],
+                                    ),
+                                    const Divider(
+                                      color: Color(0xffE1CCD2),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          "Tanggal Booking",
+                                          style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                        IconButton(
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .primary,
+                                          icon: const Icon(
+                                              Icons.calendar_month_rounded),
                                           onPressed: () {
-                                            setState(() {
-                                              _jumlahPemesan++;
+                                            showDatePicker(
+                                              context: context,
+                                              initialDate: DateTime.now(),
+                                              firstDate: DateTime.now(),
+                                              lastDate: DateTime.now().add(
+                                                  const Duration(days: 365)),
+                                            ).then((value) {
+                                              setState(() {
+                                                selectedDate = value;
+                                              });
                                             });
                                           },
-                                        ),
+                                        )
                                       ],
-                                    )
-                                  ],
-                                ),
-                                const Divider(
-                                  color: Color(0xffE1CCD2),
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
+                                    ),
                                     Text(
-                                      "Tanggal Booking",
+                                      selectedDate == null
+                                          ? "Pilih tanggal booking"
+                                          : "${selectedDate!.day}-${selectedDate!.month}-${selectedDate!.year}",
                                       style: TextStyle(
-                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xffC55977),
                                       ),
                                     ),
-                                    IconButton(
-                                      color:
-                                          Theme.of(context).colorScheme.primary,
-                                      icon: const Icon(
-                                          Icons.calendar_month_rounded),
-                                      onPressed: () {
-                                        showDatePicker(
-                                          context: context,
-                                          initialDate: DateTime.now(),
-                                          firstDate: DateTime.now(),
-                                          lastDate: DateTime.now()
-                                              .add(const Duration(days: 365)),
-                                        ).then((value) {
-                                          setState(() {
-                                            selectedDate = value;
-                                          });
-                                        });
-                                      },
-                                    )
                                   ],
                                 ),
-                                Text(
-                                  selectedDate == null
-                                      ? "Pilih tanggal booking"
-                                      : "${selectedDate!.day}-${selectedDate!.month}-${selectedDate!.year}",
-                                  style: TextStyle(
-                                    color: Color(0xffC55977),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ));
+                              ));
                     });
                   },
                 );
