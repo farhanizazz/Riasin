@@ -1,12 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:intl/intl.dart';
 import 'package:riasin_app/Url.dart';
 import 'package:riasin_app/component/item_mua.dart';
 import 'package:riasin_app/component/pesanan_item.dart';
 import 'package:riasin_app/component/review_item.dart';
 import 'package:riasin_app/layout/detail_review.dart';
-import 'package:riasin_app/layout/mua/order_in_client.dart';
+import 'package:riasin_app/layout/mua/detail_Pemesanan.dart';
 
 class LihatSemuaPesanan extends StatefulWidget {
   const LihatSemuaPesanan({super.key, required this.data});
@@ -23,6 +24,7 @@ class _LihatSemuaPesananState extends State<LihatSemuaPesanan> {
   List data = [];
 
   final _storage = const FlutterSecureStorage();
+  DateFormat dateFormatter = DateFormat('dd MMMM yyyy');
 
   Future<String?> _checkToken() async {
     return await _storage.read(key: 'token');
@@ -79,7 +81,7 @@ class _LihatSemuaPesananState extends State<LihatSemuaPesanan> {
                                             context,
                                             MaterialPageRoute(
                                               builder: (context) =>
-                                                  OrderInClient(
+                                                  DetailPemesanan(
                                                 id: e['id'],
                                               ),
                                             ),
@@ -121,7 +123,7 @@ class _LihatSemuaPesananState extends State<LihatSemuaPesanan> {
                                   serviceName: '${e['nama']}',
                                   serviceLocation: 'Sukolilo',
                                   bookingDate:
-                                      'Tanggal Booking: ${e['tanggal_pemesanan']}')),
+                                      'Tanggal Booking: ${dateFormatter.format(DateFormat('dd-MM-yyyy').parse(e['tanggal_pemesanan'])).toString()}')),
                         )
                         .toList(),
                   ),

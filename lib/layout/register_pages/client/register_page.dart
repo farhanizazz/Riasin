@@ -7,6 +7,7 @@ import 'package:riasin_app/component/labeled_text_field.dart';
 import 'package:riasin_app/layout/client/dashboard_client.dart';
 import 'package:riasin_app/layout/login_pages/login_page.dart';
 import 'package:http/http.dart' as http;
+import 'package:riasin_app/layout/register_pages/client/register_page_data_diri.dart';
 import 'package:riasin_app/layout/register_pages/mua/register_page_mua.dart';
 
 import '../mua/register_page_mua.dart';
@@ -210,10 +211,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                                 context,
                                                 MaterialPageRoute(
                                                     builder: (context) =>
-                                                        DashboardClient(
-                                                            token: jsonDecode(
-                                                                    value.body)[
-                                                                'token'])))
+                                                        RegisterPageDataDiri()))
                                           }
                                         else
                                           {

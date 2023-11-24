@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -26,13 +27,12 @@ class _LoginPageState extends State<LoginPage> {
   bool _isLoading = false;
   bool _isObscure = true;
 
-  Future<http.Response> loginMUA(String email, String password) {
-    return http.post(
-      Uri.parse('$baseUrl/api/login'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, dynamic>{
+  final dio = Dio();
+
+  Future<Response> loginMUA(String email, String password) {
+    return dio.post('$baseUrl/api/login',
+      options: Options(headers: {'Content-Type': 'application/json'}),
+      data: FormData.fromMap({
         "email": email,
         "password": password,
       }),
@@ -124,13 +124,12 @@ class _LoginPageState extends State<LoginPage> {
                                           passwordController.text)
                                       .then((value) => {
                                             _isLoading = false,
-                                            if (jsonDecode(value.body)['status'])
+                                            if (value.data['status'])
                                               {
                                                 _storage.write(
                                                     key: 'token',
-                                                    value: jsonDecode(
-                                                        value.body)['token']),
-                                                if (jsonDecode(value.body)['data']
+                                                    value: value.data['token']),
+                                                if (value.data['data']
                                                         ['role_id'] ==
                                                     2)
                                                   {
@@ -140,8 +139,7 @@ class _LoginPageState extends State<LoginPage> {
                                                             builder: (context) =>
                                                                 DashboardMua()))
                                                   }
-                                                else if (jsonDecode(value.body)[
-                                                        'data']['role_id'] ==
+                                                else if (value.data['data']['role_id'] ==
                                                     3)
                                                   {
                                                     Navigator.pushReplacement(
@@ -149,10 +147,7 @@ class _LoginPageState extends State<LoginPage> {
                                                         MaterialPageRoute(
                                                             builder: (context) =>
                                                                 DashboardClient(
-                                                                  token: jsonDecode(
-                                                                          value
-                                                                              .body)[
-                                                                      'token'],
+                                                                  token: value.data['token'],
                                                                 )))
                                                   }
                                                 // Navigator.pushReplacement(
@@ -170,12 +165,12 @@ class _LoginPageState extends State<LoginPage> {
                                                             "Email atau password salah")))
                                               }
                                           });
-                                } on Exception catch (e) {
+                                } on DioException catch (e) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                       SnackBar(
                                           backgroundColor: Colors.red,
                                           content: Text(e.toString())));
-                                  log(e.toString());
+                                  log(e.response.toString());
                                 }
                               }
                             },

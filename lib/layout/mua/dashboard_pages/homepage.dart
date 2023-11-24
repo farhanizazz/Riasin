@@ -1,12 +1,13 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:riasin_app/layout/detail_review.dart';
 
 // import 'package:riasin_app/mua/detail_review.dart';
 import 'package:riasin_app/component/pesanan_item.dart';
 import 'package:riasin_app/component/review_item.dart';
 import 'package:riasin_app/layout/mua/dashboard_pages/lihat_semua.dart';
-import 'package:riasin_app/layout/mua/order_in_client.dart';
+import 'package:riasin_app/layout/mua/detail_Pemesanan.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({
@@ -26,6 +27,8 @@ class Homepage extends StatefulWidget {
 
 class _HomepageState extends State<Homepage> {
   int _currentCarouselIndex = 0;
+  DateFormat dateFormatter = DateFormat('dd MMMM yyyy');
+
 
   @override
   Widget build(BuildContext context) {
@@ -192,7 +195,7 @@ class _HomepageState extends State<Homepage> {
                                                   context,
                                                   MaterialPageRoute(
                                                     builder: (context) =>
-                                                        OrderInClient(
+                                                        DetailPemesanan(
                                                       id: e['id'],
                                                     ),
                                                   ),
@@ -205,7 +208,7 @@ class _HomepageState extends State<Homepage> {
                                               serviceName: '${e['kategori']}',
                                               serviceLocation: 'Sukolilo',
                                               bookingDate:
-                                                  'Tanggal Booking: ${e['tanggal_pemesanan']}'))
+                                                  'Tanggal Booking: ${dateFormatter.format(DateFormat('dd-MM-yyyy').parse(e['tanggal_pemesanan'])).toString()}'))
                                     ],
                                   ),
                           ],

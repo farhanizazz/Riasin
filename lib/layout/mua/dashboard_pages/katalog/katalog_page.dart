@@ -118,231 +118,239 @@ class _KatalogPageState extends State<KatalogPage> {
     return Scaffold(
         body: Container(
       padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 37),
-      child: ListView(
-        padding: const EdgeInsets.only(bottom: 0),
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text(
-                "Preview MUA",
+      child: RefreshIndicator(
+        onRefresh: () async {
+          _isKatalogJasaLoading = true;
+          _isPreviewMUALoading = true;
+          getData();
+        },
+        child: ListView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: const EdgeInsets.only(bottom: 0),
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  "Preview MUA",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PreviewMUA(previewData: previewMUAData, getData: getPreviewMUA, notifyParent: getData,)));
+                    },
+                    child: const Text(
+                      "Lihat Semua",
+                      style: TextStyle(fontWeight: FontWeight.w700),
+                    ))
+              ],
+            ),
+            _isPreviewMUALoading
+                ? Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20.0),
+                  child: Center(
+                      child: CircularProgressIndicator(),
+                    ),
+                )
+                : GridView.count(
+                    physics: const NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    crossAxisCount: 3,
+                    padding: const EdgeInsets.all(0),
+                    crossAxisSpacing: 0,
+                    mainAxisSpacing: 0,
+                    children: [
+                      selectedPhoto == null ? Container(
+                        color: Color(0xffE1CCD2),
+                        child: Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              IconButton(
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(
+                                      Color(0xffC55967)),
+                                  shape:
+                                      MaterialStateProperty.all(CircleBorder()),
+                                ),
+                                onPressed: () async {
+                                  _pickAndSendImage();
+                                },
+                                icon: Icon(
+                                  Icons.add,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Text(
+                                'Tambah Foto',
+                                style: TextStyle(
+                                    fontSize: 10, color: Color(0xffC55967)),
+                              )
+                            ],
+                          ),
+                        ),
+                      ) : Stack(
+                        children: [
+                          Image.file(
+                            selectedPhoto!,
+                            fit: BoxFit.cover,
+                            height: double.infinity,
+                            width: double.infinity,
+                          ),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.3),
+                            ),
+                          ),
+                          Center(
+                            child: CircularProgressIndicator(),
+                          ),
+                          Center(
+                            child: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  cancelToken.cancel();
+                                  selectedPhoto = null;
+                                });
+                              },
+                              icon: const Icon(
+                                Icons.cancel,
+                                color: Color(0xffC55977),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      ...previewMUAData.take(5).map(
+                            (e) => Stack(
+                              children: [
+                                Image.network(
+                                  e['foto'],
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                  height: double.infinity,
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    color: Colors.black.withOpacity(0.3),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          )
+                    ],
+                  ),
+            const SizedBox(
+              height: 34,
+            ),
+            const Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Katalog Jasa",
                 style: TextStyle(
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => PreviewMUA(previewData: previewMUAData, getData: getPreviewMUA, notifyParent: getData,)));
-                  },
-                  child: const Text(
-                    "Lihat Semua",
-                    style: TextStyle(fontWeight: FontWeight.w700),
-                  ))
-            ],
-          ),
-          _isPreviewMUALoading
-              ? Padding(
-                padding: const EdgeInsets.symmetric(vertical: 20.0),
-                child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
-              )
-              : GridView.count(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  crossAxisCount: 3,
-                  padding: const EdgeInsets.all(0),
-                  crossAxisSpacing: 0,
-                  mainAxisSpacing: 0,
+            ),
+            const SizedBox(height: 15),
+            KatalogJasaItem(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const KatalogJasa()));
+              },
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Color(0xffDFC0C9),
+                border: Border.all(color: Color(0xffC55967), width: 1),
+              ),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    selectedPhoto == null ? Container(
-                      color: Color(0xffE1CCD2),
-                      child: Center(
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            IconButton(
-                              style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    Color(0xffC55967)),
-                                shape:
-                                    MaterialStateProperty.all(CircleBorder()),
-                              ),
-                              onPressed: () async {
-                                _pickAndSendImage();
-                              },
-                              icon: Icon(
-                                Icons.add,
-                                color: Colors.white,
-                              ),
-                            ),
-                            Text(
-                              'Tambah Foto',
-                              style: TextStyle(
-                                  fontSize: 10, color: Color(0xffC55967)),
-                            )
-                          ],
-                        ),
+                    IconButton(
+                      onPressed: null,
+                      icon: Icon(
+                        Icons.add,
+                        color: Colors.white,
                       ),
-                    ) : Stack(
-                      children: [
-                        Image.file(
-                          selectedPhoto!,
-                          fit: BoxFit.cover,
-                          height: double.infinity,
-                          width: double.infinity,
-                        ),
-                        Container(
-                          decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(0.3),
-                          ),
-                        ),
-                        Center(
-                          child: CircularProgressIndicator(),
-                        ),
-                        Center(
-                          child: IconButton(
-                            onPressed: () {
-                              setState(() {
-                                cancelToken.cancel();
-                                selectedPhoto = null;
-                              });
-                            },
-                            icon: const Icon(
-                              Icons.cancel,
-                              color: Color(0xffC55977),
-                            ),
-                          ),
-                        ),
-                      ],
+                      style: ButtonStyle(
+                        backgroundColor:
+                            MaterialStateProperty.all(Color(0xffC55967)),
+                        shape: MaterialStateProperty.all(CircleBorder()),
+                      ),
                     ),
-                    ...previewMUAData.take(5).map(
-                          (e) => Stack(
-                            children: [
-                              Image.network(
-                                e['foto'],
-                                fit: BoxFit.cover,
-                                width: double.infinity,
-                                height: double.infinity,
-                              ),
-                              Container(
-                                decoration: BoxDecoration(
-                                  color: Colors.black.withOpacity(0.3),
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
+                    Text(
+                      'Tambah Jasa',
+                      style: TextStyle(fontSize: 10, color: Color(0xffC55967)),
+                    )
                   ],
                 ),
-          const SizedBox(
-            height: 34,
-          ),
-          const Align(
-            alignment: Alignment.centerLeft,
-            child: Text(
-              "Katalog Jasa",
-              style: TextStyle(
-                fontWeight: FontWeight.w700,
               ),
             ),
-          ),
-          const SizedBox(height: 15),
-          KatalogJasaItem(
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const KatalogJasa()));
-            },
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Color(0xffDFC0C9),
-              border: Border.all(color: Color(0xffC55967), width: 1),
-            ),
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                    onPressed: null,
-                    icon: Icon(
-                      Icons.add,
-                      color: Colors.white,
-                    ),
-                    style: ButtonStyle(
-                      backgroundColor:
-                          MaterialStateProperty.all(Color(0xffC55967)),
-                      shape: MaterialStateProperty.all(CircleBorder()),
-                    ),
-                  ),
-                  Text(
-                    'Tambah Jasa',
-                    style: TextStyle(fontSize: 10, color: Color(0xffC55967)),
-                  )
-                ],
-              ),
-            ),
-          ),
-          SizedBox(height: 10),
-          _isKatalogJasaLoading ? Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20.0),
-            child: Center(child: CircularProgressIndicator(),),
-          ) : Column(
-              children: katalogJasaData
-                  .map((e) => Column(
-                        children: [
-                          Hero(
-                            tag: "katalogJasa${e['id']}",
-                            child: KatalogJasaItem(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => EditKatalogJasa(
-                                              id: e['id'],
-                                              photoUrl: e['foto'],
-                                              nama: e['nama'],
-                                            )));
-                              },
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10),
-                                child: Stack(
-                                  children: [
-                                    Image.network(
-                                      e['foto'],
-                                      fit: BoxFit.cover,
-                                      width: double.infinity,
-                                    ),
-                                    Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(5),
-                                        color: Colors.black.withOpacity(0.3),
+            SizedBox(height: 10),
+            _isKatalogJasaLoading ? Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20.0),
+              child: Center(child: CircularProgressIndicator(),),
+            ) : Column(
+                children: katalogJasaData
+                    .map((e) => Column(
+                          children: [
+                            Hero(
+                              tag: "katalogJasa${e['id']}",
+                              child: KatalogJasaItem(
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => EditKatalogJasa(
+                                                id: e['id'],
+                                                photoUrl: e['foto'],
+                                                nama: e['nama'],
+                                              )));
+                                },
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(10),
+                                  child: Stack(
+                                    children: [
+                                      Image.network(
+                                        e['foto'],
+                                        fit: BoxFit.cover,
+                                        width: double.infinity,
                                       ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Align(
-                                        alignment: Alignment.bottomLeft,
-                                        child: Text(
-                                          e['nama'],
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.bold),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          borderRadius: BorderRadius.circular(5),
+                                          color: Colors.black.withOpacity(0.3),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Align(
+                                          alignment: Alignment.bottomLeft,
+                                          child: Text(
+                                            e['nama'],
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          SizedBox(height: 10),
-                        ],
-                      ))
-                  .toList())
-        ],
+                            SizedBox(height: 10),
+                          ],
+                        ))
+                    .toList())
+          ],
+        ),
       ),
     ));
   }

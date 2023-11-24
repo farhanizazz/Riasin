@@ -136,7 +136,12 @@ class _DetailMuaState extends State<DetailMua> {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Image.network(dataMua['galeri'][0]['foto'][0]),
+                      Image.network(
+                        dataMua['galeri'][0]['foto'][0],
+                        height: 400,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
                       Stack(
                         children: [
                           Container(
@@ -354,13 +359,12 @@ class _DetailMuaState extends State<DetailMua> {
                                         Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                                builder:
-                                                    (context) => DetailGaleri(
-                                                          photos: dataMua[
-                                                                      'review_photos_by_category']
-                                                                  [index]
-                                                              ['foto'],
-                                                        )));
+                                                builder: (context) =>
+                                                    DetailGaleri(
+                                                      photos: dataMua[
+                                                              'review_photos_by_category']
+                                                          [index]['foto'],
+                                                    )));
                                       },
                                       child: SizedBox(
                                           child: CardGallery(
@@ -445,7 +449,7 @@ class _DetailMuaState extends State<DetailMua> {
                                                         body: Center(
                                                           child:
                                                               CardDetailReview(
-                                                                id: e['id'],
+                                                            id: e['id'],
                                                             clientName:
                                                                 e['nama'],
                                                             bookingDate: DateFormat(

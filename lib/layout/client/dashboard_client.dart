@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,7 @@ import 'package:riasin_app/layout/client/lihat_semua_review.dart';
 import 'package:riasin_app/layout/client/review_pesanan.dart';
 import 'package:riasin_app/layout/login_pages/login_page.dart';
 import 'package:riasin_app/component/profile_read.dart';
+import 'package:riasin_app/layout/register_pages/client/register_page_data_diri.dart';
 
 import 'homepage.dart';
 
@@ -60,7 +62,13 @@ class _DashboardClientState extends State<DashboardClient> {
         }
       });
     } on DioException catch (e) {
-      showSnackbar(e.response!.data['message']);
+      if(e.response!.statusCode == 500) {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const RegisterPageDataDiri()));
+      }
+      showSnackbar("Silahkan melengkapi data diri anda!");
     }
   }
 
@@ -77,7 +85,13 @@ class _DashboardClientState extends State<DashboardClient> {
         }
       });
     } on DioException catch (e) {
-      showSnackbar(e.response!.data['message']);
+      if(e.response!.statusCode == 500) {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const RegisterPageDataDiri()));
+        showSnackbar("Silahkan melengkapi data diri anda!");
+      }
     }
   }
 
@@ -94,7 +108,14 @@ class _DashboardClientState extends State<DashboardClient> {
         }
       });
     } on DioException catch (e) {
-      showSnackbar(e.response!.data['message']);
+      if(e.response!.statusCode == 500) {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => const RegisterPageDataDiri()));
+            showSnackbar("Silahkan melengkapi data diri anda!");
+
+      }
     }
   }
 

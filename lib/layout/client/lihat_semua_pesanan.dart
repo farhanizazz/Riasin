@@ -4,7 +4,7 @@ import 'package:riasin_app/component/item_mua.dart';
 import 'package:riasin_app/component/pesanan_item.dart';
 import 'package:riasin_app/component/review_item.dart';
 import 'package:riasin_app/layout/detail_review.dart';
-import 'package:riasin_app/layout/mua/order_in_client.dart';
+import 'package:riasin_app/layout/mua/detail_Pemesanan.dart';
 
 class LihatSemuaPesanan extends StatelessWidget {
   const LihatSemuaPesanan({super.key, required this.data});
@@ -48,7 +48,7 @@ class LihatSemuaPesanan extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                           builder: (context) =>
-                              OrderInClient(
+                              DetailPemesanan(
                                 id: e['id'],
                               ),
                         ),

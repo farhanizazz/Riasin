@@ -9,21 +9,22 @@ import 'package:riasin_app/component/widget_tombol_registrasi_bawah.dart';
 import 'package:riasin_app/layout/mua/dashboard_mua.dart';
 import 'package:riasin_app/main.dart';
 
-class OrderInClient extends StatefulWidget {
+class DetailPemesanan extends StatefulWidget {
   final int id;
 
-  const OrderInClient(
+  const DetailPemesanan(
       {super.key, required this.id});
 
   @override
-  State<OrderInClient> createState() => _OrderInClientState();
+  State<DetailPemesanan> createState() => _DetailPemesananState();
 }
 
-class _OrderInClientState extends State<OrderInClient> {
+class _DetailPemesananState extends State<DetailPemesanan> {
   final _storage = const FlutterSecureStorage();
   final dio = Dio();
   bool _isLoading = true;
   final formatter = NumberFormat("#,###");
+  final dateFormatter = DateFormat('dd MMMM yyyy');
 
   Future<String?> _checkToken() async {
     return await _storage.read(key: 'token');
@@ -244,6 +245,21 @@ class _OrderInClientState extends State<OrderInClient> {
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
+                                          Text(
+                                            'Tanggal Pemesanan',
+                                            style: TextStyle(
+                                                fontSize: 13,
+                                                fontWeight: FontWeight.bold,
+                                                color: Color.fromARGB(
+                                                    255, 197, 89, 120)),
+                                          ),
+                                          Text(
+                                            dateFormatter.format(DateTime.parse(data['tanggal_pemesanan'])).toString(),
+                                            style: TextStyle(
+                                                fontSize: 13,
+                                                color: Colors.black),
+                                          ),
+                                          SizedBox(height: 10),
                                           Text(
                                             'Nama Client',
                                             style: TextStyle(
