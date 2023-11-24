@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -76,6 +77,12 @@ class _LoginPageState extends State<LoginPage> {
                           },
                         ),
                         LabeledTextField(
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Password tidak boleh kosong';
+                            }
+                            return null;
+                          },
                           suffixIcon: IconButton(
                             onPressed: () {
                               setState(() {
@@ -168,6 +175,7 @@ class _LoginPageState extends State<LoginPage> {
                                       SnackBar(
                                           backgroundColor: Colors.red,
                                           content: Text(e.toString())));
+                                  log(e.toString());
                                 }
                               }
                             },
