@@ -9,6 +9,9 @@ import 'package:riasin_app/component/review_item.dart';
 import 'package:riasin_app/layout/mua/dashboard_pages/lihat_semua.dart';
 import 'package:riasin_app/layout/mua/detail_Pemesanan.dart';
 
+import 'katalog/add_katalog_jasa.dart';
+import 'katalog/katalog_page.dart';
+
 class Homepage extends StatefulWidget {
   const Homepage({
     super.key,
@@ -28,7 +31,7 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
   int _currentCarouselIndex = 0;
   DateFormat dateFormatter = DateFormat('dd MMMM yyyy');
-
+  NumberFormat numberFormatter = NumberFormat('#,###');
 
   @override
   Widget build(BuildContext context) {
@@ -94,39 +97,82 @@ class _HomepageState extends State<Homepage> {
                     children: <Widget>[
                       // Profil Pengguna
 
-                      CarouselSlider(
-                        items: widget.dashboardData['layananMua']
-                            .map<Widget>((product) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 20.0, vertical: 10.0),
-                            child: buildCarouselItem(
-                              product['nama'],
-                              product['foto'],
-                              product['ulasan'] == null
-                                  ? 0.0
-                                  : product['ulasan'].floor().toDouble(),
-                              double.parse(product['harga']),
+                      widget.dashboardData['layananMua'].isEmpty
+                          ? Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: KatalogJasaItem(
+                                onTap: () {
+                                  Navigator.push(context,
+                                      MaterialPageRoute(builder: (context) => const KatalogJasa()));
+                                },
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Color(0xffDFC0C9),
+                                  border: Border.all(
+                                      color: Color(0xffC55967), width: 1),
+                                ),
+                                child: Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      IconButton(
+                                        onPressed: null,
+                                        icon: Icon(
+                                          Icons.add,
+                                          color: Colors.white,
+                                        ),
+                                        style: ButtonStyle(
+                                          backgroundColor:
+                                              MaterialStateProperty.all(
+                                                  Color(0xffC55967)),
+                                          shape: MaterialStateProperty.all(
+                                              CircleBorder()),
+                                        ),
+                                      ),
+                                      Text(
+                                        'Tambah Jasa',
+                                        style: TextStyle(
+                                            fontSize: 10,
+                                            color: Color(0xffC55967)),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                          )
+                          : CarouselSlider(
+                              items: widget.dashboardData['layananMua']
+                                  .map<Widget>((product) {
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20.0, vertical: 10.0),
+                                  child: buildCarouselItem(
+                                    product['nama'],
+                                    product['foto'],
+                                    product['ulasan'] == null
+                                        ? 0.0
+                                        : product['ulasan'].floor().toDouble(),
+                                    numberFormatter.format(int.parse(product['harga'])),
+                                  ),
+                                );
+                              }).toList(),
+                              options: CarouselOptions(
+                                autoPlay: true,
+                                enlargeCenterPage: true,
+                                enableInfiniteScroll: true,
+                                autoPlayInterval: const Duration(seconds: 3),
+                                autoPlayAnimationDuration:
+                                    const Duration(milliseconds: 800),
+                                autoPlayCurve: Curves.fastOutSlowIn,
+                                aspectRatio: 2.0,
+                                onPageChanged: (index, reason) {
+                                  setState(() {
+                                    _currentCarouselIndex = index;
+                                  });
+                                },
+                                viewportFraction: 1,
+                              ),
                             ),
-                          );
-                        }).toList(),
-                        options: CarouselOptions(
-                          autoPlay: true,
-                          enlargeCenterPage: true,
-                          enableInfiniteScroll: true,
-                          autoPlayInterval: const Duration(seconds: 3),
-                          autoPlayAnimationDuration:
-                              const Duration(milliseconds: 800),
-                          autoPlayCurve: Curves.fastOutSlowIn,
-                          aspectRatio: 2.0,
-                          onPageChanged: (index, reason) {
-                            setState(() {
-                              _currentCarouselIndex = index;
-                            });
-                          },
-                          viewportFraction: 1,
-                        ),
-                      ),
 
                       Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -276,6 +322,7 @@ class _HomepageState extends State<Homepage> {
                                                               body: Center(
                                                                 child:
                                                                     CardDetailReview(
+                                                                      id: e['id'],
                                                                   clientName:
                                                                       e['nama'],
                                                                   bookingDate: e[
@@ -324,7 +371,7 @@ class _HomepageState extends State<Homepage> {
 }
 
 Widget buildCarouselItem(
-    String name, String imagePath, double rating, double price) {
+    String name, String imagePath, double rating, String price) {
   return Stack(
     children: [
       ClipRRect(
@@ -380,7 +427,7 @@ Widget buildCarouselItem(
                   Align(
                     alignment: Alignment.bottomLeft,
                     child: Text(
-                      'Harga: Rp ${price.toStringAsFixed(3)}',
+                      'Harga: Rp $price',
                       style: const TextStyle(
                         color: Colors.white,
                         fontSize: 10,

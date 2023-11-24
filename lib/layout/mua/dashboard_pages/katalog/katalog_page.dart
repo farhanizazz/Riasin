@@ -82,7 +82,7 @@ class _KatalogPageState extends State<KatalogPage> {
     final returnedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
     if(returnedImage == null) return;
     setState(() {
-      selectedPhoto = File(returnedImage!.path);
+      selectedPhoto = File(returnedImage.path);
     });
 
     try {
@@ -373,8 +373,8 @@ class KatalogJasaItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
+      color: Colors.transparent,
       child: InkWell(
-        overlayColor: MaterialStateProperty.all(Colors.grey.withOpacity(0.2)),
         onTap: onTap,
         borderRadius: BorderRadius.circular(10),
         child: Ink(

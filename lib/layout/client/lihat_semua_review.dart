@@ -19,7 +19,7 @@ class _ReviewPageState extends State<ReviewPage> {
   final dio = Dio();
   final _storage = const FlutterSecureStorage();
   List data = [];
-  final DateFormat formatter = DateFormat('dd MMMM yyyy');
+  final DateFormat formatter = DateFormat('dd MMM yyyy');
   bool _loading = true;
 
   void showSnackbar(String message) {

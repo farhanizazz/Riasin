@@ -28,6 +28,7 @@ class _RegisterPageDataDiriState extends State<RegisterPageDataDiri> {
   List<dynamic> kecamatans = [];
   final dio = Dio();
   bool _isLoading = true;
+  bool _isSubmitLoading = false;
   final _storage = const FlutterSecureStorage();
   TextEditingController _dateController = TextEditingController();
 
@@ -155,7 +156,7 @@ class _RegisterPageDataDiriState extends State<RegisterPageDataDiri> {
                                   context: context,
                                   initialDate: DateTime.now(),
                                   firstDate: DateTime(1800),
-                                  lastDate: DateTime(2200),
+                                  lastDate: DateTime.now(),
                                 ).then((value) {
                                   if (value != null) {
                                     String formattedDate =
@@ -184,7 +185,6 @@ class _RegisterPageDataDiriState extends State<RegisterPageDataDiri> {
                                 color: Color(0xffC55977),
                               ),
                             ),
-                            SizedBox(height: 20),
                             DropdownButtonFormField<String>(
                                 validator: (value) => value == null
                                     ? 'Jenis kelamin tidak boleh kosong'
@@ -249,7 +249,7 @@ class _RegisterPageDataDiriState extends State<RegisterPageDataDiri> {
                                       value: 'P',
                                       child: Text('Perempuan')),
                                 ]),
-                            SizedBox(height: 40),
+                            SizedBox(height: 20),
                             DropdownButtonFormField<String>(
                                 validator: (value) => value == null
                                     ? 'Kecamatan tidak boleh kosong'
@@ -325,8 +325,12 @@ class _RegisterPageDataDiriState extends State<RegisterPageDataDiri> {
                           ],
                         ),
                         WidgetTombolRegistrasiBawah(
-                          nextPageOnTap: () async {
+
+                          nextPageOnTap: _isSubmitLoading ? null : () async {
                             if (_formKey.currentState!.validate()) {
+                              setState(() {
+                                _isSubmitLoading = true;
+                              });
                               if (_image == null) {
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(SnackBar(

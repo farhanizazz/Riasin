@@ -151,13 +151,7 @@ class _DashboardClientState extends State<DashboardClient> {
               muaBorn: profileData['tanggal_lahir'],
               muaGender:
                   profileData['gender'] == 'L' ? 'Laki-laki' : 'Perempuan',
-              onTap: () {
-                _storage.delete(key: 'token').then((value) =>
-                    Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const LoginPage())));
-              },
+
             ),
     ];
 

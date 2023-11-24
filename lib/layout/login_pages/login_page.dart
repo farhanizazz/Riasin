@@ -116,8 +116,10 @@ class _LoginPageState extends State<LoginPage> {
                         width: double.infinity,
                         height: 60,
                         child: ElevatedButton(
-                            onPressed: () async {
-                              _isLoading = true;
+                            onPressed: _isLoading ? null :  () async {
+                              setState(() {
+                                _isLoading = true;
+                              });
                               if (_formKey.currentState!.validate()) {
                                 try {
                                   await loginMUA(emailController.text,
@@ -162,7 +164,10 @@ class _LoginPageState extends State<LoginPage> {
                                                     .showSnackBar(const SnackBar(
                                                         backgroundColor: Colors.red,
                                                         content: Text(
-                                                            "Email atau password salah")))
+                                                            "Email atau password salah"))),
+                                                setState(() {
+                                                  _isLoading = false;
+                                                })
                                               }
                                           });
                                 } on DioException catch (e) {
@@ -174,11 +179,28 @@ class _LoginPageState extends State<LoginPage> {
                                 }
                               }
                             },
-                            style: ElevatedButton.styleFrom(
-                                elevation: 0,
-                                backgroundColor: const Color(0xFFC55977),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20))),
+                            style:ButtonStyle(
+                              overlayColor: _isLoading
+                                  ? MaterialStateProperty.all<Color>(
+                                  Colors.transparent)
+                                  : null,
+                              backgroundColor: _isLoading
+                                  ? MaterialStateProperty.all<Color>(
+                                  const Color.fromARGB(255, 192, 125, 144))
+                                  : MaterialStateProperty.all<Color>(
+                                  const Color(0xffC55977)),
+                              shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
+                              ),
+                              elevation: MaterialStateProperty.all<double>(0.0),
+                              shadowColor: MaterialStateProperty.all<Color>(
+                                  Colors.transparent),
+                              minimumSize: MaterialStateProperty.all<Size>(
+                                  const Size.fromHeight(60)),
+                            ),
                             child: _isLoading
                                 ? const CircularProgressIndicator(
                                     color: Colors.white,

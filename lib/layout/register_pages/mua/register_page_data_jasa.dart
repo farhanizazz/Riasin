@@ -316,43 +316,47 @@ class _RegisterPageDataDiriState extends State<RegisterPageDataJasa> {
                             ],
                           ),
                         ),
-                        WidgetTombolRegistrasiBawah(
-                          nextPageOnTap: () {
-                            if (_formKey.currentState!.validate()) {
-                              if (formData.profilePicture == null) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content:
-                                        Text('Foto profil tidak boleh kosong'),
-                                    backgroundColor: Colors.red,
-                                  ),
-                                );
-                                return;
-                              }
-                              if (formData.pdfPortfolio == null) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content:
-                                        Text('Portofolio tidak boleh kosong'),
-                                    backgroundColor: Colors.red,
-                                  ),
-                                );
-                                return;
-                              }
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => RegisterPilihHari(),
-                                  ));
-                            }
-                          },
-                          nextPageName: "Pilih Hari",
-                          previousPageName: "Data Diri",
-                        ),
                       ],
                     ),
                   ),
                 )),
+      bottomNavigationBar: BottomAppBar(
+        surfaceTintColor: Colors.transparent,
+        color: Colors.transparent,
+        child: WidgetTombolRegistrasiBawah(
+          nextPageOnTap: () {
+            if (_formKey.currentState!.validate()) {
+              if (formData.profilePicture == null) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content:
+                    Text('Foto profil tidak boleh kosong'),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+                return;
+              }
+              if (formData.pdfPortfolio == null) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content:
+                    Text('Portofolio tidak boleh kosong'),
+                    backgroundColor: Colors.red,
+                  ),
+                );
+                return;
+              }
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => RegisterPilihHari(),
+                  ));
+            }
+          },
+          nextPageName: "Pilih Hari",
+          previousPageName: "Data Diri",
+        ),
+      ),
     );
   }
 }

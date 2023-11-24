@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -46,6 +48,7 @@ class _CardDetailReviewState extends State<CardDetailReview> {
   }
 
   void getData() async {
+    print(widget.id.toString());
     print(await _storage.read(key: 'token'));
     try {
       Response res = await dio.get(

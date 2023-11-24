@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
@@ -163,10 +164,11 @@ class _PreviewMUAState extends State<PreviewMUA> {
                               } on DioException catch (e) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                    content: Text(e.response!.data['message']),
+                                    content: Text(e.response!.toString()),
                                     backgroundColor: Colors.red,
                                   ),
                                 );
+                                log(e.response.toString());
                               }
                               setState(() {
                                 widget.previewData.remove(e);

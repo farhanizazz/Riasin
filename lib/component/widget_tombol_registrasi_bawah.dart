@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class WidgetTombolRegistrasiBawah extends StatelessWidget {
-  final Function() nextPageOnTap;
+  final Function()? nextPageOnTap;
   final String nextPageName;
   final String previousPageName;
   final bool useNextArrow;
@@ -12,7 +12,7 @@ class WidgetTombolRegistrasiBawah extends StatelessWidget {
 
   const WidgetTombolRegistrasiBawah({
     super.key,
-    required this.nextPageOnTap,
+    this.nextPageOnTap,
     required this.nextPageName,
     required this.previousPageName,
     this.useNextArrow = true,
@@ -27,7 +27,6 @@ class WidgetTombolRegistrasiBawah extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Row(
-      
       children: [
       usePrevButton ? Expanded(
           child: ElevatedButton(
@@ -75,9 +74,7 @@ class WidgetTombolRegistrasiBawah extends StatelessWidget {
         ),
         Expanded(
           child: ElevatedButton(
-            onPressed: () {
-              nextPageOnTap();
-            },
+            onPressed: nextPageOnTap,
             style: ButtonStyle(
 
               padding: MaterialStateProperty.all(EdgeInsets.all(0)),

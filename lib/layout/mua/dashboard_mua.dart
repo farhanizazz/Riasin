@@ -30,11 +30,6 @@ class _DashboardMuaState extends State<DashboardMua> {
   }
 
   int _selectedIndex = 0;
-  List<CarouselItem> products = [
-    CarouselItem('Nama Produk 1', 'assets/images/mua.jpg', 4.5, 50.0),
-    CarouselItem('Nama Produk 2', 'assets/images/mua.jpg', 4.0, 40.0),
-    CarouselItem('Nama Produk 3', 'assets/images/mua.jpg', 4.2, 45.0),
-  ];
   late Map<String, dynamic> dashboardData = {
     'profile': {},
     'layananMua': {},
@@ -126,13 +121,6 @@ class _DashboardMuaState extends State<DashboardMua> {
             muaGender: dashboardData['profile']['jenis_kelamin'] == 'L'
                 ? 'Laki-laki'
                 : 'Perempuan',
-            onTap: () {
-              _storage.delete(key: 'token').then((value) =>
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const LoginPage())));
-            },
           ),
         ];
       });
@@ -142,6 +130,7 @@ class _DashboardMuaState extends State<DashboardMua> {
           SnackBar(
             content: Text('Silahkan lengkapi data diri anda!'),
             duration: Duration(seconds: 2),
+            backgroundColor: Colors.red[800],
           ),
         );
         Navigator.pushReplacement(

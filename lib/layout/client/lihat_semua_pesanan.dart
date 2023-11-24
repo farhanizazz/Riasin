@@ -98,7 +98,7 @@ class lihatSemuaReview extends StatelessWidget {
       ),
       body: data.isEmpty
           ? Center(
-        child: Text("Tidak ada pesanan terbaru"),
+        child: Text("Tidak ada review terbaru"),
       )
           : SingleChildScrollView(
         child: Column(
@@ -117,6 +117,7 @@ class lihatSemuaReview extends StatelessWidget {
                                     "Review ${e['nama']}")),
                             body: Center(
                               child: CardDetailReview(
+                                id: e['id'],
                                 clientName: e['nama'],
                                 bookingDate:
                                 DateFormat('dd MMMM yy').format(DateFormat('yyyy-MM-dd HH:mm:ss').parse(e['tanggal_pemesanan'])).toString(),

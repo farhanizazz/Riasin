@@ -67,7 +67,7 @@ class _KatalogJasaState extends State<KatalogJasa> {
         backgroundColor: Colors.white,
         centerTitle: true,
         title: const Text(
-          "Preview MUA",
+          "Tambah Katalog Jasa",
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.bold,
@@ -219,7 +219,7 @@ class _KatalogJasaState extends State<KatalogJasa> {
                           keyboardType: TextInputType.multiline,
                           maxLines: null,
                           decoration: InputDecoration(
-                            hintText: 'Request Tambahan',
+                            hintText: 'Deskripsi Jasa',
                             hintStyle: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w600,
